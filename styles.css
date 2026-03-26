@@ -757,7 +757,6 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   display:none;
 }
 
-/* Základný CTA button */
 .cta-btn{
   display:flex;
   align-items:center;
@@ -782,7 +781,6 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   transform:scale(1.03) translateY(-1px);
 }
 
-/* Logo wrap vnútri CTA */
 .cta-logo-wrap{
   width:36px; height:36px;
   border-radius:50%;
@@ -792,7 +790,6 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 }
 .cta-logo-wrap svg{ width:22px; height:22px; }
 
-/* Text blok */
 .cta-text-block{
   display:flex; flex-direction:column; gap:3px;
 }
@@ -813,7 +810,7 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   letter-spacing:-.3px;
 }
 
-/* Outline variant (classic light) */
+/* Outline variant */
 .cta-btn.cta-outline{
   background:var(--gr-bg, #fff);
   border:var(--gr-border-style, 1.5px solid #e5e7eb);
@@ -833,11 +830,10 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   color:var(--gr-score-color, var(--gr-text, #111));
 }
 
-/* Modern variant — glow efekt */
+/* Modern variant */
 .cta-btn.cta-modern{
   border-radius:calc(var(--radius) + 4px);
   padding:11px 20px 11px 11px;
-  box-shadow:var(--gr-badge-shadow, 0 0 0 2px rgba(0,0,0,.08));
   border:none;
 }
 .cta-btn.cta-modern .cta-logo-wrap{
@@ -849,7 +845,7 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   font-size:15px; font-weight:900;
 }
 
-/* Glass variant */
+/* Glass light variant */
 .cta-btn.cta-glass{
   background:rgba(255,255,255,0.22);
   border:1px solid rgba(255,255,255,0.55);
@@ -861,13 +857,11 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   filter:none;
   box-shadow:0 8px 32px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,0.80);
 }
-.cta-btn.cta-glass .cta-logo-wrap{
-  background:rgba(255,255,255,0.30);
-}
+.cta-btn.cta-glass .cta-logo-wrap{ background:rgba(255,255,255,0.30); }
 .cta-btn.cta-glass .cta-label{ color:rgba(255,255,255,0.80); }
 .cta-btn.cta-glass .cta-score{ color:#fff; }
 
-/* Glass dark */
+/* Glass dark variant */
 .cta-btn.cta-glass-dark{
   background:rgba(0,0,0,0.25);
   border:1px solid rgba(255,255,255,0.18);
@@ -883,14 +877,14 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 .cta-btn.cta-glass-dark .cta-label{ color:rgba(255,255,255,0.65); }
 .cta-btn.cta-glass-dark .cta-score{ color:#fff; }
 
-/* Scale podľa size */
+/* Size scales */
 .cta-size-s{ transform:scale(0.82); transform-origin:inherit; }
 .cta-size-m{ transform:scale(1); }
 .cta-size-l{ transform:scale(1.22); transform-origin:inherit; }
 .cta-size-s:hover{ transform:scale(0.84) translateY(-1px); }
 .cta-size-l:hover{ transform:scale(1.25) translateY(-1px); }
 
-/* Animácia pri mountnutí */
+/* Mount animácia */
 .cta-enter{
   animation:ctaPopIn .3s cubic-bezier(.34,1.56,.64,1) both;
 }
