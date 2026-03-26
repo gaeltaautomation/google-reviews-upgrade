@@ -14,29 +14,12 @@ const LANGS={
 
 // ── WIDGET TYPE DEFINITIONS ──────────────────────────────────────────────────
 const WIDGET_TYPES = {
-  c0: {
-    label: 'Floating', icon: '💬',
-    sections: ['appearance','position','content','reviews-logic','display']
-  },
-  c1: {
-    label: 'Karusel', icon: '🎠',
-    sections: ['appearance','content-c1','reviews-logic-c1','display-pages']
-  },
-  c2: {
-    label: 'Lišta', icon: '📌',
-    sections: ['appearance-c2','position-c2','content-c2','display-devices','display-pages']
-  },
-  c3: {
-    label: 'Embed', icon: '🧩',
-    sections: ['appearance','content-c3','reviews-logic','display-pages']
-  },
-  c4: {
-    label: 'CTA button', icon: '✍️',
-    sections: ['appearance-c4','position','content-c4','display']
-  }
+  c0: { label: 'Floating', icon: '💬', sections: ['appearance','position','content','reviews-logic','display'] },
+  c1: { label: 'Karusel', icon: '🎠', sections: ['appearance','content-c1','reviews-logic-c1','display-pages'] },
+  c2: { label: 'Lišta', icon: '📌', sections: ['appearance-c2','position-c2','content-c2','display-devices','display-pages'] },
+  c3: { label: 'Embed', icon: '🧩', sections: ['appearance','content-c3','reviews-logic','display-pages'] },
+  c4: { label: 'CTA button', icon: '✍️', sections: ['appearance-c4','position','content-c4','display'] }
 };
-
-const COMBINE_LABELS = { c0:'💬 Floating', c1:'🎠 Karusel', c2:'📌 Lišta', c4:'✍️ CTA button' };
 
 // ── SECTION RENDERERS ────────────────────────────────────────────────────────
 const SECTIONS = {
@@ -205,7 +188,7 @@ const SECTIONS = {
       </div>
     </div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">#</span> Počet recenzií</div>
+      <div class="cfg-label"><span class="cfg-label-icon">#</span> Koľko recenzií zobraziť</div>
       <div class="cfg-row">
         <div class="pill-btn ${S.reviewCount===3?'active':''}" data-count="3" onclick="setReviewCount(3,this)">3 <span style="opacity:.55;font-size:9px">lite</span></div>
         <div class="pill-btn ${S.reviewCount===5?'active':''}" data-count="5" onclick="setReviewCount(5,this)">5 <span style="opacity:.55;font-size:9px">default</span></div>
@@ -245,7 +228,7 @@ const SECTIONS = {
       </div>
     </div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">#</span> Počet (karty)</div>
+      <div class="cfg-label"><span class="cfg-label-icon">#</span> Koľko kariet zobraziť</div>
       <div class="cfg-row">
         <div class="pill-btn ${S.reviewCount===3?'active':''}" data-count="3" onclick="setReviewCount(3,this)">3</div>
         <div class="pill-btn ${S.reviewCount===5?'active':''}" data-count="5" onclick="setReviewCount(5,this)">5</div>
@@ -338,19 +321,6 @@ function switchType(type, el) {
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
 
-  // Show/hide combine section (not for c0)
-  const combineSection = document.getElementById('combine-section');
-  if (type !== 'c0') {
-    combineSection.style.display = 'block';
-    const opts = Object.entries(COMBINE_LABELS)
-      .filter(([k]) => k !== type)
-      .map(([k,l]) => `<label class="chk-single"><input type="checkbox" ${(S.combine||[]).includes(k)?'checked':''} onchange="toggleCombine('${k}',this.checked)"><span>${l}</span></label>`)
-      .join('');
-    document.getElementById('combine-options').innerHTML = opts;
-  } else {
-    combineSection.style.display = 'none';
-  }
-
   // Render dynamic sections
   const dyn = document.getElementById('cfg-dynamic');
   dyn.innerHTML = WIDGET_TYPES[type].sections.map(s => SECTIONS[s] ? SECTIONS[s]() : '').join('');
@@ -367,7 +337,6 @@ function switchType(type, el) {
     }
   });
 
-  // Re-init position fields if c0
   if (type === 'c0') {
     buildOffsetFields();
     applyTheme();
@@ -378,12 +347,6 @@ function switchType(type, el) {
   }
 
   updatePreviewLabel();
-}
-
-function toggleCombine(type, checked) {
-  if (!S.combine) S.combine = [];
-  if (checked) { if (!S.combine.includes(type)) S.combine.push(type); }
-  else { S.combine = S.combine.filter(t => t !== type); }
 }
 
 function updatePreviewLabel() {
@@ -431,7 +394,6 @@ const GAP=10;
 let panelOpen=false,currentDevice='desktop',activeOffsetTab='desktop';
 let S={
   widgetType:'c0',
-  combine:[],
   style:'classic',accent:'#4285F4',mode:'light',radius:14,size:'M',pos:'bottom-right',
   offsetDesktop:{bottom:28,right:28},offsetMobile:{bottom:16,right:16},
   lang:'sk',ctaWrite:'Napísať recenziu',ctaAll:'Všetky recenzie',
@@ -630,7 +592,6 @@ function col(i){ document.getElementById('s'+i).classList.remove('hidden'); docu
 // ── INIT ─────────────────────────────────────────────────────────────────────
 document.getElementById('panel-stars').innerHTML=Array(5).fill(STAR(12)).join('');
 
-// Render initial dynamic sections for C0
 const dyn = document.getElementById('cfg-dynamic');
 dyn.innerHTML = WIDGET_TYPES['c0'].sections.map(s => SECTIONS[s] ? SECTIONS[s]() : '').join('');
 buildOffsetFields();
