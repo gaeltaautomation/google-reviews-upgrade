@@ -12,7 +12,6 @@ const LANGS={
   it:{label:"Recensioni Google",reviews:"recensioni",writeReview:"Scrivi una recensione",allReviews:"Tutte le recensioni",barText:"I nostri clienti ci amano",ctaText:"Scrivi una recensione"}
 };
 
-// ── WIDGET TYPE DEFINITIONS ──────────────────────────────────────────────────
 const WIDGET_TYPES = {
   c0: { label: 'Floating', icon: '💬', sections: ['appearance','position','content','reviews-logic','display'] },
   c1: { label: 'Karusel', icon: '🎠', sections: ['appearance','content-c1','reviews-logic-c1','display-pages'] },
@@ -21,7 +20,6 @@ const WIDGET_TYPES = {
   c4: { label: 'CTA button', icon: '✍️', sections: ['appearance-c4','position','content-c4','display'] }
 };
 
-// ── SECTION RENDERERS ────────────────────────────────────────────────────────
 const SECTIONS = {
 
   'appearance': () => `
@@ -147,7 +145,7 @@ const SECTIONS = {
     <div class="cfg-section">${renderLangSection()}</div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Text tlačidla</div>
-      <input id="inp-write" class="cfg-input" type="text" value="${S.ctaWrite}" oninput="S.ctaWrite=this.value">
+      <input id="inp-write" class="cfg-input" type="text" value="${S.ctaWrite}" oninput="S.ctaWrite=this.value;buildCarousel()">
     </div>`,
 
   'content-c2': () => `
@@ -321,11 +319,9 @@ function switchType(type, el) {
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
 
-  // Render dynamic sections
   const dyn = document.getElementById('cfg-dynamic');
   dyn.innerHTML = WIDGET_TYPES[type].sections.map(s => SECTIONS[s] ? SECTIONS[s]() : '').join('');
 
-  // Show correct preview
   ['c0','c1','c2','c3','c4'].forEach(t => {
     const el2 = document.getElementById(t === 'c0' ? 'gr-badge' : `preview-${t}`);
     const panel = document.getElementById('gr-panel');
@@ -338,10 +334,9 @@ function switchType(type, el) {
   });
 
   if (type === 'c0') {
-    buildOffsetFields();
-    applyTheme();
-    buildBadge();
-    applyPosition();
+    buildOffsetFields(); applyTheme(); buildBadge(); applyPosition();
+  } else if (type === 'c1') {
+    applyTheme(); buildCarousel();
   } else {
     applyTheme();
   }
@@ -392,6 +387,7 @@ const reviews=[
 const SIZES={S:.82,M:1,L:1.22};
 const GAP=10;
 let panelOpen=false,currentDevice='desktop',activeOffsetTab='desktop';
+let carouselIndex=0;
 let S={
   widgetType:'c0',
   style:'classic',accent:'#4285F4',mode:'light',radius:14,size:'M',pos:'bottom-right',
@@ -442,6 +438,7 @@ function applyTheme(){
   const stage=document.getElementById('preview-stage');
   stage.classList.remove('glass-bg-light','glass-bg-dark');
   if(S.style==='glass') stage.classList.add(S.mode==='dark'?'glass-bg-dark':'glass-bg-light');
+  if(S.widgetType==='c1') buildCarousel();
   updatePreviewLabel();
 }
 
@@ -465,6 +462,136 @@ function buildBadge(){
       +(S.showCount?`<span class="gr-badge-count">47 ${t.reviews}</span>`:'')
       +`</div></div></div>`;
   }
+}
+
+// ── CAROUSEL ─────────────────────────────────────────────────────────────────
+function buildCarousel(){
+  const wrap = document.getElementById('preview-c1');
+  if(!wrap) return;
+  const t = LANGS[S.lang];
+  const MAX = S.textLen;
+  const filtered = reviews.filter(rv => rv.r >= S.minRating).slice(0, S.reviewCount);
+  carouselIndex = Math.min(carouselIndex, Math.max(0, filtered.length - 1));
+
+  const isDark = S.mode === 'dark';
+  const isGlass = S.style === 'glass';
+  const isModern = S.style === 'modern';
+
+  const cardBg = isDark
+    ? (isGlass ? 'rgba(255,255,255,0.07)' : isModern ? '#0f172a' : '#1f2937')
+    : (isGlass ? 'rgba(255,255,255,0.55)' : '#fff');
+  const cardBorder = isDark
+    ? (isGlass ? '1px solid rgba(255,255,255,0.14)' : '1.5px solid #374151')
+    : (isGlass ? '1px solid rgba(255,255,255,0.65)' : '1.5px solid #e5e7eb');
+  const textCol = isDark ? '#f1f5f9' : '#111827';
+  const mutedCol = isDark ? '#94a3b8' : '#6b7280';
+  const bodyCol = isDark ? '#cbd5e1' : '#4b5563';
+  const headerBg = isDark
+    ? (isGlass ? 'rgba(0,0,0,0.25)' : isModern ? `linear-gradient(135deg,${rgba(S.accent,.18)} 0%,rgba(2,6,23,0) 100%)` : '#1e293b')
+    : (isGlass ? 'rgba(255,255,255,0.35)' : isModern ? `linear-gradient(135deg,${rgba(S.accent,.08)} 0%,rgba(248,250,252,0) 100%)` : '#f8fafc');
+  const wrapBg = isDark
+    ? (isGlass ? 'transparent' : isModern ? '#020617' : '#111827')
+    : (isGlass ? 'transparent' : isModern ? '#f8fafc' : '#f3f4f6');
+  const navBg = isDark ? rgba(S.accent,.18) : rgba(S.accent,.10);
+  const navCol = S.accent;
+  const blur = isGlass ? 'blur(18px)' : 'none';
+
+  const cards = filtered.map((rv,i) => {
+    const short = rv.text.length > MAX ? rv.text.slice(0,MAX)+'...' : rv.text;
+    const dateStr = S.dateFormat==='absolute' ? rv.absDate : rv.date;
+    const replyHtml = (S.ownerReply==='show' && rv.ownerReply)
+      ? `<div class="cr-reply" style="background:${rgba(S.accent,.08)};border-left:3px solid ${S.accent};margin-top:10px;padding:8px 10px;border-radius:6px">
+           <div style="font-size:10px;font-weight:700;color:${S.accent};text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">💬 Odpoveď</div>
+           <p style="font-size:12px;color:${bodyCol};margin:0;line-height:1.5">${rv.ownerReply}</p>
+         </div>` : '';
+    const active = i === carouselIndex;
+    return `<div class="cr-card${active?' cr-active':''}" style="
+      min-width:280px;max-width:320px;padding:20px;
+      background:${cardBg};border:${cardBorder};
+      border-radius:${S.radius+4}px;
+      backdrop-filter:${blur};-webkit-backdrop-filter:${blur};
+      box-shadow:${isDark?'0 4px 24px rgba(0,0,0,.45)':'0 4px 20px rgba(0,0,0,.08)'};
+      flex-shrink:0;
+      transition:transform .3s ease,opacity .3s ease;
+      opacity:${active?1:.45};
+      transform:${active?'scale(1)':'scale(0.93)'};
+    ">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="width:36px;height:36px;border-radius:${S.style==='classic'?'50%':'8px'};background:${rv.col};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0">${rv.init}</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:${textCol}">${rv.name}</div>
+          <div style="font-size:11px;color:${mutedCol};margin-top:1px">${dateStr}</div>
+        </div>
+        <div style="margin-left:auto;opacity:.8">${G_SVG(16)}</div>
+      </div>
+      <div style="display:flex;gap:1px;margin-bottom:9px">${Array(rv.r).fill(STAR(13)).join('')}</div>
+      <p style="font-size:13px;color:${bodyCol};line-height:1.55;margin:0">${short}</p>
+      ${replyHtml}
+    </div>`;
+  }).join('');
+
+  const total = filtered.length;
+  const dots = filtered.map((_,i) =>
+    `<div onclick="carouselGo(${i})" style="width:${i===carouselIndex?18:7}px;height:7px;border-radius:999px;background:${i===carouselIndex?S.accent:isDark?'rgba(255,255,255,0.25)':'#d1d5db'};cursor:pointer;transition:all .25s"></div>`
+  ).join('');
+
+  const scoreCol = isModern ? S.accent : textCol;
+
+  wrap.innerHTML = `
+    <div class="cr-shell" style="width:100%;max-width:820px;background:${wrapBg};border-radius:${S.radius+8}px;overflow:hidden;backdrop-filter:${blur};-webkit-backdrop-filter:${blur}">
+      <div class="cr-header" style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px 14px;background:${headerBg};gap:12px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:${isModern?'10px':'50%'};background:${rgba(S.accent,.12)};display:flex;align-items:center;justify-content:center">${G_SVG(22)}</div>
+          <div>
+            <div style="font-size:12px;font-weight:800;color:${isModern?S.accent:mutedCol};text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px">${t.label}</div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="font-size:22px;font-weight:900;color:${scoreCol};letter-spacing:-.5px">5.0</span>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="display:flex;gap:1px">${Array(5).fill(STAR(13)).join('')}</div>
+                <span style="font-size:11px;color:${mutedCol}">47 ${t.reviews}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button onclick="this.blur()" style="padding:8px 16px;background:${S.accent};color:#fff;border:none;border-radius:${S.radius}px;font-size:12px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif">✏️ ${S.ctaWrite}</button>
+      </div>
+      <div class="cr-track-wrap" style="padding:20px 24px 16px;position:relative;overflow:hidden">
+        <div class="cr-track" id="cr-track" style="display:flex;gap:16px;transition:transform .35s cubic-bezier(.4,0,.2,1)">${cards}</div>
+      </div>
+      <div class="cr-footer" style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px 18px">
+        <div style="display:flex;gap:6px;align-items:center">${dots}</div>
+        <div style="display:flex;gap:8px">
+          <button onclick="carouselPrev()" style="width:34px;height:34px;border-radius:50%;background:${navBg};border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:${navCol}" title="Predchádzajúci">‹</button>
+          <button onclick="carouselNext(${total})" style="width:34px;height:34px;border-radius:50%;background:${navBg};border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:${navCol}" title="Nasledujúci">›</button>
+        </div>
+      </div>
+    </div>`;
+
+  updateCarouselTrack(filtered.length);
+}
+
+function updateCarouselTrack(total){
+  const track = document.getElementById('cr-track');
+  if(!track) return;
+  const cardW = 320 + 16;
+  const offset = carouselIndex * cardW;
+  track.style.transform = `translateX(-${offset}px)`;
+}
+
+function carouselGo(i){
+  const filtered = reviews.filter(rv => rv.r >= S.minRating).slice(0, S.reviewCount);
+  carouselIndex = Math.max(0, Math.min(i, filtered.length-1));
+  buildCarousel();
+}
+function carouselPrev(){
+  const filtered = reviews.filter(rv => rv.r >= S.minRating).slice(0, S.reviewCount);
+  carouselIndex = Math.max(0, carouselIndex-1);
+  buildCarousel();
+}
+function carouselNext(total){
+  const filtered = reviews.filter(rv => rv.r >= S.minRating).slice(0, S.reviewCount);
+  carouselIndex = Math.min(filtered.length-1, carouselIndex+1);
+  buildCarousel();
 }
 
 function applyPosition(){
@@ -542,12 +669,14 @@ function setLang(lang){
   const iw=document.getElementById('inp-write'); if(iw) iw.value=t.writeReview;
   const ia=document.getElementById('inp-all'); if(ia) ia.value=t.allReviews;
   const pc=document.getElementById('panel-count'); if(pc) pc.textContent=`· 47 ${t.reviews}`;
-  updateTexts(); if(S.widgetType==='c0') buildBadge();
+  updateTexts();
+  if(S.widgetType==='c0') buildBadge();
+  if(S.widgetType==='c1') buildCarousel();
 }
 
 function setStyle(s,el){ document.querySelectorAll('[data-style]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.style=s; applyTheme(); if(S.widgetType==='c0') buildBadge(); }
-function setColor(el){ document.querySelectorAll('.color-swatch').forEach(c=>c.classList.remove('active')); el.classList.add('active'); S.accent=el.dataset.color; applyTheme(); if(S.widgetType==='c0') buildBadge(); }
-function setColorHex(v){ S.accent=v; applyTheme(); if(S.widgetType==='c0') buildBadge(); }
+function setColor(el){ document.querySelectorAll('.color-swatch').forEach(c=>c.classList.remove('active')); el.classList.add('active'); S.accent=el.dataset.color; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); }
+function setColorHex(v){ S.accent=v; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); }
 function setMode(m,el){ document.querySelectorAll('#mode-section .toggle-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.mode=m; applyTheme(); }
 function setRadius(v){ S.radius=parseInt(v); const rv=document.getElementById('radius-val'); if(rv) rv.textContent=v+'px'; applyTheme(); if(S.widgetType==='c0') applyPosition(); }
 function setSize(s,el){ document.querySelectorAll('[data-size]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.size=s; applyTheme(); if(S.widgetType==='c0') applyPosition(); }
@@ -558,11 +687,11 @@ function setBarPos(pos,el){ S.barPos=pos; document.querySelectorAll('[onclick^="
 function setBarDismissible(val,el){ S.barDismissible=val; document.querySelectorAll('[onclick^="setBarDismissible"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }
 function togglePanel(){ panelOpen=!panelOpen; const gp=document.getElementById('gr-panel'); if(gp) gp.classList.toggle('open',panelOpen); }
 
-function setMinRating(val,el){ document.querySelectorAll('[data-minrating]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.minRating=val; renderReviews(); }
-function setReviewCount(val,el){ document.querySelectorAll('[data-count]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.reviewCount=val; renderReviews(); }
-function setTextLen(val){ S.textLen=parseInt(val); const tv=document.getElementById('textlen-val'); if(tv) tv.textContent=val+' znakov'; renderReviews(); }
-function setDateFormat(fmt,el){ document.querySelectorAll('[onclick^="setDateFormat"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.dateFormat=fmt; renderReviews(); }
-function setOwnerReply(val,el){ document.querySelectorAll('[onclick^="setOwnerReply"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.ownerReply=val; renderReviews(); }
+function setMinRating(val,el){ document.querySelectorAll('[data-minrating]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.minRating=val; if(S.widgetType==='c1'){carouselIndex=0;buildCarousel();}else renderReviews(); }
+function setReviewCount(val,el){ document.querySelectorAll('[data-count]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.reviewCount=val; if(S.widgetType==='c1'){carouselIndex=0;buildCarousel();}else renderReviews(); }
+function setTextLen(val){ S.textLen=parseInt(val); const tv=document.getElementById('textlen-val'); if(tv) tv.textContent=val+' znakov'; if(S.widgetType==='c1') buildCarousel(); else renderReviews(); }
+function setDateFormat(fmt,el){ document.querySelectorAll('[onclick^="setDateFormat"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.dateFormat=fmt; if(S.widgetType==='c1') buildCarousel(); else renderReviews(); }
+function setOwnerReply(val,el){ document.querySelectorAll('[onclick^="setOwnerReply"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.ownerReply=val; if(S.widgetType==='c1') buildCarousel(); else renderReviews(); }
 
 function renderReviews(){
   const MAX=S.textLen;
