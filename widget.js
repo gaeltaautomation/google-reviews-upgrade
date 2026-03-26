@@ -172,7 +172,7 @@ const SECTIONS = {
     <div class="cfg-section">${renderLangSection()}</div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Text tlačidla</div>
-      <input id="inp-cta" class="cfg-input" type="text" value="${S.ctaWrite}" oninput="S.ctaWrite=this.value">
+      <input id="inp-cta" class="cfg-input" type="text" value="${S.ctaWrite}" oninput="S.ctaWrite=this.value;buildCTA()">
     </div>`,
 
   'reviews-logic': () => `
@@ -341,8 +341,8 @@ function switchType(type, el) {
     applyTheme(); buildBar();
   } else if (type === 'c3') {
     applyTheme(); buildEmbed();
-  } else {
-    applyTheme();
+  } else if (type === 'c4') {
+    buildOffsetFields(); applyTheme(); buildCTA(); applyCTAPosition();
   }
 
   updatePreviewLabel();
@@ -357,6 +357,7 @@ function updatePreviewLabel() {
   let label = typeLabel + modeLabel;
   if (S.widgetType === 'c0') label += ` · ${S.size} · ${posL[S.pos]}`;
   if (S.widgetType === 'c2') label += ` · ${S.barPos === 'top' ? '▲ Navrchu' : '▼ Dole'}`;
+  if (S.widgetType === 'c4') label += ` · ${S.size} · ${posL[S.pos]}`;
   document.getElementById('preview-text').textContent = label;
 }
 
@@ -446,6 +447,7 @@ function applyTheme(){
   if(S.widgetType==='c1') buildCarousel();
   if(S.widgetType==='c2') buildBar();
   if(S.widgetType==='c3') buildEmbed();
+  if(S.widgetType==='c4') buildCTA();
   updatePreviewLabel();
 }
 
@@ -469,6 +471,56 @@ function buildBadge(){
       +(S.showCount?`<span class="gr-badge-count">47 ${t.reviews}</span>`:'')+
       `</div></div></div>`;
   }
+}
+
+// ── CTA BUTTON (c4) ──────────────────────────────────────────────────────────
+function buildCTA(){
+  const wrap = document.getElementById('preview-c4');
+  if(!wrap) return;
+
+  const t = LANGS[S.lang];
+  const sc = SIZES[S.size];
+
+  // resolve variant class based on style + mode
+  let variantClass = 'cta-btn';
+  if(S.style === 'classic'){
+    variantClass += S.mode === 'dark' ? ' cta-outline' : ' cta-outline';
+  } else if(S.style === 'modern'){
+    variantClass += ' cta-modern';
+  } else if(S.style === 'glass'){
+    variantClass += S.mode === 'dark' ? ' cta-glass-dark' : ' cta-glass';
+  }
+
+  const sizeClass = `cta-size-${S.size.toLowerCase()}`;
+
+  wrap.innerHTML = `
+    <button class="${variantClass} ${sizeClass} cta-pop-in"
+      style="--accent:${S.accent};border-radius:${S.radius}px;"
+      onclick="this.blur()">
+      <span class="cta-logo-wrap">${G_SVG(18)}</span>
+      <span class="cta-text-block">
+        <span class="cta-label">${t.label}</span>
+        <span class="cta-stars">${Array(5).fill(STAR(11)).join('')}
+          <span class="cta-score">5.0</span>
+        </span>
+      </span>
+      <span class="cta-divider"></span>
+      <span class="cta-action">✏️ ${S.ctaWrite}</span>
+    </button>`;
+
+  applyCTAPosition();
+}
+
+function applyCTAPosition(){
+  const wrap = document.getElementById('preview-c4');
+  if(!wrap) return;
+  const top = isTop(), left = isLeft();
+  const o = currentDevice === 'mobile' ? S.offsetMobile : S.offsetDesktop;
+  wrap.style.position = 'absolute';
+  wrap.style.top    = top    ? (o.top    || 100) + 'px' : 'auto';
+  wrap.style.bottom = !top   ? (o.bottom || 28)  + 'px' : 'auto';
+  wrap.style.left   = left   ? (o.left   || 28)  + 'px' : 'auto';
+  wrap.style.right  = !left  ? (o.right  || 28)  + 'px' : 'auto';
 }
 
 // ── STICKY BAR (c2) ──────────────────────────────────────────────────────────
@@ -776,6 +828,7 @@ function setDevice(dev,el){
   if(dev==='desktop'){ label.textContent='🖥 Desktop preview'; }
   else { frame.classList.add(dev==='mobile'?'mobile':'tablet','visible'); label.textContent=dev==='mobile'?'📱 Mobile preview':'⬜ Tablet preview'; stage.classList.add('device-mode'); }
   if(S.widgetType==='c0') applyPosition();
+  if(S.widgetType==='c4') applyCTAPosition();
 }
 
 function updateTexts(){
@@ -790,22 +843,24 @@ function setLang(lang){
   S.ctaWrite=t.writeReview; S.ctaAll=t.allReviews;
   const iw=document.getElementById('inp-write'); if(iw) iw.value=t.writeReview;
   const ia=document.getElementById('inp-all'); if(ia) ia.value=t.allReviews;
+  const ic=document.getElementById('inp-cta'); if(ic) ic.value=t.writeReview;
   const pc=document.getElementById('panel-count'); if(pc) pc.textContent=`· 47 ${t.reviews}`;
   updateTexts();
   if(S.widgetType==='c0') buildBadge();
   if(S.widgetType==='c1') buildCarousel();
   if(S.widgetType==='c2') buildBar();
   if(S.widgetType==='c3') buildEmbed();
+  if(S.widgetType==='c4') buildCTA();
 }
 
 function setStyle(s,el){ document.querySelectorAll('[data-style]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.style=s; applyTheme(); if(S.widgetType==='c0') buildBadge(); }
-function setColor(el){ document.querySelectorAll('.color-swatch').forEach(c=>c.classList.remove('active')); el.classList.add('active'); S.accent=el.dataset.color; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); if(S.widgetType==='c2') buildBar(); if(S.widgetType==='c3') buildEmbed(); }
-function setColorHex(v){ S.accent=v; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); if(S.widgetType==='c2') buildBar(); if(S.widgetType==='c3') buildEmbed(); }
+function setColor(el){ document.querySelectorAll('.color-swatch').forEach(c=>c.classList.remove('active')); el.classList.add('active'); S.accent=el.dataset.color; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); if(S.widgetType==='c2') buildBar(); if(S.widgetType==='c3') buildEmbed(); if(S.widgetType==='c4') buildCTA(); }
+function setColorHex(v){ S.accent=v; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); if(S.widgetType==='c2') buildBar(); if(S.widgetType==='c3') buildEmbed(); if(S.widgetType==='c4') buildCTA(); }
 function setMode(m,el){ document.querySelectorAll('#mode-section .toggle-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.mode=m; applyTheme(); }
-function setRadius(v){ S.radius=parseInt(v); const rv=document.getElementById('radius-val'); if(rv) rv.textContent=v+'px'; applyTheme(); if(S.widgetType==='c0') applyPosition(); if(S.widgetType==='c3') buildEmbed(); }
-function setSize(s,el){ document.querySelectorAll('[data-size]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.size=s; applyTheme(); if(S.widgetType==='c0') applyPosition(); }
-function setPos(el){ document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.pos=el.dataset.pos; const top=isTop(),left=isLeft(); S.offsetDesktop={[top?'top':'bottom']:top?100:28,...(top?{}:{[left?'left':'right']:28})}; S.offsetMobile={[top?'top':'bottom']:top?80:16,...(top?{}:{[left?'left':'right']:16})}; buildOffsetFields(); buildBadge(); applyPosition(); panelOpen=false; const gp=document.getElementById('gr-panel'); if(gp) gp.classList.remove('open'); }
-function setOffset(key,field,val){ S[key][field]=parseInt(val)||0; applyPosition(); }
+function setRadius(v){ S.radius=parseInt(v); const rv=document.getElementById('radius-val'); if(rv) rv.textContent=v+'px'; applyTheme(); if(S.widgetType==='c0') applyPosition(); if(S.widgetType==='c3') buildEmbed(); if(S.widgetType==='c4') buildCTA(); }
+function setSize(s,el){ document.querySelectorAll('[data-size]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.size=s; applyTheme(); if(S.widgetType==='c0') applyPosition(); if(S.widgetType==='c4'){ buildCTA(); applyCTAPosition(); } }
+function setPos(el){ document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.pos=el.dataset.pos; const top=isTop(),left=isLeft(); S.offsetDesktop={[top?'top':'bottom']:top?100:28,...(top?{}:{[left?'left':'right']:28})}; S.offsetMobile={[top?'top':'bottom']:top?80:16,...(top?{}:{[left?'left':'right']:16})}; buildOffsetFields(); if(S.widgetType==='c0'){ buildBadge(); applyPosition(); panelOpen=false; const gp=document.getElementById('gr-panel'); if(gp) gp.classList.remove('open'); } if(S.widgetType==='c4') applyCTAPosition(); }
+function setOffset(key,field,val){ S[key][field]=parseInt(val)||0; applyPosition(); if(S.widgetType==='c4') applyCTAPosition(); }
 function setOffsetTab(tab,el){ activeOffsetTab=tab; document.querySelectorAll('.offset-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); const df=document.getElementById('offset-desktop-fields'); const mf=document.getElementById('offset-mobile-fields'); if(df) df.style.display=tab==='desktop'?'block':'none'; if(mf) mf.style.display=tab==='mobile'?'block':'none'; }
 function setBarPos(pos,el){ S.barPos=pos; document.querySelectorAll('[onclick^="setBarPos"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); buildBar(); updatePreviewLabel(); }
 function setBarDismissible(val,el){ S.barDismissible=val; document.querySelectorAll('[onclick^="setBarDismissible"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); buildBar(); }
