@@ -131,63 +131,63 @@ const THEMES={
   },
   glass:{
     light:{
-      /* Apple Glassmorphism Light – rgba bg + silný blur */
-      "--gr-bg":"rgba(255,255,255,0.55)",
-      "--gr-border-style":"1px solid rgba(255,255,255,0.70)",
-      "--gr-border-raw":"rgba(255,255,255,0.70)",
-      "--gr-logo-bg":"rgba(255,255,255,0.60)",
-      "--gr-text":"#1d1d1f",
-      "--gr-text-muted":"#6e6e73",
-      "--gr-text-body":"#3d3d3f",
-      "--gr-divider":"rgba(0,0,0,0.07)",
-      "--gr-chip":"rgba(255,255,255,0.50)",
-      "--gr-score-color":"#1d1d1f",
-      "--gr-panel-header-bg":"rgba(255,255,255,0.10)",
-      "--gr-review-hover":"rgba(255,255,255,0.20)",
-      "--gr-close-bg":"rgba(255,255,255,0.30)",
-      "--gr-close-border":"rgba(255,255,255,0.55)",
-      "--gr-close-icon":"#6e6e73",
-      "--gr-close-blur":"blur(12px)",
-      "--gr-btn-outline-bg":"rgba(255,255,255,0.25)",
-      "--gr-btn-outline-border":"rgba(255,255,255,0.50)",
-      "--gr-btn-outline-color":"#1d1d1f",
-      "--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.80)",
-      "--gr-btn-outline-blur":"blur(12px)",
+      /* Leadhub-style glassmorphism Light
+         Nizka opacita pozadia + cistý blur(20px) bez saturate/brightness extremov */
+      "--gr-bg":"rgba(255,255,255,0.15)",
+      "--gr-border-style":"1px solid rgba(255,255,255,0.25)",
+      "--gr-border-raw":"rgba(255,255,255,0.25)",
+      "--gr-logo-bg":"rgba(255,255,255,0.20)",
+      "--gr-text":"#ffffff",
+      "--gr-text-muted":"rgba(255,255,255,0.70)",
+      "--gr-text-body":"rgba(255,255,255,0.85)",
+      "--gr-divider":"rgba(255,255,255,0.12)",
+      "--gr-chip":"rgba(255,255,255,0.10)",
+      "--gr-score-color":"#ffffff",
+      "--gr-panel-header-bg":"rgba(255,255,255,0.05)",
+      "--gr-review-hover":"rgba(255,255,255,0.08)",
+      "--gr-close-bg":"rgba(255,255,255,0.15)",
+      "--gr-close-border":"rgba(255,255,255,0.25)",
+      "--gr-close-icon":"rgba(255,255,255,0.80)",
+      "--gr-close-blur":"blur(10px)",
+      "--gr-btn-outline-bg":"rgba(255,255,255,0.12)",
+      "--gr-btn-outline-border":"rgba(255,255,255,0.25)",
+      "--gr-btn-outline-color":"#ffffff",
+      "--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.30)",
+      "--gr-btn-outline-blur":"blur(10px)",
       "--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW",
-      "--gr-badge-shadow":"0 8px 32px rgba(15,23,42,0.12), 0 1px 0 rgba(255,255,255,0.95) inset, 0 -1px 0 rgba(15,23,42,0.06) inset",
-      "--gr-badge-shadow-hover":"0 16px 48px rgba(15,23,42,0.18), 0 1px 0 rgba(255,255,255,0.95) inset",
-      /* KĽÚČ: silný blur – funguje len keď je badge vnútri farebného preview-stage */
-      "--gr-blur":"blur(40px) saturate(1.8) brightness(1.05)",
-      "--gr-blur-hover":"blur(52px) saturate(2.1) brightness(1.07)"
+      "--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.20), 0 1px 0 rgba(255,255,255,0.30) inset",
+      "--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.35) inset",
+      "--gr-blur":"blur(20px)",
+      "--gr-blur-hover":"blur(24px)"
     },
     dark:{
-      /* Apple Glassmorphism Dark */
-      "--gr-bg":"rgba(28,28,30,0.65)",
-      "--gr-border-style":"1px solid rgba(255,255,255,0.14)",
-      "--gr-border-raw":"rgba(255,255,255,0.14)",
-      "--gr-logo-bg":"rgba(58,58,60,0.80)",
-      "--gr-text":"#f5f5f7",
-      "--gr-text-muted":"#98989d",
-      "--gr-text-body":"#c7c7cc",
-      "--gr-divider":"rgba(255,255,255,0.09)",
-      "--gr-chip":"rgba(44,44,46,0.70)",
-      "--gr-score-color":"#f5f5f7",
-      "--gr-panel-header-bg":"rgba(255,255,255,0.04)",
+      /* Leadhub-style glassmorphism Dark */
+      "--gr-bg":"rgba(0,0,0,0.20)",
+      "--gr-border-style":"1px solid rgba(255,255,255,0.15)",
+      "--gr-border-raw":"rgba(255,255,255,0.15)",
+      "--gr-logo-bg":"rgba(255,255,255,0.10)",
+      "--gr-text":"#ffffff",
+      "--gr-text-muted":"rgba(255,255,255,0.60)",
+      "--gr-text-body":"rgba(255,255,255,0.75)",
+      "--gr-divider":"rgba(255,255,255,0.10)",
+      "--gr-chip":"rgba(255,255,255,0.07)",
+      "--gr-score-color":"#ffffff",
+      "--gr-panel-header-bg":"rgba(0,0,0,0.10)",
       "--gr-review-hover":"rgba(255,255,255,0.06)",
-      "--gr-close-bg":"rgba(255,255,255,0.14)",
-      "--gr-close-border":"rgba(255,255,255,0.25)",
-      "--gr-close-icon":"#98989d",
-      "--gr-close-blur":"blur(12px)",
-      "--gr-btn-outline-bg":"rgba(255,255,255,0.10)",
-      "--gr-btn-outline-border":"rgba(255,255,255,0.20)",
-      "--gr-btn-outline-color":"#f5f5f7",
-      "--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.18)",
-      "--gr-btn-outline-blur":"blur(12px)",
+      "--gr-close-bg":"rgba(255,255,255,0.12)",
+      "--gr-close-border":"rgba(255,255,255,0.18)",
+      "--gr-close-icon":"rgba(255,255,255,0.70)",
+      "--gr-close-blur":"blur(10px)",
+      "--gr-btn-outline-bg":"rgba(255,255,255,0.08)",
+      "--gr-btn-outline-border":"rgba(255,255,255,0.18)",
+      "--gr-btn-outline-color":"#ffffff",
+      "--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.15)",
+      "--gr-btn-outline-blur":"blur(10px)",
       "--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW",
-      "--gr-badge-shadow":"0 8px 32px rgba(0,0,0,0.60), 0 1px 0 rgba(255,255,255,0.10) inset, 0 -1px 0 rgba(0,0,0,0.45) inset",
-      "--gr-badge-shadow-hover":"0 16px 48px rgba(0,0,0,0.75), 0 1px 0 rgba(255,255,255,0.12) inset",
-      "--gr-blur":"blur(40px) saturate(1.6) brightness(0.92)",
-      "--gr-blur-hover":"blur(52px) saturate(1.9) brightness(0.95)"
+      "--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.12) inset",
+      "--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.15) inset",
+      "--gr-blur":"blur(20px)",
+      "--gr-blur-hover":"blur(24px)"
     }
   }
 };
@@ -256,7 +256,6 @@ function applyTheme(){
   root.style.setProperty('--radius',S.radius+'px');
   document.getElementById('mode-section').style.display='block';
 
-  // Glass preview bg – pridaj/odober triedy na #preview-stage
   const stage=document.getElementById('preview-stage');
   stage.classList.remove('glass-bg-light','glass-bg-dark');
   if(S.style==='glass'){
@@ -294,7 +293,6 @@ function buildBadge(){
   }
 }
 
-// Pozícia badge a panel – ABSOLUTE vnútri #preview-stage
 function applyPosition(){
   const badge=document.getElementById('gr-badge');
   const panel=document.getElementById('gr-panel');
@@ -303,7 +301,6 @@ function applyPosition(){
   const o=currentDevice==='mobile'?S.offsetMobile:S.offsetDesktop;
   const sc=SIZES[S.size];
 
-  // Badge vždy absolute vnútri stage
   badge.style.position='absolute';
   badge.style.transform=`scale(${sc})`;
 
