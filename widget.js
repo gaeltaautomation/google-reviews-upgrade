@@ -153,7 +153,7 @@ const SECTIONS = {
     <div class="cfg-section">${renderLangSection()}</div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Text lišty</div>
-      <input id="inp-bar" class="cfg-input" type="text" value="${S.barCustomText||''}" placeholder="${LANGS[S.lang].barText}" oninput="S.barCustomText=this.value">
+      <input id="inp-bar" class="cfg-input" type="text" value="${S.barCustomText||''}" placeholder="${LANGS[S.lang].barText}" oninput="S.barCustomText=this.value;buildBar()">
     </div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">✖</span> Zatvárateľná</div>
@@ -337,6 +337,8 @@ function switchType(type, el) {
     buildOffsetFields(); applyTheme(); buildBadge(); applyPosition();
   } else if (type === 'c1') {
     applyTheme(); buildCarousel();
+  } else if (type === 'c2') {
+    applyTheme(); buildBar();
   } else {
     applyTheme();
   }
@@ -352,6 +354,7 @@ function updatePreviewLabel() {
   document.getElementById('preview-dot').style.boxShadow = `0 0 8px ${S.accent}`;
   let label = typeLabel + modeLabel;
   if (S.widgetType === 'c0') label += ` · ${S.size} · ${posL[S.pos]}`;
+  if (S.widgetType === 'c2') label += ` · ${S.barPos === 'top' ? '▲ Navrchu' : '▼ Dole'}`;
   document.getElementById('preview-text').textContent = label;
 }
 
@@ -439,6 +442,7 @@ function applyTheme(){
   stage.classList.remove('glass-bg-light','glass-bg-dark');
   if(S.style==='glass') stage.classList.add(S.mode==='dark'?'glass-bg-dark':'glass-bg-light');
   if(S.widgetType==='c1') buildCarousel();
+  if(S.widgetType==='c2') buildBar();
   updatePreviewLabel();
 }
 
@@ -462,6 +466,53 @@ function buildBadge(){
       +(S.showCount?`<span class="gr-badge-count">47 ${t.reviews}</span>`:'')
       +`</div></div></div>`;
   }
+}
+
+// ── STICKY BAR (c2) ──────────────────────────────────────────────────────────
+function buildBar(){
+  const wrap = document.getElementById('preview-c2');
+  if(!wrap) return;
+
+  const t = LANGS[S.lang];
+  const barText = S.barCustomText || t.barText;
+
+  // pozícia
+  wrap.className = '';
+  wrap.style.display = 'flex';
+  wrap.classList.add(S.barPos === 'top' ? 'bar-top' : 'bar-bottom');
+
+  const dismissHtml = S.barDismissible
+    ? `<button class="gr-bar-dismiss" onclick="dismissBar()" title="Zavrieť">
+         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+           <path d="M5 5l10 10M15 5L5 15"/>
+         </svg>
+       </button>`
+    : '';
+
+  wrap.innerHTML = `
+    <div class="gr-bar gr-bar-enter">
+      <div class="gr-bar-left">
+        <div class="gr-bar-logo">${G_SVG(18)}</div>
+        <span class="gr-bar-score">5.0</span>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div class="gr-bar-stars">${Array(5).fill(STAR(13)).join('')}</div>
+          <span class="gr-bar-count">47 ${t.reviews}</span>
+        </div>
+      </div>
+      <div class="gr-bar-center">${barText}</div>
+      <div class="gr-bar-right">
+        <button class="gr-bar-cta">✏️ ${t.ctaText}</button>
+        ${dismissHtml}
+      </div>
+    </div>`;
+}
+
+function dismissBar(){
+  const wrap = document.getElementById('preview-c2');
+  if(!wrap) return;
+  wrap.style.display = 'none';
+  // po 1.5s znova zobrazí (len v preview, nie v produkcii)
+  setTimeout(() => { if(S.widgetType === 'c2') { wrap.style.display = 'flex'; buildBar(); } }, 1500);
 }
 
 // ── CAROUSEL ─────────────────────────────────────────────────────────────────
@@ -672,19 +723,20 @@ function setLang(lang){
   updateTexts();
   if(S.widgetType==='c0') buildBadge();
   if(S.widgetType==='c1') buildCarousel();
+  if(S.widgetType==='c2') buildBar();
 }
 
 function setStyle(s,el){ document.querySelectorAll('[data-style]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.style=s; applyTheme(); if(S.widgetType==='c0') buildBadge(); }
-function setColor(el){ document.querySelectorAll('.color-swatch').forEach(c=>c.classList.remove('active')); el.classList.add('active'); S.accent=el.dataset.color; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); }
-function setColorHex(v){ S.accent=v; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); }
+function setColor(el){ document.querySelectorAll('.color-swatch').forEach(c=>c.classList.remove('active')); el.classList.add('active'); S.accent=el.dataset.color; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); if(S.widgetType==='c2') buildBar(); }
+function setColorHex(v){ S.accent=v; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); if(S.widgetType==='c2') buildBar(); }
 function setMode(m,el){ document.querySelectorAll('#mode-section .toggle-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.mode=m; applyTheme(); }
 function setRadius(v){ S.radius=parseInt(v); const rv=document.getElementById('radius-val'); if(rv) rv.textContent=v+'px'; applyTheme(); if(S.widgetType==='c0') applyPosition(); }
 function setSize(s,el){ document.querySelectorAll('[data-size]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.size=s; applyTheme(); if(S.widgetType==='c0') applyPosition(); }
 function setPos(el){ document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.pos=el.dataset.pos; const top=isTop(),left=isLeft(); S.offsetDesktop={[top?'top':'bottom']:top?100:28,...(top?{}:{[left?'left':'right']:28})}; S.offsetMobile={[top?'top':'bottom']:top?80:16,...(top?{}:{[left?'left':'right']:16})}; buildOffsetFields(); buildBadge(); applyPosition(); panelOpen=false; const gp=document.getElementById('gr-panel'); if(gp) gp.classList.remove('open'); }
 function setOffset(key,field,val){ S[key][field]=parseInt(val)||0; applyPosition(); }
 function setOffsetTab(tab,el){ activeOffsetTab=tab; document.querySelectorAll('.offset-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); const df=document.getElementById('offset-desktop-fields'); const mf=document.getElementById('offset-mobile-fields'); if(df) df.style.display=tab==='desktop'?'block':'none'; if(mf) mf.style.display=tab==='mobile'?'block':'none'; }
-function setBarPos(pos,el){ S.barPos=pos; document.querySelectorAll('[onclick^="setBarPos"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }
-function setBarDismissible(val,el){ S.barDismissible=val; document.querySelectorAll('[onclick^="setBarDismissible"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }
+function setBarPos(pos,el){ S.barPos=pos; document.querySelectorAll('[onclick^="setBarPos"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); buildBar(); updatePreviewLabel(); }
+function setBarDismissible(val,el){ S.barDismissible=val; document.querySelectorAll('[onclick^="setBarDismissible"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); buildBar(); }
 function togglePanel(){ panelOpen=!panelOpen; const gp=document.getElementById('gr-panel'); if(gp) gp.classList.toggle('open',panelOpen); }
 
 function setMinRating(val,el){ document.querySelectorAll('[data-minrating]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.minRating=val; if(S.widgetType==='c1'){carouselIndex=0;buildCarousel();}else renderReviews(); }
