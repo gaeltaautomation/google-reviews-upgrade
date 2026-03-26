@@ -339,6 +339,8 @@ function switchType(type, el) {
     applyTheme(); buildCarousel();
   } else if (type === 'c2') {
     applyTheme(); buildBar();
+  } else if (type === 'c3') {
+    applyTheme(); buildEmbed();
   } else {
     applyTheme();
   }
@@ -443,6 +445,7 @@ function applyTheme(){
   if(S.style==='glass') stage.classList.add(S.mode==='dark'?'glass-bg-dark':'glass-bg-light');
   if(S.widgetType==='c1') buildCarousel();
   if(S.widgetType==='c2') buildBar();
+  if(S.widgetType==='c3') buildEmbed();
   updatePreviewLabel();
 }
 
@@ -455,16 +458,16 @@ function buildBadge(){
   if(S.style==='modern') badge.classList.add('modern-badge');
   if(top){
     badge.innerHTML=`<div class="vert-stars">${Array(5).fill(STAR(14)).join('')}</div>`
-      +(S.showCount?`<span class="vert-count">47 ${t.reviews}</span>`:'')
-      +`<div class="vert-divider"></div><span class="vert-score">5.0</span>`
+      +(S.showCount?`<span class="vert-count">47 ${t.reviews}</span>`:'')+
+      `<div class="vert-divider"></div><span class="vert-score">5.0</span>`
       +`<div class="gr-logo-wrap" style="width:26px;height:26px;margin-top:2px">${G_SVG(16)}</div>`;
   } else {
     badge.innerHTML=`<div class="gr-logo-wrap" style="width:42px;height:42px">${G_SVG(26)}</div>`
       +`<div class="gr-badge-info"><span class="gr-badge-label">${t.label}</span>`
       +`<div class="gr-score-block"><span class="gr-badge-score">5.0</span>`
       +`<div class="gr-stars-count"><div class="gr-badge-stars">${Array(5).fill(STAR(14)).join('')}</div>`
-      +(S.showCount?`<span class="gr-badge-count">47 ${t.reviews}</span>`:'')
-      +`</div></div></div>`;
+      +(S.showCount?`<span class="gr-badge-count">47 ${t.reviews}</span>`:'')+
+      `</div></div></div>`;
   }
 }
 
@@ -476,7 +479,6 @@ function buildBar(){
   const t = LANGS[S.lang];
   const barText = S.barCustomText || t.barText;
 
-  // pozícia
   wrap.className = '';
   wrap.style.display = 'flex';
   wrap.classList.add(S.barPos === 'top' ? 'bar-top' : 'bar-bottom');
@@ -511,8 +513,77 @@ function dismissBar(){
   const wrap = document.getElementById('preview-c2');
   if(!wrap) return;
   wrap.style.display = 'none';
-  // po 1.5s znova zobrazí (len v preview, nie v produkcii)
   setTimeout(() => { if(S.widgetType === 'c2') { wrap.style.display = 'flex'; buildBar(); } }, 1500);
+}
+
+// ── EMBED WIDGET (c3) ────────────────────────────────────────────────────────
+function buildEmbed(){
+  const wrap = document.getElementById('preview-c3');
+  if(!wrap) return;
+
+  const t = LANGS[S.lang];
+  const MAX = S.textLen;
+  const filtered = reviews.filter(rv => rv.r >= S.minRating).slice(0, S.reviewCount);
+
+  const isModern = S.style === 'modern';
+  const scoreCol = isModern ? S.accent : 'var(--gr-score-color, var(--gr-text, #111))';
+  const avatarRadius = S.style === 'classic' ? '50%' : (S.style === 'modern' ? '8px' : '50%');
+
+  const headerBg = isModern
+    ? (S.mode === 'dark'
+        ? `linear-gradient(135deg, ${rgba(S.accent,.18)} 0%, rgba(2,6,23,0) 100%)`
+        : `linear-gradient(135deg, ${rgba(S.accent,.08)} 0%, rgba(248,250,252,0) 100%)`)
+    : 'var(--gr-panel-header-bg, transparent)';
+
+  const logoRadius = isModern ? '10px' : '50%';
+
+  const cards = filtered.map((rv, i) => {
+    const short = rv.text.length > MAX ? rv.text.slice(0, MAX) + '...' : rv.text;
+    const dateStr = S.dateFormat === 'absolute' ? rv.absDate : rv.date;
+    const replyHtml = (S.ownerReply === 'show' && rv.ownerReply)
+      ? `<div class="emb-card-reply">
+           <div class="emb-reply-label">💬 Odpoveď</div>
+           <div class="emb-reply-text">${rv.ownerReply}</div>
+         </div>`
+      : '';
+    return `<div class="emb-card emb-card-enter" style="animation-delay:${i * 0.05}s">
+      <div class="emb-card-top">
+        <div class="emb-avatar" style="background:${rv.col};border-radius:${avatarRadius}">${rv.init}</div>
+        <div>
+          <div class="emb-name">${rv.name}</div>
+          <div class="emb-date">${dateStr}</div>
+        </div>
+        <div class="emb-g-logo">${G_SVG(16)}</div>
+      </div>
+      <div class="emb-card-stars">${Array(rv.r).fill(STAR(13)).join('')}</div>
+      <div class="emb-card-text">${short}</div>
+      ${replyHtml}
+    </div>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div class="emb-shell">
+      <div class="emb-header" style="background:${headerBg}">
+        <div class="emb-header-left">
+          <div class="emb-logo-wrap" style="border-radius:${logoRadius}">${G_SVG(26)}</div>
+          <div>
+            <div class="emb-biz-name" style="color:${isModern ? S.accent : 'var(--gr-text,#111827)'}">${t.label}</div>
+            <div class="emb-meta">
+              <span class="emb-score" style="color:${scoreCol}">5.0</span>
+              <div class="emb-stars-wrap">
+                <div class="emb-stars">${Array(5).fill(STAR(14)).join('')}</div>
+                <span class="emb-count">47 ${t.reviews}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="emb-header-right">
+          <button class="emb-btn-write">✏️ ${S.ctaWrite}</button>
+          <button class="emb-btn-all">${S.ctaAll}</button>
+        </div>
+      </div>
+      <div class="emb-grid">${cards}</div>
+    </div>`;
 }
 
 // ── CAROUSEL ─────────────────────────────────────────────────────────────────
@@ -724,13 +795,14 @@ function setLang(lang){
   if(S.widgetType==='c0') buildBadge();
   if(S.widgetType==='c1') buildCarousel();
   if(S.widgetType==='c2') buildBar();
+  if(S.widgetType==='c3') buildEmbed();
 }
 
 function setStyle(s,el){ document.querySelectorAll('[data-style]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.style=s; applyTheme(); if(S.widgetType==='c0') buildBadge(); }
-function setColor(el){ document.querySelectorAll('.color-swatch').forEach(c=>c.classList.remove('active')); el.classList.add('active'); S.accent=el.dataset.color; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); if(S.widgetType==='c2') buildBar(); }
-function setColorHex(v){ S.accent=v; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); if(S.widgetType==='c2') buildBar(); }
+function setColor(el){ document.querySelectorAll('.color-swatch').forEach(c=>c.classList.remove('active')); el.classList.add('active'); S.accent=el.dataset.color; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); if(S.widgetType==='c2') buildBar(); if(S.widgetType==='c3') buildEmbed(); }
+function setColorHex(v){ S.accent=v; applyTheme(); if(S.widgetType==='c0') buildBadge(); if(S.widgetType==='c1') buildCarousel(); if(S.widgetType==='c2') buildBar(); if(S.widgetType==='c3') buildEmbed(); }
 function setMode(m,el){ document.querySelectorAll('#mode-section .toggle-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.mode=m; applyTheme(); }
-function setRadius(v){ S.radius=parseInt(v); const rv=document.getElementById('radius-val'); if(rv) rv.textContent=v+'px'; applyTheme(); if(S.widgetType==='c0') applyPosition(); }
+function setRadius(v){ S.radius=parseInt(v); const rv=document.getElementById('radius-val'); if(rv) rv.textContent=v+'px'; applyTheme(); if(S.widgetType==='c0') applyPosition(); if(S.widgetType==='c3') buildEmbed(); }
 function setSize(s,el){ document.querySelectorAll('[data-size]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.size=s; applyTheme(); if(S.widgetType==='c0') applyPosition(); }
 function setPos(el){ document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.pos=el.dataset.pos; const top=isTop(),left=isLeft(); S.offsetDesktop={[top?'top':'bottom']:top?100:28,...(top?{}:{[left?'left':'right']:28})}; S.offsetMobile={[top?'top':'bottom']:top?80:16,...(top?{}:{[left?'left':'right']:16})}; buildOffsetFields(); buildBadge(); applyPosition(); panelOpen=false; const gp=document.getElementById('gr-panel'); if(gp) gp.classList.remove('open'); }
 function setOffset(key,field,val){ S[key][field]=parseInt(val)||0; applyPosition(); }
@@ -739,11 +811,11 @@ function setBarPos(pos,el){ S.barPos=pos; document.querySelectorAll('[onclick^="
 function setBarDismissible(val,el){ S.barDismissible=val; document.querySelectorAll('[onclick^="setBarDismissible"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); buildBar(); }
 function togglePanel(){ panelOpen=!panelOpen; const gp=document.getElementById('gr-panel'); if(gp) gp.classList.toggle('open',panelOpen); }
 
-function setMinRating(val,el){ document.querySelectorAll('[data-minrating]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.minRating=val; if(S.widgetType==='c1'){carouselIndex=0;buildCarousel();}else renderReviews(); }
-function setReviewCount(val,el){ document.querySelectorAll('[data-count]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.reviewCount=val; if(S.widgetType==='c1'){carouselIndex=0;buildCarousel();}else renderReviews(); }
-function setTextLen(val){ S.textLen=parseInt(val); const tv=document.getElementById('textlen-val'); if(tv) tv.textContent=val+' znakov'; if(S.widgetType==='c1') buildCarousel(); else renderReviews(); }
-function setDateFormat(fmt,el){ document.querySelectorAll('[onclick^="setDateFormat"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.dateFormat=fmt; if(S.widgetType==='c1') buildCarousel(); else renderReviews(); }
-function setOwnerReply(val,el){ document.querySelectorAll('[onclick^="setOwnerReply"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.ownerReply=val; if(S.widgetType==='c1') buildCarousel(); else renderReviews(); }
+function setMinRating(val,el){ document.querySelectorAll('[data-minrating]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.minRating=val; if(S.widgetType==='c1'){carouselIndex=0;buildCarousel();}else if(S.widgetType==='c3'){buildEmbed();}else renderReviews(); }
+function setReviewCount(val,el){ document.querySelectorAll('[data-count]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.reviewCount=val; if(S.widgetType==='c1'){carouselIndex=0;buildCarousel();}else if(S.widgetType==='c3'){buildEmbed();}else renderReviews(); }
+function setTextLen(val){ S.textLen=parseInt(val); const tv=document.getElementById('textlen-val'); if(tv) tv.textContent=val+' znakov'; if(S.widgetType==='c1') buildCarousel(); else if(S.widgetType==='c3') buildEmbed(); else renderReviews(); }
+function setDateFormat(fmt,el){ document.querySelectorAll('[onclick^="setDateFormat"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.dateFormat=fmt; if(S.widgetType==='c1') buildCarousel(); else if(S.widgetType==='c3') buildEmbed(); else renderReviews(); }
+function setOwnerReply(val,el){ document.querySelectorAll('[onclick^="setOwnerReply"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.ownerReply=val; if(S.widgetType==='c1') buildCarousel(); else if(S.widgetType==='c3') buildEmbed(); else renderReviews(); }
 
 function renderReviews(){
   const MAX=S.textLen;
