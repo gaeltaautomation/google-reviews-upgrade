@@ -31,9 +31,36 @@ const THEMES={
   },
   glass:{
     light:{
-      "--gr-bg":"rgba(255,255,255,0.15)","--gr-border-style":"1px solid rgba(255,255,255,0.25)","--gr-border-raw":"rgba(255,255,255,0.25)","--gr-logo-bg":"rgba(255,255,255,0.20)","--gr-text":"#ffffff","--gr-text-muted":"rgba(255,255,255,0.70)","--gr-text-body":"rgba(255,255,255,0.85)","--gr-divider":"rgba(255,255,255,0.12)","--gr-chip":"rgba(255,255,255,0.10)","--gr-score-color":"#ffffff","--gr-panel-header-bg":"rgba(255,255,255,0.05)","--gr-review-hover":"rgba(255,255,255,0.08)","--gr-close-bg":"rgba(255,255,255,0.15)","--gr-close-border":"rgba(255,255,255,0.25)","--gr-close-icon":"rgba(255,255,255,0.80)","--gr-close-blur":"blur(10px)","--gr-btn-outline-bg":"rgba(255,255,255,0.12)","--gr-btn-outline-border":"rgba(255,255,255,0.25)","--gr-btn-outline-color":"#ffffff","--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.30)","--gr-btn-outline-blur":"blur(10px)","--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW","--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.20), 0 1px 0 rgba(255,255,255,0.30) inset","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.35) inset","--gr-blur":"blur(20px)","--gr-blur-hover":"blur(24px)"
+      /* Glass Light – tmavý text pre čítateľnosť na svetlom pozadí */
+      "--gr-bg":"rgba(255,255,255,0.45)",
+      "--gr-border-style":"1px solid rgba(255,255,255,0.60)",
+      "--gr-border-raw":"rgba(255,255,255,0.60)",
+      "--gr-logo-bg":"rgba(255,255,255,0.50)",
+      "--gr-text":"#0f172a",
+      "--gr-text-muted":"#64748b",
+      "--gr-text-body":"#334155",
+      "--gr-divider":"rgba(15,23,42,0.08)",
+      "--gr-chip":"rgba(15,23,42,0.05)",
+      "--gr-score-color":"#0f172a",
+      "--gr-panel-header-bg":"rgba(255,255,255,0.30)",
+      "--gr-review-hover":"rgba(15,23,42,0.04)",
+      "--gr-close-bg":"rgba(255,255,255,0.50)",
+      "--gr-close-border":"rgba(15,23,42,0.12)",
+      "--gr-close-icon":"#64748b",
+      "--gr-close-blur":"blur(10px)",
+      "--gr-btn-outline-bg":"rgba(255,255,255,0.40)",
+      "--gr-btn-outline-border":"rgba(15,23,42,0.15)",
+      "--gr-btn-outline-color":"#0f172a",
+      "--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.80)",
+      "--gr-btn-outline-blur":"blur(10px)",
+      "--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW",
+      "--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.80) inset",
+      "--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.18), 0 1px 0 rgba(255,255,255,0.90) inset",
+      "--gr-blur":"blur(20px)",
+      "--gr-blur-hover":"blur(24px)"
     },
     dark:{
+      /* Glass Dark – biele texty */
       "--gr-bg":"rgba(0,0,0,0.20)","--gr-border-style":"1px solid rgba(255,255,255,0.15)","--gr-border-raw":"rgba(255,255,255,0.15)","--gr-logo-bg":"rgba(255,255,255,0.10)","--gr-text":"#ffffff","--gr-text-muted":"rgba(255,255,255,0.60)","--gr-text-body":"rgba(255,255,255,0.75)","--gr-divider":"rgba(255,255,255,0.10)","--gr-chip":"rgba(255,255,255,0.07)","--gr-score-color":"#ffffff","--gr-panel-header-bg":"rgba(0,0,0,0.10)","--gr-review-hover":"rgba(255,255,255,0.06)","--gr-close-bg":"rgba(255,255,255,0.12)","--gr-close-border":"rgba(255,255,255,0.18)","--gr-close-icon":"rgba(255,255,255,0.70)","--gr-close-blur":"blur(10px)","--gr-btn-outline-bg":"rgba(255,255,255,0.08)","--gr-btn-outline-border":"rgba(255,255,255,0.18)","--gr-btn-outline-color":"#ffffff","--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.15)","--gr-btn-outline-blur":"blur(10px)","--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW","--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.12) inset","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.15) inset","--gr-blur":"blur(20px)","--gr-blur-hover":"blur(24px)"
     }
   }
@@ -60,7 +87,6 @@ let S={
   offsetDesktop:{bottom:28,right:28},offsetMobile:{bottom:16,right:16},
   lang:'sk',ctaWrite:'Napísať recenziu',ctaAll:'Všetky recenzie',
   showCount:true,devDesktop:true,devTablet:true,devMobile:true,
-  // logika recenzií
   minRating:0,reviewCount:5,textLen:150,dateFormat:'relative',ownerReply:'show'
 };
 
@@ -217,45 +243,29 @@ function togglePanel(){ panelOpen=!panelOpen; document.getElementById('gr-panel'
 // ── LOGIKA RECENZIÍ ──────────────────────────────────────────────
 function setMinRating(val,el){
   document.querySelectorAll('[data-minrating]').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  S.minRating=val;
-  renderReviews();
+  el.classList.add('active'); S.minRating=val; renderReviews();
 }
-
 function setReviewCount(val,el){
   document.querySelectorAll('[data-count]').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  S.reviewCount=val;
-  renderReviews();
+  el.classList.add('active'); S.reviewCount=val; renderReviews();
 }
-
 function setTextLen(val){
   S.textLen=parseInt(val);
   document.getElementById('textlen-val').textContent=val+' znakov';
   renderReviews();
 }
-
 function setDateFormat(fmt,el){
   document.querySelectorAll('[onclick^="setDateFormat"]').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  S.dateFormat=fmt;
-  renderReviews();
+  el.classList.add('active'); S.dateFormat=fmt; renderReviews();
 }
-
 function setOwnerReply(val,el){
   document.querySelectorAll('[onclick^="setOwnerReply"]').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  S.ownerReply=val;
-  renderReviews();
+  el.classList.add('active'); S.ownerReply=val; renderReviews();
 }
-// ─────────────────────────────────────────────────────────────────
 
 function renderReviews(){
   const MAX=S.textLen;
-  const filtered=reviews
-    .filter(rv=>rv.r>=S.minRating)
-    .slice(0,S.reviewCount);
-
+  const filtered=reviews.filter(rv=>rv.r>=S.minRating).slice(0,S.reviewCount);
   document.getElementById('gr-reviews-list').innerHTML=filtered.map((rv,i)=>{
     const long=rv.text.length>MAX;
     const short=long?rv.text.slice(0,MAX)+'...':rv.text;
@@ -270,9 +280,7 @@ function renderReviews(){
       +`<div class="gr-review-text">`
       +`<span id="s${i}" class="gr-text-short">${short}${long?`<span class="gr-read-more" onclick="exp(${i})"> Čítať viac</span>`:''}</span>`
       +(long?`<span id="f${i}" class="gr-text-full">${rv.text}<span class="gr-read-more" onclick="col(${i})"> Menej</span></span>`:'')
-      +`</div>`
-      +replyHtml
-      +`</div>`;
+      +`</div>${replyHtml}</div>`;
   }).join('');
 }
 function exp(i){ document.getElementById('s'+i).classList.add('hidden'); document.getElementById('f'+i).classList.add('visible'); }
