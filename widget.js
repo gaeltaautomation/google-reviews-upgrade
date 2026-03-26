@@ -15,23 +15,76 @@ const LANGS={
 const THEMES={
   classic:{
     light:{
-      "--gr-bg":"#fff","--gr-border-style":"1.5px solid #e5e7eb","--gr-border-raw":"#e5e7eb","--gr-logo-bg":"#f3f4f6","--gr-text":"#111","--gr-text-muted":"#6b7280","--gr-text-body":"#4b5563","--gr-divider":"#f3f4f6","--gr-chip":"#f9fafb","--gr-score-color":"#111","--gr-panel-header-bg":"transparent","--gr-review-hover":"#fafafa","--gr-close-bg":"#f9fafb","--gr-close-border":"#e5e7eb","--gr-close-icon":"#6b7280","--gr-close-blur":"none","--gr-btn-outline-bg":"#f9fafb","--gr-btn-outline-border":"#e5e7eb","--gr-btn-outline-color":"#374151","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"none","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.10)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.16)","--gr-blur":"none","--gr-blur-hover":"none"
+      "--gr-bg":"#fff","--gr-border-style":"1.5px solid #e5e7eb","--gr-border-raw":"#e5e7eb","--gr-logo-bg":"#f3f4f6","--gr-text":"#111","--gr-text-muted":"#6b7280","--gr-text-body":"#4b5563","--gr-divider":"#f3f4f6","--gr-chip":"#f9fafb","--gr-score-color":"#111","--gr-panel-header-bg":"transparent","--gr-review-hover":"#fafafa","--gr-close-bg":"#f9fafb","--gr-close-border":"#e5e7eb","--gr-close-icon":"#6b7280","--gr-close-blur":"none","--gr-btn-outline-bg":"#f9fafb","--gr-btn-outline-border":"#e5e7eb","--gr-btn-outline-color":"#374151","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"none","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.10)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.16)","--gr-blur":"none","--gr-blur-hover":"none","--gr-avatar-radius":"50%","--gr-panel-border-radius":"14px"
     },
     dark:{
-      "--gr-bg":"#1f2937","--gr-border-style":"1.5px solid #374151","--gr-border-raw":"#374151","--gr-logo-bg":"#374151","--gr-text":"#f9fafb","--gr-text-muted":"#9ca3af","--gr-text-body":"#d1d5db","--gr-divider":"#374151","--gr-chip":"#374151","--gr-score-color":"#f9fafb","--gr-panel-header-bg":"transparent","--gr-review-hover":"#374151","--gr-close-bg":"#374151","--gr-close-border":"#4b5563","--gr-close-icon":"#9ca3af","--gr-close-blur":"none","--gr-btn-outline-bg":"#374151","--gr-btn-outline-border":"#4b5563","--gr-btn-outline-color":"#f9fafb","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"none","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.4)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.55)","--gr-blur":"none","--gr-blur-hover":"none"
+      "--gr-bg":"#1f2937","--gr-border-style":"1.5px solid #374151","--gr-border-raw":"#374151","--gr-logo-bg":"#374151","--gr-text":"#f9fafb","--gr-text-muted":"#9ca3af","--gr-text-body":"#d1d5db","--gr-divider":"#374151","--gr-chip":"#374151","--gr-score-color":"#f9fafb","--gr-panel-header-bg":"transparent","--gr-review-hover":"#374151","--gr-close-bg":"#374151","--gr-close-border":"#4b5563","--gr-close-icon":"#9ca3af","--gr-close-blur":"none","--gr-btn-outline-bg":"#374151","--gr-btn-outline-border":"#4b5563","--gr-btn-outline-color":"#f9fafb","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"none","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.4)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.55)","--gr-blur":"none","--gr-blur-hover":"none","--gr-avatar-radius":"50%","--gr-panel-border-radius":"14px"
     }
   },
   modern:{
     light:{
-      "--gr-bg":"#ffffff","--gr-border-style":"MODERN_L_BORDER","--gr-border-raw":"MODERN_L_BORDER_RAW","--gr-logo-bg":"MODERN_LOGO_BG","--gr-text":"#0f172a","--gr-text-muted":"#64748b","--gr-text-body":"#475569","--gr-divider":"MODERN_DIVIDER","--gr-chip":"#f8fafc","--gr-score-color":"ACCENT","--gr-panel-header-bg":"#fafafa","--gr-review-hover":"MODERN_L_HOVER","--gr-close-bg":"MODERN_CLOSE_BG","--gr-close-border":"MODERN_CLOSE_BORDER","--gr-close-icon":"ACCENT","--gr-close-blur":"none","--gr-btn-outline-bg":"MODERN_BTN_OL_BG","--gr-btn-outline-border":"MODERN_BTN_OL_BORDER","--gr-btn-outline-color":"ACCENT","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"MODERN_BTN_P_SHADOW","--gr-badge-shadow":"MODERN_L_S","--gr-badge-shadow-hover":"MODERN_L_SH","--gr-blur":"none","--gr-blur-hover":"none"
+      "--gr-bg":"#ffffff",
+      "--gr-border-style":"none",
+      "--gr-border-raw":"transparent",
+      "--gr-logo-bg":"MODERN_LOGO_BG",
+      "--gr-text":"#0f172a",
+      "--gr-text-muted":"#64748b",
+      "--gr-text-body":"#475569",
+      "--gr-divider":"transparent",
+      "--gr-chip":"#f8fafc",
+      "--gr-score-color":"ACCENT",
+      "--gr-panel-header-bg":"MODERN_HEADER_BG_L",
+      "--gr-review-hover":"MODERN_L_HOVER",
+      "--gr-close-bg":"rgba(255,255,255,0.70)",
+      "--gr-close-border":"MODERN_CLOSE_BORDER",
+      "--gr-close-icon":"ACCENT",
+      "--gr-close-blur":"none",
+      "--gr-btn-outline-bg":"#f8fafc",
+      "--gr-btn-outline-border":"MODERN_BTN_OL_BORDER",
+      "--gr-btn-outline-color":"#0f172a",
+      "--gr-btn-outline-shadow":"none",
+      "--gr-btn-outline-blur":"none",
+      "--gr-btn-primary-shadow":"MODERN_BTN_P_SHADOW",
+      "--gr-badge-shadow":"MODERN_L_S",
+      "--gr-badge-shadow-hover":"MODERN_L_SH",
+      "--gr-blur":"none",
+      "--gr-blur-hover":"none",
+      "--gr-avatar-radius":"8px",
+      "--gr-panel-border-radius":"20px"
     },
     dark:{
-      "--gr-bg":"#020617","--gr-border-style":"MODERN_D_BORDER","--gr-border-raw":"MODERN_D_BORDER_RAW","--gr-logo-bg":"MODERN_LOGO_BG","--gr-text":"#e5e7eb","--gr-text-muted":"#9ca3af","--gr-text-body":"#cbd5e1","--gr-divider":"MODERN_DIVIDER","--gr-chip":"#020617","--gr-score-color":"ACCENT","--gr-panel-header-bg":"#080f1e","--gr-review-hover":"MODERN_D_HOVER","--gr-close-bg":"MODERN_CLOSE_BG","--gr-close-border":"MODERN_CLOSE_BORDER","--gr-close-icon":"ACCENT","--gr-close-blur":"none","--gr-btn-outline-bg":"MODERN_BTN_OL_BG","--gr-btn-outline-border":"MODERN_BTN_OL_BORDER","--gr-btn-outline-color":"ACCENT","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"MODERN_BTN_P_SHADOW","--gr-badge-shadow":"MODERN_D_S","--gr-badge-shadow-hover":"MODERN_D_SH","--gr-blur":"none","--gr-blur-hover":"none"
+      "--gr-bg":"#020617",
+      "--gr-border-style":"none",
+      "--gr-border-raw":"transparent",
+      "--gr-logo-bg":"MODERN_LOGO_BG",
+      "--gr-text":"#e2e8f0",
+      "--gr-text-muted":"#64748b",
+      "--gr-text-body":"#94a3b8",
+      "--gr-divider":"transparent",
+      "--gr-chip":"#0f172a",
+      "--gr-score-color":"ACCENT",
+      "--gr-panel-header-bg":"MODERN_HEADER_BG_D",
+      "--gr-review-hover":"MODERN_D_HOVER",
+      "--gr-close-bg":"rgba(255,255,255,0.06)",
+      "--gr-close-border":"MODERN_CLOSE_BORDER",
+      "--gr-close-icon":"ACCENT",
+      "--gr-close-blur":"none",
+      "--gr-btn-outline-bg":"rgba(255,255,255,0.04)",
+      "--gr-btn-outline-border":"MODERN_BTN_OL_BORDER",
+      "--gr-btn-outline-color":"#e2e8f0",
+      "--gr-btn-outline-shadow":"none",
+      "--gr-btn-outline-blur":"none",
+      "--gr-btn-primary-shadow":"MODERN_BTN_P_SHADOW",
+      "--gr-badge-shadow":"MODERN_D_S",
+      "--gr-badge-shadow-hover":"MODERN_D_SH",
+      "--gr-blur":"none",
+      "--gr-blur-hover":"none",
+      "--gr-avatar-radius":"8px",
+      "--gr-panel-border-radius":"20px"
     }
   },
   glass:{
     light:{
-      /* Glass Light – tmavý text pre čítateľnosť na svetlom pozadí */
       "--gr-bg":"rgba(255,255,255,0.45)",
       "--gr-border-style":"1px solid rgba(255,255,255,0.60)",
       "--gr-border-raw":"rgba(255,255,255,0.60)",
@@ -57,11 +110,12 @@ const THEMES={
       "--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.80) inset",
       "--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.18), 0 1px 0 rgba(255,255,255,0.90) inset",
       "--gr-blur":"blur(20px)",
-      "--gr-blur-hover":"blur(24px)"
+      "--gr-blur-hover":"blur(24px)",
+      "--gr-avatar-radius":"50%",
+      "--gr-panel-border-radius":"14px"
     },
     dark:{
-      /* Glass Dark – biele texty */
-      "--gr-bg":"rgba(0,0,0,0.20)","--gr-border-style":"1px solid rgba(255,255,255,0.15)","--gr-border-raw":"rgba(255,255,255,0.15)","--gr-logo-bg":"rgba(255,255,255,0.10)","--gr-text":"#ffffff","--gr-text-muted":"rgba(255,255,255,0.60)","--gr-text-body":"rgba(255,255,255,0.75)","--gr-divider":"rgba(255,255,255,0.10)","--gr-chip":"rgba(255,255,255,0.07)","--gr-score-color":"#ffffff","--gr-panel-header-bg":"rgba(0,0,0,0.10)","--gr-review-hover":"rgba(255,255,255,0.06)","--gr-close-bg":"rgba(255,255,255,0.12)","--gr-close-border":"rgba(255,255,255,0.18)","--gr-close-icon":"rgba(255,255,255,0.70)","--gr-close-blur":"blur(10px)","--gr-btn-outline-bg":"rgba(255,255,255,0.08)","--gr-btn-outline-border":"rgba(255,255,255,0.18)","--gr-btn-outline-color":"#ffffff","--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.15)","--gr-btn-outline-blur":"blur(10px)","--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW","--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.12) inset","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.15) inset","--gr-blur":"blur(20px)","--gr-blur-hover":"blur(24px)"
+      "--gr-bg":"rgba(0,0,0,0.20)","--gr-border-style":"1px solid rgba(255,255,255,0.15)","--gr-border-raw":"rgba(255,255,255,0.15)","--gr-logo-bg":"rgba(255,255,255,0.10)","--gr-text":"#ffffff","--gr-text-muted":"rgba(255,255,255,0.60)","--gr-text-body":"rgba(255,255,255,0.75)","--gr-divider":"rgba(255,255,255,0.10)","--gr-chip":"rgba(255,255,255,0.07)","--gr-score-color":"#ffffff","--gr-panel-header-bg":"rgba(0,0,0,0.10)","--gr-review-hover":"rgba(255,255,255,0.06)","--gr-close-bg":"rgba(255,255,255,0.12)","--gr-close-border":"rgba(255,255,255,0.18)","--gr-close-icon":"rgba(255,255,255,0.70)","--gr-close-blur":"blur(10px)","--gr-btn-outline-bg":"rgba(255,255,255,0.08)","--gr-btn-outline-border":"rgba(255,255,255,0.18)","--gr-btn-outline-color":"#ffffff","--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.15)","--gr-btn-outline-blur":"blur(10px)","--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW","--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.12) inset","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.15) inset","--gr-blur":"blur(20px)","--gr-blur-hover":"blur(24px)","--gr-avatar-radius":"50%","--gr-panel-border-radius":"14px"
     }
   }
 };
@@ -97,17 +151,18 @@ function resolveTokens(vars){
   const a=S.accent;
   const map={
     'ACCENT':a,
-    'MODERN_L_BORDER':`1.5px solid ${rgba(a,.20)}`,'MODERN_L_BORDER_RAW':rgba(a,.20),
-    'MODERN_D_BORDER':`1px solid ${rgba(a,.25)}`,'MODERN_D_BORDER_RAW':rgba(a,.25),
-    'MODERN_LOGO_BG':rgba(a,.08),'MODERN_DIVIDER':rgba(a,.12),
-    'MODERN_L_HOVER':rgba(a,.04),'MODERN_D_HOVER':rgba(a,.06),
-    'MODERN_CLOSE_BG':rgba(a,.10),'MODERN_CLOSE_BORDER':rgba(a,.20),
-    'MODERN_BTN_OL_BG':rgba(a,.08),'MODERN_BTN_OL_BORDER':rgba(a,.25),
-    'MODERN_BTN_P_SHADOW':`0 4px 16px ${rgba(a,.4)}`,
-    'MODERN_L_S':`0 0 0 3px ${rgba(a,.06)}, 0 4px 24px rgba(15,23,42,0.08)`,
-    'MODERN_L_SH':`0 0 0 4px ${rgba(a,.15)}, 0 8px 32px ${rgba(a,.20)}, 0 0 20px ${rgba(a,.12)}`,
-    'MODERN_D_S':`0 0 0 1px ${rgba(a,.15)}, 0 0 32px ${rgba(a,.35)}, 0 4px 20px rgba(0,0,0,0.6)`,
-    'MODERN_D_SH':`0 0 0 1px ${rgba(a,.7)}, 0 0 48px ${rgba(a,.55)}, 0 8px 32px rgba(0,0,0,0.7)`,
+    'MODERN_LOGO_BG':rgba(a,.10),
+    'MODERN_HEADER_BG_L':`linear-gradient(135deg, ${rgba(a,.08)} 0%, rgba(248,250,252,0) 100%)`,
+    'MODERN_HEADER_BG_D':`linear-gradient(135deg, ${rgba(a,.18)} 0%, rgba(2,6,23,0) 100%)`,
+    'MODERN_L_HOVER':rgba(a,.04),
+    'MODERN_D_HOVER':rgba(a,.07),
+    'MODERN_CLOSE_BORDER':rgba(a,.20),
+    'MODERN_BTN_OL_BORDER':rgba(a,.22),
+    'MODERN_BTN_P_SHADOW':`0 4px 20px ${rgba(a,.45)}, 0 1px 0 ${rgba(a,.60)} inset`,
+    'MODERN_L_S':`0 0 0 2px ${rgba(a,.12)}, 0 8px 32px rgba(15,23,42,0.10)`,
+    'MODERN_L_SH':`0 0 0 3px ${rgba(a,.30)}, 0 12px 40px ${rgba(a,.22)}, 0 4px 12px rgba(15,23,42,0.08)`,
+    'MODERN_D_S':`0 0 0 1px ${rgba(a,.20)}, 0 0 40px ${rgba(a,.40)}, 0 4px 24px rgba(0,0,0,0.70)`,
+    'MODERN_D_SH':`0 0 0 2px ${rgba(a,.80)}, 0 0 60px ${rgba(a,.60)}, 0 8px 32px rgba(0,0,0,0.80)`,
     'GLASS_BTN_P_SHADOW':`0 2px 12px ${rgba(a,.45)}`
   };
   const out={};
@@ -123,6 +178,10 @@ function applyTheme(){
   for(const [k,v] of Object.entries(vars)) root.style.setProperty(k,v);
   root.style.setProperty('--accent',S.accent);
   root.style.setProperty('--radius',S.radius+'px');
+  // Modern-specific panel class
+  const panel=document.getElementById('gr-panel');
+  panel.classList.toggle('modern-panel', S.style==='modern');
+  panel.classList.toggle('modern-dark', S.style==='modern' && S.mode==='dark');
   document.getElementById('mode-section').style.display='block';
   const stage=document.getElementById('preview-stage');
   stage.classList.remove('glass-bg-light','glass-bg-dark');
@@ -140,6 +199,7 @@ function buildBadge(){
   const t=LANGS[S.lang];
   badge.className=top?'vert':'horiz';
   if(top) badge.classList.add(left?'side-left':'side-right');
+  if(S.style==='modern') badge.classList.add('modern-badge');
   if(top){
     badge.innerHTML=`<div class="vert-stars">${Array(5).fill(STAR(14)).join('')}</div>`
       +(S.showCount?`<span class="vert-count">47 ${t.reviews}</span>`:'')
@@ -240,7 +300,6 @@ function setOffset(key,field,val){ S[key][field]=parseInt(val)||0; applyPosition
 function setOffsetTab(tab,el){ activeOffsetTab=tab; document.querySelectorAll('.offset-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); document.getElementById('offset-desktop-fields').style.display=tab==='desktop'?'block':'none'; document.getElementById('offset-mobile-fields').style.display=tab==='mobile'?'block':'none'; }
 function togglePanel(){ panelOpen=!panelOpen; document.getElementById('gr-panel').classList.toggle('open',panelOpen); }
 
-// ── LOGIKA RECENZIÍ ──────────────────────────────────────────────
 function setMinRating(val,el){
   document.querySelectorAll('[data-minrating]').forEach(b=>b.classList.remove('active'));
   el.classList.add('active'); S.minRating=val; renderReviews();
@@ -274,7 +333,7 @@ function renderReviews(){
       ?`<div class="gr-owner-reply"><span class="gr-owner-label">💬 Odpoveď majiteľa</span><p>${rv.ownerReply}</p></div>`
       :'';
     return `<div class="gr-review-item">`
-      +`<div class="gr-review-top"><div class="gr-avatar" style="background:${rv.col}">${rv.init}</div>`
+      +`<div class="gr-review-top"><div class="gr-avatar" style="background:${rv.col};border-radius:var(--gr-avatar-radius,50%)">${rv.init}</div>`
       +`<div><div class="gr-reviewer-name">${rv.name}</div><div class="gr-review-date">${dateStr}</div></div></div>`
       +`<div class="gr-review-stars">${Array(rv.r).fill(STAR(12)).join('')}</div>`
       +`<div class="gr-review-text">`
