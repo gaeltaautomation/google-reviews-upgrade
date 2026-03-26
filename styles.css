@@ -308,7 +308,7 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
   background:var(--gr-panel-header-bg,transparent);
 }
-/* Modern header – tučnejší gradient, väčší score */
+/* Modern header */
 #gr-panel.modern-panel .gr-panel-header{
   padding:16px 18px 14px;
   border-bottom:none;
@@ -351,7 +351,6 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 .gr-close:hover{ filter:brightness(.9); }
 .gr-close svg{ width:12px; height:12px; color:var(--gr-close-icon,#6b7280); }
 
-/* Modern reviews list – bez dividerov, spacing namiesto čiar */
 .gr-reviews{ overflow-y:auto; flex:1; padding:4px 0; scrollbar-width:thin; scrollbar-color:var(--gr-border-raw,#e5e7eb) transparent; }
 .gr-review-item{ padding:11px 15px; border-bottom:1px solid var(--gr-divider,#f9fafb); transition:background .15s; }
 .gr-review-item:last-child{ border-bottom:none; }
@@ -382,7 +381,6 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 .gr-text-full.visible{ display:inline; }
 .gr-text-short.hidden{ display:none; }
 
-/* Modern footer */
 .gr-panel-footer{ padding:10px 15px; border-top:1px solid var(--gr-divider,#f3f4f6); display:flex; gap:8px; }
 #gr-panel.modern-panel .gr-panel-footer{
   padding:12px 18px 14px;
@@ -431,20 +429,70 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 .gr-owner-reply p{
   font-size:12px; color:var(--gr-text-body,#4b5563); line-height:1.55; margin:0;
 }
-/* Glass light */
 .glass-bg-light .gr-owner-reply, #gr-panel.glass-light .gr-owner-reply{
   background:rgba(255,255,255,0.12); border-left-color:rgba(255,255,255,0.60);
   backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
 }
 .glass-bg-light .gr-owner-label, #gr-panel.glass-light .gr-owner-label{ color:rgba(255,255,255,0.85); }
 .glass-bg-light .gr-owner-reply p, #gr-panel.glass-light .gr-owner-reply p{ color:rgba(255,255,255,0.75); }
-/* Glass dark */
 .glass-bg-dark .gr-owner-reply, #gr-panel.glass-dark .gr-owner-reply{
   background:rgba(255,255,255,0.07); border-left-color:rgba(255,255,255,0.30);
   backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
 }
 .glass-bg-dark .gr-owner-label, #gr-panel.glass-dark .gr-owner-label{ color:rgba(255,255,255,0.70); }
 .glass-bg-dark .gr-owner-reply p, #gr-panel.glass-dark .gr-owner-reply p{ color:rgba(255,255,255,0.60); }
+
+/* ══════════════════════════════
+   TYPE SELECTOR  (Časť A)
+══════════════════════════════ */
+.type-selector-section{ padding:14px 20px 16px; }
+
+.type-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+}
+.type-btn{
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  padding:10px 4px 9px;
+  border-radius:10px;
+  border:1.5px solid #e5e7eb;
+  background:#fff;
+  cursor:pointer;
+  transition:all .15s;
+  text-align:center;
+}
+.type-btn:hover{ border-color:var(--accent); background:#f0f7ff; }
+.type-btn.active{
+  border-color:var(--accent);
+  background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, #fff) 0%, #fff 100%);
+  box-shadow:0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.type-icon{ font-size:18px; line-height:1; }
+.type-label{ font-size:10px; font-weight:800; color:#1e293b; letter-spacing:.2px; line-height:1.2; }
+.type-sub{ font-size:9px; color:#94a3b8; font-weight:500; line-height:1.2; }
+.type-btn.active .type-label{ color:var(--accent); }
+
+/* ══════════════════════════════
+   WIDGET PLACEHOLDER PREVIEWS
+══════════════════════════════ */
+.widget-preview-placeholder{
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  padding:32px 40px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.80);
+  border:2px dashed #d1d5db;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  text-align:center;
+  z-index:100;
+}
+.placeholder-badge{ font-size:40px; line-height:1; }
+.placeholder-title{ font-size:15px; font-weight:800; color:#1e293b; }
+.placeholder-sub{ font-size:12px; color:#94a3b8; font-weight:500; }
 
 @media(max-width:900px){
   #preview-stage-wrapper{ display:none; }
