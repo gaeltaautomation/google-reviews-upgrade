@@ -15,179 +15,26 @@ const LANGS={
 const THEMES={
   classic:{
     light:{
-      "--gr-bg":"#fff",
-      "--gr-border-style":"1.5px solid #e5e7eb",
-      "--gr-border-raw":"#e5e7eb",
-      "--gr-logo-bg":"#f3f4f6",
-      "--gr-text":"#111",
-      "--gr-text-muted":"#6b7280",
-      "--gr-text-body":"#4b5563",
-      "--gr-divider":"#f3f4f6",
-      "--gr-chip":"#f9fafb",
-      "--gr-score-color":"#111",
-      "--gr-panel-header-bg":"transparent",
-      "--gr-review-hover":"#fafafa",
-      "--gr-close-bg":"#f9fafb",
-      "--gr-close-border":"#e5e7eb",
-      "--gr-close-icon":"#6b7280",
-      "--gr-close-blur":"none",
-      "--gr-btn-outline-bg":"#f9fafb",
-      "--gr-btn-outline-border":"#e5e7eb",
-      "--gr-btn-outline-color":"#374151",
-      "--gr-btn-outline-shadow":"none",
-      "--gr-btn-outline-blur":"none",
-      "--gr-btn-primary-shadow":"none",
-      "--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.10)",
-      "--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.16)",
-      "--gr-blur":"none",
-      "--gr-blur-hover":"none"
+      "--gr-bg":"#fff","--gr-border-style":"1.5px solid #e5e7eb","--gr-border-raw":"#e5e7eb","--gr-logo-bg":"#f3f4f6","--gr-text":"#111","--gr-text-muted":"#6b7280","--gr-text-body":"#4b5563","--gr-divider":"#f3f4f6","--gr-chip":"#f9fafb","--gr-score-color":"#111","--gr-panel-header-bg":"transparent","--gr-review-hover":"#fafafa","--gr-close-bg":"#f9fafb","--gr-close-border":"#e5e7eb","--gr-close-icon":"#6b7280","--gr-close-blur":"none","--gr-btn-outline-bg":"#f9fafb","--gr-btn-outline-border":"#e5e7eb","--gr-btn-outline-color":"#374151","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"none","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.10)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.16)","--gr-blur":"none","--gr-blur-hover":"none"
     },
     dark:{
-      "--gr-bg":"#1f2937",
-      "--gr-border-style":"1.5px solid #374151",
-      "--gr-border-raw":"#374151",
-      "--gr-logo-bg":"#374151",
-      "--gr-text":"#f9fafb",
-      "--gr-text-muted":"#9ca3af",
-      "--gr-text-body":"#d1d5db",
-      "--gr-divider":"#374151",
-      "--gr-chip":"#374151",
-      "--gr-score-color":"#f9fafb",
-      "--gr-panel-header-bg":"transparent",
-      "--gr-review-hover":"#374151",
-      "--gr-close-bg":"#374151",
-      "--gr-close-border":"#4b5563",
-      "--gr-close-icon":"#9ca3af",
-      "--gr-close-blur":"none",
-      "--gr-btn-outline-bg":"#374151",
-      "--gr-btn-outline-border":"#4b5563",
-      "--gr-btn-outline-color":"#f9fafb",
-      "--gr-btn-outline-shadow":"none",
-      "--gr-btn-outline-blur":"none",
-      "--gr-btn-primary-shadow":"none",
-      "--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.4)",
-      "--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.55)",
-      "--gr-blur":"none",
-      "--gr-blur-hover":"none"
+      "--gr-bg":"#1f2937","--gr-border-style":"1.5px solid #374151","--gr-border-raw":"#374151","--gr-logo-bg":"#374151","--gr-text":"#f9fafb","--gr-text-muted":"#9ca3af","--gr-text-body":"#d1d5db","--gr-divider":"#374151","--gr-chip":"#374151","--gr-score-color":"#f9fafb","--gr-panel-header-bg":"transparent","--gr-review-hover":"#374151","--gr-close-bg":"#374151","--gr-close-border":"#4b5563","--gr-close-icon":"#9ca3af","--gr-close-blur":"none","--gr-btn-outline-bg":"#374151","--gr-btn-outline-border":"#4b5563","--gr-btn-outline-color":"#f9fafb","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"none","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.4)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.55)","--gr-blur":"none","--gr-blur-hover":"none"
     }
   },
   modern:{
     light:{
-      "--gr-bg":"#ffffff",
-      "--gr-border-style":"MODERN_L_BORDER",
-      "--gr-border-raw":"MODERN_L_BORDER_RAW",
-      "--gr-logo-bg":"MODERN_LOGO_BG",
-      "--gr-text":"#0f172a",
-      "--gr-text-muted":"#64748b",
-      "--gr-text-body":"#475569",
-      "--gr-divider":"MODERN_DIVIDER",
-      "--gr-chip":"#f8fafc",
-      "--gr-score-color":"ACCENT",
-      "--gr-panel-header-bg":"#fafafa",
-      "--gr-review-hover":"MODERN_L_HOVER",
-      "--gr-close-bg":"MODERN_CLOSE_BG",
-      "--gr-close-border":"MODERN_CLOSE_BORDER",
-      "--gr-close-icon":"ACCENT",
-      "--gr-close-blur":"none",
-      "--gr-btn-outline-bg":"MODERN_BTN_OL_BG",
-      "--gr-btn-outline-border":"MODERN_BTN_OL_BORDER",
-      "--gr-btn-outline-color":"ACCENT",
-      "--gr-btn-outline-shadow":"none",
-      "--gr-btn-outline-blur":"none",
-      "--gr-btn-primary-shadow":"MODERN_BTN_P_SHADOW",
-      "--gr-badge-shadow":"MODERN_L_S",
-      "--gr-badge-shadow-hover":"MODERN_L_SH",
-      "--gr-blur":"none",
-      "--gr-blur-hover":"none"
+      "--gr-bg":"#ffffff","--gr-border-style":"MODERN_L_BORDER","--gr-border-raw":"MODERN_L_BORDER_RAW","--gr-logo-bg":"MODERN_LOGO_BG","--gr-text":"#0f172a","--gr-text-muted":"#64748b","--gr-text-body":"#475569","--gr-divider":"MODERN_DIVIDER","--gr-chip":"#f8fafc","--gr-score-color":"ACCENT","--gr-panel-header-bg":"#fafafa","--gr-review-hover":"MODERN_L_HOVER","--gr-close-bg":"MODERN_CLOSE_BG","--gr-close-border":"MODERN_CLOSE_BORDER","--gr-close-icon":"ACCENT","--gr-close-blur":"none","--gr-btn-outline-bg":"MODERN_BTN_OL_BG","--gr-btn-outline-border":"MODERN_BTN_OL_BORDER","--gr-btn-outline-color":"ACCENT","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"MODERN_BTN_P_SHADOW","--gr-badge-shadow":"MODERN_L_S","--gr-badge-shadow-hover":"MODERN_L_SH","--gr-blur":"none","--gr-blur-hover":"none"
     },
     dark:{
-      "--gr-bg":"#020617",
-      "--gr-border-style":"MODERN_D_BORDER",
-      "--gr-border-raw":"MODERN_D_BORDER_RAW",
-      "--gr-logo-bg":"MODERN_LOGO_BG",
-      "--gr-text":"#e5e7eb",
-      "--gr-text-muted":"#9ca3af",
-      "--gr-text-body":"#cbd5e1",
-      "--gr-divider":"MODERN_DIVIDER",
-      "--gr-chip":"#020617",
-      "--gr-score-color":"ACCENT",
-      "--gr-panel-header-bg":"#080f1e",
-      "--gr-review-hover":"MODERN_D_HOVER",
-      "--gr-close-bg":"MODERN_CLOSE_BG",
-      "--gr-close-border":"MODERN_CLOSE_BORDER",
-      "--gr-close-icon":"ACCENT",
-      "--gr-close-blur":"none",
-      "--gr-btn-outline-bg":"MODERN_BTN_OL_BG",
-      "--gr-btn-outline-border":"MODERN_BTN_OL_BORDER",
-      "--gr-btn-outline-color":"ACCENT",
-      "--gr-btn-outline-shadow":"none",
-      "--gr-btn-outline-blur":"none",
-      "--gr-btn-primary-shadow":"MODERN_BTN_P_SHADOW",
-      "--gr-badge-shadow":"MODERN_D_S",
-      "--gr-badge-shadow-hover":"MODERN_D_SH",
-      "--gr-blur":"none",
-      "--gr-blur-hover":"none"
+      "--gr-bg":"#020617","--gr-border-style":"MODERN_D_BORDER","--gr-border-raw":"MODERN_D_BORDER_RAW","--gr-logo-bg":"MODERN_LOGO_BG","--gr-text":"#e5e7eb","--gr-text-muted":"#9ca3af","--gr-text-body":"#cbd5e1","--gr-divider":"MODERN_DIVIDER","--gr-chip":"#020617","--gr-score-color":"ACCENT","--gr-panel-header-bg":"#080f1e","--gr-review-hover":"MODERN_D_HOVER","--gr-close-bg":"MODERN_CLOSE_BG","--gr-close-border":"MODERN_CLOSE_BORDER","--gr-close-icon":"ACCENT","--gr-close-blur":"none","--gr-btn-outline-bg":"MODERN_BTN_OL_BG","--gr-btn-outline-border":"MODERN_BTN_OL_BORDER","--gr-btn-outline-color":"ACCENT","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"MODERN_BTN_P_SHADOW","--gr-badge-shadow":"MODERN_D_S","--gr-badge-shadow-hover":"MODERN_D_SH","--gr-blur":"none","--gr-blur-hover":"none"
     }
   },
   glass:{
     light:{
-      /* Leadhub-style glassmorphism Light
-         Nizka opacita pozadia + cistý blur(20px) bez saturate/brightness extremov */
-      "--gr-bg":"rgba(255,255,255,0.15)",
-      "--gr-border-style":"1px solid rgba(255,255,255,0.25)",
-      "--gr-border-raw":"rgba(255,255,255,0.25)",
-      "--gr-logo-bg":"rgba(255,255,255,0.20)",
-      "--gr-text":"#ffffff",
-      "--gr-text-muted":"rgba(255,255,255,0.70)",
-      "--gr-text-body":"rgba(255,255,255,0.85)",
-      "--gr-divider":"rgba(255,255,255,0.12)",
-      "--gr-chip":"rgba(255,255,255,0.10)",
-      "--gr-score-color":"#ffffff",
-      "--gr-panel-header-bg":"rgba(255,255,255,0.05)",
-      "--gr-review-hover":"rgba(255,255,255,0.08)",
-      "--gr-close-bg":"rgba(255,255,255,0.15)",
-      "--gr-close-border":"rgba(255,255,255,0.25)",
-      "--gr-close-icon":"rgba(255,255,255,0.80)",
-      "--gr-close-blur":"blur(10px)",
-      "--gr-btn-outline-bg":"rgba(255,255,255,0.12)",
-      "--gr-btn-outline-border":"rgba(255,255,255,0.25)",
-      "--gr-btn-outline-color":"#ffffff",
-      "--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.30)",
-      "--gr-btn-outline-blur":"blur(10px)",
-      "--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW",
-      "--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.20), 0 1px 0 rgba(255,255,255,0.30) inset",
-      "--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.35) inset",
-      "--gr-blur":"blur(20px)",
-      "--gr-blur-hover":"blur(24px)"
+      "--gr-bg":"rgba(255,255,255,0.15)","--gr-border-style":"1px solid rgba(255,255,255,0.25)","--gr-border-raw":"rgba(255,255,255,0.25)","--gr-logo-bg":"rgba(255,255,255,0.20)","--gr-text":"#ffffff","--gr-text-muted":"rgba(255,255,255,0.70)","--gr-text-body":"rgba(255,255,255,0.85)","--gr-divider":"rgba(255,255,255,0.12)","--gr-chip":"rgba(255,255,255,0.10)","--gr-score-color":"#ffffff","--gr-panel-header-bg":"rgba(255,255,255,0.05)","--gr-review-hover":"rgba(255,255,255,0.08)","--gr-close-bg":"rgba(255,255,255,0.15)","--gr-close-border":"rgba(255,255,255,0.25)","--gr-close-icon":"rgba(255,255,255,0.80)","--gr-close-blur":"blur(10px)","--gr-btn-outline-bg":"rgba(255,255,255,0.12)","--gr-btn-outline-border":"rgba(255,255,255,0.25)","--gr-btn-outline-color":"#ffffff","--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.30)","--gr-btn-outline-blur":"blur(10px)","--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW","--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.20), 0 1px 0 rgba(255,255,255,0.30) inset","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.35) inset","--gr-blur":"blur(20px)","--gr-blur-hover":"blur(24px)"
     },
     dark:{
-      /* Leadhub-style glassmorphism Dark */
-      "--gr-bg":"rgba(0,0,0,0.20)",
-      "--gr-border-style":"1px solid rgba(255,255,255,0.15)",
-      "--gr-border-raw":"rgba(255,255,255,0.15)",
-      "--gr-logo-bg":"rgba(255,255,255,0.10)",
-      "--gr-text":"#ffffff",
-      "--gr-text-muted":"rgba(255,255,255,0.60)",
-      "--gr-text-body":"rgba(255,255,255,0.75)",
-      "--gr-divider":"rgba(255,255,255,0.10)",
-      "--gr-chip":"rgba(255,255,255,0.07)",
-      "--gr-score-color":"#ffffff",
-      "--gr-panel-header-bg":"rgba(0,0,0,0.10)",
-      "--gr-review-hover":"rgba(255,255,255,0.06)",
-      "--gr-close-bg":"rgba(255,255,255,0.12)",
-      "--gr-close-border":"rgba(255,255,255,0.18)",
-      "--gr-close-icon":"rgba(255,255,255,0.70)",
-      "--gr-close-blur":"blur(10px)",
-      "--gr-btn-outline-bg":"rgba(255,255,255,0.08)",
-      "--gr-btn-outline-border":"rgba(255,255,255,0.18)",
-      "--gr-btn-outline-color":"#ffffff",
-      "--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.15)",
-      "--gr-btn-outline-blur":"blur(10px)",
-      "--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW",
-      "--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.12) inset",
-      "--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.15) inset",
-      "--gr-blur":"blur(20px)",
-      "--gr-blur-hover":"blur(24px)"
+      "--gr-bg":"rgba(0,0,0,0.20)","--gr-border-style":"1px solid rgba(255,255,255,0.15)","--gr-border-raw":"rgba(255,255,255,0.15)","--gr-logo-bg":"rgba(255,255,255,0.10)","--gr-text":"#ffffff","--gr-text-muted":"rgba(255,255,255,0.60)","--gr-text-body":"rgba(255,255,255,0.75)","--gr-divider":"rgba(255,255,255,0.10)","--gr-chip":"rgba(255,255,255,0.07)","--gr-score-color":"#ffffff","--gr-panel-header-bg":"rgba(0,0,0,0.10)","--gr-review-hover":"rgba(255,255,255,0.06)","--gr-close-bg":"rgba(255,255,255,0.12)","--gr-close-border":"rgba(255,255,255,0.18)","--gr-close-icon":"rgba(255,255,255,0.70)","--gr-close-blur":"blur(10px)","--gr-btn-outline-bg":"rgba(255,255,255,0.08)","--gr-btn-outline-border":"rgba(255,255,255,0.18)","--gr-btn-outline-color":"#ffffff","--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.15)","--gr-btn-outline-blur":"blur(10px)","--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW","--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.12) inset","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.15) inset","--gr-blur":"blur(20px)","--gr-blur-hover":"blur(24px)"
     }
   }
 };
@@ -198,11 +45,11 @@ function rgba(hex,a){
 }
 
 const reviews=[
-  {name:"Jana Klincová",init:"JK",col:"#8b5cf6",r:5,date:"pred týždňom",text:"Spoluprácu s firmou pri migrácii na Shoptet hodnotím veľmi pozitívne. Celý proces prebehol hladko, profesionálne a bez zbytočných komplikácií."},
-  {name:"Erik Svitek",init:"ES",col:"#059669",r:5,date:"pred týždňom",text:"Maximálna spokojnosť. Na všetko našli riešenie rýchlo. Vrelo odporúčam!"},
-  {name:"Dimo Van",init:"DV",col:"#2563eb",r:5,date:"pred mesiacom",text:"S firmou Gaelta som mal výbornú skúsenosť. Oceňujem promptnú komunikáciu, profesionalitu a precízne spracovanie každého detailu."},
-  {name:"Sarah Ivičičová",init:"SI",col:"#db2777",r:5,date:"pred mesiacom",text:"Skvelá práca, veľmi odporúčam!"},
-  {name:"Amer Arslan",init:"AA",col:"#d97706",r:5,date:"pred mesiacom",text:"Profesionálni, efektívni a ľahko sa s nimi spolupracuje. Vrelo odporúčam!"}
+  {name:"Jana Klincová",init:"JK",col:"#8b5cf6",r:5,date:"pred týždňom",absDate:"19.3.2026",text:"Spoluprácu s firmou pri migrácii na Shoptet hodnotím veľmi pozitívne. Celý proces prebehol hladko, profesionálne a bez zbytočných komplikácií.",ownerReply:"Ďakujeme za krásne slová! Teší nás, že migrácia prebehla hladko."},
+  {name:"Erik Svitek",init:"ES",col:"#059669",r:5,date:"pred týždňom",absDate:"18.3.2026",text:"Maximálna spokojnosť. Na všetko našli riešenie rýchlo. Vrelo odporúčam!",ownerReply:null},
+  {name:"Dimo Van",init:"DV",col:"#2563eb",r:5,date:"pred mesiacom",absDate:"26.2.2026",text:"S firmou Gaelta som mal výbornú skúsenosť. Oceňujem promptnú komunikáciu, profesionalitu a precízne spracovanie každého detailu.",ownerReply:"Ďakujeme, Dimo! Radi sme pomohli."},
+  {name:"Sarah Ivičičová",init:"SI",col:"#db2777",r:5,date:"pred mesiacom",absDate:"14.2.2026",text:"Skvelá práca, veľmi odporúčam!",ownerReply:null},
+  {name:"Amer Arslan",init:"AA",col:"#d97706",r:5,date:"pred mesiacom",absDate:"10.2.2026",text:"Profesionálni, efektívni a ľahko sa s nimi spolupracuje. Vrelo odporúčam!",ownerReply:"Veľa vďaka, Amer!"}
 ];
 
 const SIZES={S:.82,M:1,L:1.22};
@@ -212,7 +59,9 @@ let S={
   style:'classic',accent:'#4285F4',mode:'light',radius:14,size:'M',pos:'bottom-right',
   offsetDesktop:{bottom:28,right:28},offsetMobile:{bottom:16,right:16},
   lang:'sk',ctaWrite:'Napísať recenziu',ctaAll:'Všetky recenzie',
-  showCount:true,devDesktop:true,devTablet:true,devMobile:true
+  showCount:true,devDesktop:true,devTablet:true,devMobile:true,
+  // logika recenzií
+  minRating:0,reviewCount:5,textLen:150,dateFormat:'relative',ownerReply:'show'
 };
 
 function isTop(){return S.pos.startsWith('top');}
@@ -222,18 +71,12 @@ function resolveTokens(vars){
   const a=S.accent;
   const map={
     'ACCENT':a,
-    'MODERN_L_BORDER':`1.5px solid ${rgba(a,.20)}`,
-    'MODERN_L_BORDER_RAW':rgba(a,.20),
-    'MODERN_D_BORDER':`1px solid ${rgba(a,.25)}`,
-    'MODERN_D_BORDER_RAW':rgba(a,.25),
-    'MODERN_LOGO_BG':rgba(a,.08),
-    'MODERN_DIVIDER':rgba(a,.12),
-    'MODERN_L_HOVER':rgba(a,.04),
-    'MODERN_D_HOVER':rgba(a,.06),
-    'MODERN_CLOSE_BG':rgba(a,.10),
-    'MODERN_CLOSE_BORDER':rgba(a,.20),
-    'MODERN_BTN_OL_BG':rgba(a,.08),
-    'MODERN_BTN_OL_BORDER':rgba(a,.25),
+    'MODERN_L_BORDER':`1.5px solid ${rgba(a,.20)}`,'MODERN_L_BORDER_RAW':rgba(a,.20),
+    'MODERN_D_BORDER':`1px solid ${rgba(a,.25)}`,'MODERN_D_BORDER_RAW':rgba(a,.25),
+    'MODERN_LOGO_BG':rgba(a,.08),'MODERN_DIVIDER':rgba(a,.12),
+    'MODERN_L_HOVER':rgba(a,.04),'MODERN_D_HOVER':rgba(a,.06),
+    'MODERN_CLOSE_BG':rgba(a,.10),'MODERN_CLOSE_BORDER':rgba(a,.20),
+    'MODERN_BTN_OL_BG':rgba(a,.08),'MODERN_BTN_OL_BORDER':rgba(a,.25),
     'MODERN_BTN_P_SHADOW':`0 4px 16px ${rgba(a,.4)}`,
     'MODERN_L_S':`0 0 0 3px ${rgba(a,.06)}, 0 4px 24px rgba(15,23,42,0.08)`,
     'MODERN_L_SH':`0 0 0 4px ${rgba(a,.15)}, 0 8px 32px ${rgba(a,.20)}, 0 0 20px ${rgba(a,.12)}`,
@@ -255,13 +98,9 @@ function applyTheme(){
   root.style.setProperty('--accent',S.accent);
   root.style.setProperty('--radius',S.radius+'px');
   document.getElementById('mode-section').style.display='block';
-
   const stage=document.getElementById('preview-stage');
   stage.classList.remove('glass-bg-light','glass-bg-dark');
-  if(S.style==='glass'){
-    stage.classList.add(S.mode==='dark'?'glass-bg-dark':'glass-bg-light');
-  }
-
+  if(S.style==='glass') stage.classList.add(S.mode==='dark'?'glass-bg-dark':'glass-bg-light');
   const posL={"bottom-right":"Dole vpravo","bottom-left":"Dole vľavo","top-right":"Hore vpravo","top-left":"Hore vľavo"};
   const modeLabel=S.mode==='dark'?' · Dark':' · Light';
   document.getElementById('preview-dot').style.background=S.accent;
@@ -282,12 +121,9 @@ function buildBadge(){
       +`<div class="gr-logo-wrap" style="width:26px;height:26px;margin-top:2px">${G_SVG(16)}</div>`;
   } else {
     badge.innerHTML=`<div class="gr-logo-wrap" style="width:42px;height:42px">${G_SVG(26)}</div>`
-      +`<div class="gr-badge-info">`
-      +`<span class="gr-badge-label">${t.label}</span>`
-      +`<div class="gr-score-block">`
-      +`<span class="gr-badge-score">5.0</span>`
-      +`<div class="gr-stars-count">`
-      +`<div class="gr-badge-stars">${Array(5).fill(STAR(14)).join('')}</div>`
+      +`<div class="gr-badge-info"><span class="gr-badge-label">${t.label}</span>`
+      +`<div class="gr-score-block"><span class="gr-badge-score">5.0</span>`
+      +`<div class="gr-stars-count"><div class="gr-badge-stars">${Array(5).fill(STAR(14)).join('')}</div>`
       +(S.showCount?`<span class="gr-badge-count">47 ${t.reviews}</span>`:'')
       +`</div></div></div>`;
   }
@@ -300,10 +136,8 @@ function applyPosition(){
   const top=isTop(),left=isLeft();
   const o=currentDevice==='mobile'?S.offsetMobile:S.offsetDesktop;
   const sc=SIZES[S.size];
-
   badge.style.position='absolute';
   badge.style.transform=`scale(${sc})`;
-
   if(top){
     badge.style.top=(o.top||100)+'px'; badge.style.bottom='auto';
     badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
@@ -314,7 +148,6 @@ function applyPosition(){
     badge.style.right=!left?(o.right||28)+'px':'auto';
     badge.style.transformOrigin=`bottom ${left?'left':'right'}`;
   }
-
   setTimeout(()=>{
     const sRect=stage.getBoundingClientRect();
     const br=badge.getBoundingClientRect();
@@ -351,13 +184,8 @@ function setDevice(dev,el){
   const label=document.getElementById('device-label');
   const stage=document.getElementById('preview-stage');
   frame.className=''; frame.style.display='none'; stage.classList.remove('device-mode');
-  if(dev==='desktop'){
-    label.textContent='🖥 Desktop preview';
-  } else {
-    frame.classList.add(dev==='mobile'?'mobile':'tablet','visible');
-    label.textContent=dev==='mobile'?'📱 Mobile preview':'⬜ Tablet preview';
-    stage.classList.add('device-mode');
-  }
+  if(dev==='desktop'){ label.textContent='🖥 Desktop preview'; }
+  else { frame.classList.add(dev==='mobile'?'mobile':'tablet','visible'); label.textContent=dev==='mobile'?'📱 Mobile preview':'⬜ Tablet preview'; stage.classList.add('device-mode'); }
   applyPosition();
 }
 
@@ -386,11 +214,65 @@ function setOffset(key,field,val){ S[key][field]=parseInt(val)||0; applyPosition
 function setOffsetTab(tab,el){ activeOffsetTab=tab; document.querySelectorAll('.offset-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); document.getElementById('offset-desktop-fields').style.display=tab==='desktop'?'block':'none'; document.getElementById('offset-mobile-fields').style.display=tab==='mobile'?'block':'none'; }
 function togglePanel(){ panelOpen=!panelOpen; document.getElementById('gr-panel').classList.toggle('open',panelOpen); }
 
+// ── LOGIKA RECENZIÍ ──────────────────────────────────────────────
+function setMinRating(val,el){
+  document.querySelectorAll('[data-minrating]').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  S.minRating=val;
+  renderReviews();
+}
+
+function setReviewCount(val,el){
+  document.querySelectorAll('[data-count]').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  S.reviewCount=val;
+  renderReviews();
+}
+
+function setTextLen(val){
+  S.textLen=parseInt(val);
+  document.getElementById('textlen-val').textContent=val+' znakov';
+  renderReviews();
+}
+
+function setDateFormat(fmt,el){
+  document.querySelectorAll('[onclick^="setDateFormat"]').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  S.dateFormat=fmt;
+  renderReviews();
+}
+
+function setOwnerReply(val,el){
+  document.querySelectorAll('[onclick^="setOwnerReply"]').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  S.ownerReply=val;
+  renderReviews();
+}
+// ─────────────────────────────────────────────────────────────────
+
 function renderReviews(){
-  const MAX=130;
-  document.getElementById('gr-reviews-list').innerHTML=reviews.map((rv,i)=>{
-    const long=rv.text.length>MAX, short=long?rv.text.slice(0,MAX)+'...':rv.text;
-    return `<div class="gr-review-item"><div class="gr-review-top"><div class="gr-avatar" style="background:${rv.col}">${rv.init}</div><div><div class="gr-reviewer-name">${rv.name}</div><div class="gr-review-date">${rv.date}</div></div></div><div class="gr-review-stars">${Array(rv.r).fill(STAR(12)).join('')}</div><div class="gr-review-text"><span id="s${i}" class="gr-text-short">${short}${long?`<span class="gr-read-more" onclick="exp(${i})"> Čítať viac</span>`:''}</span>${long?`<span id="f${i}" class="gr-text-full">${rv.text}<span class="gr-read-more" onclick="col(${i})"> Menej</span></span>`:''}</div></div>`;
+  const MAX=S.textLen;
+  const filtered=reviews
+    .filter(rv=>rv.r>=S.minRating)
+    .slice(0,S.reviewCount);
+
+  document.getElementById('gr-reviews-list').innerHTML=filtered.map((rv,i)=>{
+    const long=rv.text.length>MAX;
+    const short=long?rv.text.slice(0,MAX)+'...':rv.text;
+    const dateStr=S.dateFormat==='absolute'?rv.absDate:rv.date;
+    const replyHtml=(S.ownerReply==='show' && rv.ownerReply)
+      ?`<div class="gr-owner-reply"><span class="gr-owner-label">💬 Odpoveď majiteľa</span><p>${rv.ownerReply}</p></div>`
+      :'';
+    return `<div class="gr-review-item">`
+      +`<div class="gr-review-top"><div class="gr-avatar" style="background:${rv.col}">${rv.init}</div>`
+      +`<div><div class="gr-reviewer-name">${rv.name}</div><div class="gr-review-date">${dateStr}</div></div></div>`
+      +`<div class="gr-review-stars">${Array(rv.r).fill(STAR(12)).join('')}</div>`
+      +`<div class="gr-review-text">`
+      +`<span id="s${i}" class="gr-text-short">${short}${long?`<span class="gr-read-more" onclick="exp(${i})"> Čítať viac</span>`:''}</span>`
+      +(long?`<span id="f${i}" class="gr-text-full">${rv.text}<span class="gr-read-more" onclick="col(${i})"> Menej</span></span>`:'')
+      +`</div>`
+      +replyHtml
+      +`</div>`;
   }).join('');
 }
 function exp(i){ document.getElementById('s'+i).classList.add('hidden'); document.getElementById('f'+i).classList.add('visible'); }
