@@ -18,7 +18,7 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   padding:24px 32px 32px 0; position:relative;
 }
 
-/* Preview stage – základné */
+/* Preview stage */
 #preview-stage{
   position:relative; width:100%; height:calc(100vh - 64px);
   max-width:1200px; margin-left:0; border-radius:0 32px 32px 0;
@@ -28,10 +28,7 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   transition: background 0.4s ease;
 }
 
-/* ── GLASS PREVIEW BACKGROUNDS ──
-   Farebné pozadie je nevyhnutné aby backdrop-filter blur mal čo rozmazávať.
-   Tieto triedy pridáva/odoberá JS podľa style+mode.
-*/
+/* ── GLASS PREVIEW BACKGROUNDS ── */
 #preview-stage.glass-bg-light{
   background:
     radial-gradient(ellipse at 15% 40%, rgba(99,102,241,0.28) 0%, transparent 50%),
@@ -194,10 +191,8 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 ══════════════════════════════ */
 #gr-badge{
   cursor:pointer; user-select:none;
-  /* Pozícia je absolute vnútri #preview-stage */
   position:absolute; z-index:200;
   transition:box-shadow .25s ease, transform .25s ease;
-  /* Backdrop filter – kľúčové pre glass */
   backdrop-filter: var(--gr-blur, none);
   -webkit-backdrop-filter: var(--gr-blur, none);
 }
@@ -266,7 +261,6 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   border:var(--gr-border-style,1.5px solid #e5e7eb);
   border-radius:var(--radius);
   box-shadow:0 16px 56px rgba(0,0,0,.14);
-  /* Glass blur na celom paneli */
   backdrop-filter: var(--gr-blur, none);
   -webkit-backdrop-filter: var(--gr-blur, none);
 }
@@ -313,6 +307,75 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 .gr-text-full{ display:none; }
 .gr-text-full.visible{ display:inline; }
 .gr-text-short.hidden{ display:none; }
+
+/* ══════════════════════════════
+   OWNER REPLY
+══════════════════════════════ */
+.gr-owner-reply{
+  margin-top:9px;
+  padding:9px 11px 9px 12px;
+  border-radius:8px;
+  background:var(--gr-owner-reply-bg, rgba(66,133,244,0.06));
+  border-left:3px solid var(--accent);
+  position:relative;
+}
+.gr-owner-label{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-size:10px;
+  font-weight:700;
+  color:var(--accent);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin-bottom:5px;
+}
+.gr-owner-reply p{
+  font-size:12px;
+  color:var(--gr-text-body, #4b5563);
+  line-height:1.55;
+  margin:0;
+}
+
+/* Owner reply – dark classic */
+[data-theme-mode="dark"] .gr-owner-reply,
+.gr-owner-reply-dark{
+  background:rgba(66,133,244,0.10);
+}
+
+/* Owner reply – glass light */
+.glass-bg-light .gr-owner-reply,
+#gr-panel.glass-light .gr-owner-reply{
+  background:rgba(255,255,255,0.12);
+  border-left-color:rgba(255,255,255,0.60);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.glass-bg-light .gr-owner-label,
+#gr-panel.glass-light .gr-owner-label{
+  color:rgba(255,255,255,0.85);
+}
+.glass-bg-light .gr-owner-reply p,
+#gr-panel.glass-light .gr-owner-reply p{
+  color:rgba(255,255,255,0.75);
+}
+
+/* Owner reply – glass dark */
+.glass-bg-dark .gr-owner-reply,
+#gr-panel.glass-dark .gr-owner-reply{
+  background:rgba(255,255,255,0.07);
+  border-left-color:rgba(255,255,255,0.30);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.glass-bg-dark .gr-owner-label,
+#gr-panel.glass-dark .gr-owner-label{
+  color:rgba(255,255,255,0.70);
+}
+.glass-bg-dark .gr-owner-reply p,
+#gr-panel.glass-dark .gr-owner-reply p{
+  color:rgba(255,255,255,0.60);
+}
 
 .gr-panel-footer{ padding:10px 15px; border-top:1px solid var(--gr-divider,#f3f4f6); display:flex; gap:8px; }
 .gr-btn{
