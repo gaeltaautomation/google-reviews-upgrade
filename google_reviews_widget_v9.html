@@ -118,6 +118,48 @@
         <input id="inp-all" class="cfg-input" type="text" value="Všetky recenzie" oninput="S.ctaAll=this.value;updateTexts()">
       </div>
 
+      <!-- ══════════════════════════════ -->
+      <!-- LOGIKA RECENZIÍ               -->
+      <!-- ══════════════════════════════ -->
+      <div class="cfg-group"><span>🔧</span> Logika recenzií</div>
+      <div class="cfg-section">
+        <div class="cfg-label"><span class="cfg-label-icon">⭐</span> Minimálne hodnotenie</div>
+        <div class="cfg-row">
+          <div class="pill-btn active" data-minrating="0" onclick="setMinRating(0,this)">Všetky</div>
+          <div class="pill-btn" data-minrating="4" onclick="setMinRating(4,this)">4★ a viac</div>
+          <div class="pill-btn" data-minrating="5" onclick="setMinRating(5,this)">Len 5★</div>
+        </div>
+      </div>
+      <div class="cfg-section">
+        <div class="cfg-label"><span class="cfg-label-icon">#</span> Počet recenzií</div>
+        <div class="cfg-row">
+          <div class="pill-btn" data-count="3" onclick="setReviewCount(3,this)">3 <span style="opacity:.55;font-size:9px">lite</span></div>
+          <div class="pill-btn active" data-count="5" onclick="setReviewCount(5,this)">5 <span style="opacity:.55;font-size:9px">default</span></div>
+          <div class="pill-btn" data-count="10" onclick="setReviewCount(10,this)">10 <span style="opacity:.55;font-size:9px">pro</span></div>
+        </div>
+      </div>
+      <div class="cfg-section">
+        <div class="slider-row">
+          <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">✂</span> Dĺžka textu</div>
+          <span class="cfg-slider-val" id="textlen-val">150 znakov</span>
+        </div>
+        <input type="range" class="cfg-slider" min="60" max="400" value="150" step="10" oninput="setTextLen(this.value)">
+      </div>
+      <div class="cfg-section">
+        <div class="cfg-label"><span class="cfg-label-icon">📅</span> Dátum recenzie</div>
+        <div class="toggle-wrap">
+          <div class="toggle-btn active" onclick="setDateFormat('relative',this)">Relatívny</div>
+          <div class="toggle-btn" onclick="setDateFormat('absolute',this)">Presný dátum</div>
+        </div>
+      </div>
+      <div class="cfg-section">
+        <div class="cfg-label"><span class="cfg-label-icon">🗣</span> Odpoveď majiteľa</div>
+        <div class="toggle-wrap">
+          <div class="toggle-btn active" onclick="setOwnerReply('show',this)">Zobraziť</div>
+          <div class="toggle-btn" onclick="setOwnerReply('hide',this)">Skryť</div>
+        </div>
+      </div>
+
       <div class="cfg-group"><span>👁</span> Zobrazenie</div>
       <div class="cfg-section">
         <div class="cfg-label"><span class="cfg-label-icon">📊</span> Doplnky</div>
@@ -161,7 +203,6 @@
       </div>
       <div id="device-frame"><div id="device-stage"></div></div>
 
-      <!-- BADGE & PANEL sú VNÚTRI preview-stage aby backdrop-filter fungoval -->
       <div id="gr-badge" onclick="togglePanel()"></div>
       <div id="gr-panel">
         <div class="gr-panel-header">
