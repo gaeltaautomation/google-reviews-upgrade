@@ -17,44 +17,7 @@
       <div class="cfg-head-sub">Widget konfigurátor · Preview mode</div>
       <div class="cfg-preview">
         <div class="cfg-preview-dot" id="preview-dot"></div>
-        <div class="cfg-preview-text" id="preview-text">Floating · Classic · Light</div>
-      </div>
-    </div>
-
-    <!-- ══ TYP WIDGETU ══ -->
-    <div class="cfg-type-bar">
-      <div class="cfg-type-label">Typ widgetu</div>
-      <div class="cfg-type-grid">
-        <div class="type-card active" data-wtype="c0" onclick="switchType('c0',this)">
-          <span class="type-icon">💬</span>
-          <span class="type-name">Floating</span>
-          <span class="type-sub">Badge + panel</span>
-        </div>
-        <div class="type-card" data-wtype="c1" onclick="switchType('c1',this)">
-          <span class="type-icon">🎠</span>
-          <span class="type-name">Karusel</span>
-          <span class="type-sub">Inline slider</span>
-        </div>
-        <div class="type-card" data-wtype="c2" onclick="switchType('c2',this)">
-          <span class="type-icon">📏</span>
-          <span class="type-name">Lišta</span>
-          <span class="type-sub">Top / Bottom bar</span>
-        </div>
-        <div class="type-card" data-wtype="c3" onclick="switchType('c3',this)">
-          <span class="type-icon">🧩</span>
-          <span class="type-name">Embed</span>
-          <span class="type-sub">HTML snippet</span>
-        </div>
-        <div class="type-card" data-wtype="c4" onclick="switchType('c4',this)">
-          <span class="type-icon">✍️</span>
-          <span class="type-name">CTA</span>
-          <span class="type-sub">Review button</span>
-        </div>
-      </div>
-      <!-- Kombinácie -->
-      <div class="cfg-combo" id="combo-section">
-        <div class="cfg-combo-label">Kombinovať s:</div>
-        <div class="cfg-combo-row" id="combo-row"></div>
+        <div class="cfg-preview-text" id="preview-text">Floating · Classic · Light · M · Dole vpravo</div>
       </div>
     </div>
 
@@ -66,336 +29,73 @@
 
     <div class="cfg-body">
 
-      <!-- ══ VZHĽAD (všetky typy) ══ -->
-      <div class="cfg-group"><span>🎨</span> Vzhľad</div>
-
-      <!-- Štýl — skrytý pre C2, C4 -->
-      <div class="cfg-section" data-show-for="c0,c1,c3">
-        <div class="cfg-label"><span class="cfg-label-icon">✦</span> Štýl</div>
-        <div class="cfg-row">
-          <div class="pill-btn active" data-style="classic" onclick="setStyle('classic',this)">Classic</div>
-          <div class="pill-btn" data-style="modern" onclick="setStyle('modern',this)">Modern</div>
-          <div class="pill-btn" data-style="glass" onclick="setStyle('glass',this)">Glass</div>
+      <!-- ══════════════════════════════ -->
+      <!-- TYP WIDGETU                   -->
+      <!-- ══════════════════════════════ -->
+      <div class="cfg-group"><span>⚡</span> Typ widgetu</div>
+      <div class="cfg-section type-selector-section">
+        <div class="type-grid">
+          <div class="type-btn active" data-type="c0" onclick="switchType('c0',this)">
+            <div class="type-icon">💬</div>
+            <div class="type-label">Floating</div>
+            <div class="type-sub">Badge + panel</div>
+          </div>
+          <div class="type-btn" data-type="c1" onclick="switchType('c1',this)">
+            <div class="type-icon">🎠</div>
+            <div class="type-label">Karusel</div>
+            <div class="type-sub">Inline slider</div>
+          </div>
+          <div class="type-btn" data-type="c2" onclick="switchType('c2',this)">
+            <div class="type-icon">📌</div>
+            <div class="type-label">Lišta</div>
+            <div class="type-sub">Sticky bar</div>
+          </div>
+          <div class="type-btn" data-type="c3" onclick="switchType('c3',this)">
+            <div class="type-icon">🧩</div>
+            <div class="type-label">Embed</div>
+            <div class="type-sub">HTML snippet</div>
+          </div>
+          <div class="type-btn" data-type="c4" onclick="switchType('c4',this)">
+            <div class="type-icon">✍️</div>
+            <div class="type-label">CTA button</div>
+            <div class="type-sub">Floating btn</div>
+          </div>
         </div>
       </div>
 
-      <!-- Farba — všetky -->
-      <div class="cfg-section" data-show-for="c0,c1,c2,c3,c4">
-        <div class="cfg-label"><span class="cfg-label-icon">◉</span> Farba</div>
-        <div class="cfg-row">
-          <div class="color-swatch active" style="background:#4285F4" data-color="#4285F4" onclick="setColor(this)"></div>
-          <div class="color-swatch" style="background:#10b981" data-color="#10b981" onclick="setColor(this)"></div>
-          <div class="color-swatch" style="background:#f59e0b" data-color="#f59e0b" onclick="setColor(this)"></div>
-          <div class="color-swatch" style="background:#ef4444" data-color="#ef4444" onclick="setColor(this)"></div>
-          <div class="color-swatch" style="background:#8b5cf6" data-color="#8b5cf6" onclick="setColor(this)"></div>
-          <div class="color-swatch" style="background:#ec4899" data-color="#ec4899" onclick="setColor(this)"></div>
-          <div class="color-swatch" style="background:#111827" data-color="#111827" onclick="setColor(this)"></div>
-          <div class="color-custom">+<input type="color" value="#4285F4" oninput="setColorHex(this.value)"></div>
-        </div>
+      <!-- KOMBINOVAT -->
+      <div class="cfg-section" id="combine-section" style="display:none">
+        <div class="cfg-label"><span class="cfg-label-icon">＋</span> Kombinovať s</div>
+        <div id="combine-options"></div>
       </div>
 
-      <!-- Light/Dark — skrytý pre C4 -->
-      <div class="cfg-section" data-show-for="c0,c1,c2,c3" id="mode-section">
-        <div class="cfg-label"><span class="cfg-label-icon">◐</span> Režim</div>
-        <div class="toggle-wrap">
-          <div class="toggle-btn active" onclick="setMode('light',this)">☀️ Light</div>
-          <div class="toggle-btn" onclick="setMode('dark',this)">🌙 Dark</div>
-        </div>
-      </div>
+      <!-- ══════════════════════════════ -->
+      <!-- DYNAMICKÉ SEKCIE              -->
+      <!-- ══════════════════════════════ -->
+      <div id="cfg-dynamic"></div>
 
-      <!-- Border radius — skrytý pre C2 -->
-      <div class="cfg-section" data-show-for="c0,c1,c3,c4">
-        <div class="slider-row">
-          <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">⌀</span> Border radius</div>
-          <span class="cfg-slider-val" id="radius-val">14px</span>
-        </div>
-        <input type="range" class="cfg-slider" min="0" max="30" value="14" oninput="setRadius(this.value)">
-      </div>
-
-      <!-- Veľkosť — len C0, C4 -->
-      <div class="cfg-section" data-show-for="c0,c4">
-        <div class="cfg-label"><span class="cfg-label-icon">⊡</span> Veľkosť</div>
-        <div class="cfg-row">
-          <div class="pill-btn" data-size="S" onclick="setSize('S',this)">S — Malý</div>
-          <div class="pill-btn active" data-size="M" onclick="setSize('M',this)">M — Stredný</div>
-          <div class="pill-btn" data-size="L" onclick="setSize('L',this)">L — Veľký</div>
-        </div>
-      </div>
-
-      <!-- ══ UMIESTNENIE ══ -->
-      <!-- C0: pozícia + offset -->
-      <div class="cfg-group" data-show-for="c0,c2,c4"><span>📍</span> Umiestnenie</div>
-
-      <div class="cfg-section" data-show-for="c0">
-        <div class="cfg-label"><span class="cfg-label-icon">⊕</span> Pozícia</div>
-        <div class="pos-grid">
-          <div class="pos-btn" data-pos="top-left" onclick="setPos(this)">↖ Hore<br>vľavo</div>
-          <div class="pos-btn hb"></div>
-          <div class="pos-btn" data-pos="top-right" onclick="setPos(this)">↗ Hore<br>vpravo</div>
-          <div class="pos-btn hb"></div><div class="pos-btn hb"></div><div class="pos-btn hb"></div>
-          <div class="pos-btn" data-pos="bottom-left" onclick="setPos(this)">↙ Dole<br>vľavo</div>
-          <div class="pos-btn hb"></div>
-          <div class="pos-btn active" data-pos="bottom-right" onclick="setPos(this)">↘ Dole<br>vpravo</div>
-        </div>
-      </div>
-      <div class="cfg-section" data-show-for="c0">
-        <div class="cfg-label"><span class="cfg-label-icon">↔</span> Odsadenie</div>
-        <div class="offset-tabs">
-          <div class="offset-tab active" onclick="setOffsetTab('desktop',this)">🖥 Desktop</div>
-          <div class="offset-tab" onclick="setOffsetTab('mobile',this)">📱 Mobile</div>
-        </div>
-        <div id="offset-desktop-fields"></div>
-        <div id="offset-mobile-fields" style="display:none"></div>
-      </div>
-
-      <!-- C2: top/bottom bar pozícia -->
-      <div class="cfg-section" data-show-for="c2">
-        <div class="cfg-label"><span class="cfg-label-icon">⊕</span> Pozícia lišty</div>
-        <div class="toggle-wrap">
-          <div class="toggle-btn active" data-barpos="top" onclick="setBarPos('top',this)">⬆ Navrchu</div>
-          <div class="toggle-btn" data-barpos="bottom" onclick="setBarPos('bottom',this)">⬇ Dole</div>
-        </div>
-      </div>
-      <!-- C2: dismissible -->
-      <div class="cfg-section" data-show-for="c2">
-        <div class="cfg-label"><span class="cfg-label-icon">✕</span> Zatvoriteľná</div>
-        <div class="toggle-wrap">
-          <div class="toggle-btn active" data-dismissible="yes" onclick="setDismissible(true,this)">Áno</div>
-          <div class="toggle-btn" data-dismissible="no" onclick="setDismissible(false,this)">Nie</div>
-        </div>
-      </div>
-
-      <!-- C4: floating button pozícia -->
-      <div class="cfg-section" data-show-for="c4">
-        <div class="cfg-label"><span class="cfg-label-icon">⊕</span> Pozícia tlačidla</div>
-        <div class="pos-grid">
-          <div class="pos-btn" data-pos="top-left" onclick="setCTAPos(this)">↖ Hore<br>vľavo</div>
-          <div class="pos-btn hb"></div>
-          <div class="pos-btn" data-pos="top-right" onclick="setCTAPos(this)">↗ Hore<br>vpravo</div>
-          <div class="pos-btn hb"></div><div class="pos-btn hb"></div><div class="pos-btn hb"></div>
-          <div class="pos-btn" data-pos="bottom-left" onclick="setCTAPos(this)">↙ Dole<br>vľavo</div>
-          <div class="pos-btn hb"></div>
-          <div class="pos-btn active" data-pos="bottom-right" onclick="setCTAPos(this)">↘ Dole<br>vpravo</div>
-        </div>
-      </div>
-
-      <!-- ══ KARUSEL nastavenia — len C1 ══ -->
-      <div class="cfg-group" data-show-for="c1"><span>🎠</span> Karusel</div>
-      <div class="cfg-section" data-show-for="c1">
-        <div class="cfg-label"><span class="cfg-label-icon">⏱</span> Auto-rotate</div>
-        <div class="toggle-wrap">
-          <div class="toggle-btn active" onclick="setAutoRotate(true,this)">Zapnutý</div>
-          <div class="toggle-btn" onclick="setAutoRotate(false,this)">Vypnutý</div>
-        </div>
-      </div>
-      <div class="cfg-section" data-show-for="c1">
-        <div class="slider-row">
-          <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">⏱</span> Interval</div>
-          <span class="cfg-slider-val" id="rotate-val">4s</span>
-        </div>
-        <input type="range" class="cfg-slider" min="2" max="10" value="4" oninput="setRotateInterval(this.value)">
-      </div>
-      <div class="cfg-section" data-show-for="c1">
-        <div class="cfg-label"><span class="cfg-label-icon">◉</span> Navigácia</div>
-        <label class="chk-single"><input type="checkbox" checked onchange="S.carousel.showArrows=this.checked;buildCarousel()"><span>Šípky</span></label>
-        <label class="chk-single"><input type="checkbox" checked onchange="S.carousel.showDots=this.checked;buildCarousel()"><span>Dots indikátor</span></label>
-      </div>
-
-      <!-- ══ LIŠTA nastavenia — len C2 ══ -->
-      <div class="cfg-group" data-show-for="c2"><span>📏</span> Lišta</div>
-      <div class="cfg-section" data-show-for="c2">
-        <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Text lišty</div>
-        <input id="inp-bar-text" class="cfg-input" type="text" value="Zákazníci nám dôverujú" oninput="S.bar.customText=this.value;buildBar()">
-        <span style="font-size:10px;color:#94a3b8;margin-top:4px;display:block">Zobrazí sa vedľa ★★★★★ 5.0 · 47 recenzií</span>
-      </div>
-      <div class="cfg-section" data-show-for="c2">
-        <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Text tlačidla</div>
-        <input id="inp-bar-cta" class="cfg-input" type="text" value="Pozrieť recenzie" oninput="S.bar.ctaText=this.value;buildBar()">
-      </div>
-
-      <!-- ══ CTA nastavenia — len C4 ══ -->
-      <div class="cfg-group" data-show-for="c4"><span>✍️</span> CTA tlačidlo</div>
-      <div class="cfg-section" data-show-for="c4">
-        <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Text tlačidla</div>
-        <input id="inp-cta-text" class="cfg-input" type="text" value="Napísať recenziu" oninput="S.cta.text=this.value;buildCTA()">
-      </div>
-      <div class="cfg-section" data-show-for="c4">
-        <div class="cfg-label"><span class="cfg-label-icon">◉</span> Tvar</div>
-        <div class="cfg-row">
-          <div class="pill-btn active" data-ctashape="pill" onclick="setCTAShape('pill',this)">Pill</div>
-          <div class="pill-btn" data-ctashape="rounded" onclick="setCTAShape('rounded',this)">Rounded</div>
-          <div class="pill-btn" data-ctashape="square" onclick="setCTAShape('square',this)">Square</div>
-        </div>
-      </div>
-      <div class="cfg-section" data-show-for="c4">
-        <div class="cfg-label"><span class="cfg-label-icon">◉</span> Štýl tlačidla</div>
-        <div class="cfg-row">
-          <div class="pill-btn active" data-ctastyle="filled" onclick="setCTAStyle('filled',this)">Filled</div>
-          <div class="pill-btn" data-ctastyle="outline" onclick="setCTAStyle('outline',this)">Outline</div>
-        </div>
-      </div>
-
-      <!-- ══ EMBED nastavenia — len C3 ══ -->
-      <div class="cfg-group" data-show-for="c3"><span>🧩</span> Embed</div>
-      <div class="cfg-section" data-show-for="c3">
-        <div class="cfg-label"><span class="cfg-label-icon">◉</span> Layout</div>
-        <div class="cfg-row">
-          <div class="pill-btn active" data-layout="grid" onclick="setEmbedLayout('grid',this)">Grid</div>
-          <div class="pill-btn" data-layout="list" onclick="setEmbedLayout('list',this)">Zoznam</div>
-          <div class="pill-btn" data-layout="masonry" onclick="setEmbedLayout('masonry',this)">Masonry</div>
-        </div>
-      </div>
-      <div class="cfg-section" data-show-for="c3">
-        <div class="cfg-label"><span class="cfg-label-icon">📋</span> HTML Snippet</div>
-        <div class="snippet-box" id="snippet-box">&lt;!-- snippet sa vygeneruje --&gt;</div>
-        <button class="snippet-copy-btn" onclick="copySnippet()">📋 Kopírovať kód</button>
-      </div>
-
-      <!-- ══ OBSAH (C0, C1, C3) ══ -->
-      <div class="cfg-group" data-show-for="c0,c1,c3"><span>💬</span> Obsah</div>
-      <div class="cfg-section" data-show-for="c0,c1,c2,c3,c4">
-        <div class="cfg-label"><span class="cfg-label-icon">🌍</span> Jazyk widgetu</div>
-        <div class="lang-grid">
-          <label class="lang-opt"><input type="radio" name="lang" value="sk" checked onchange="setLang(this.value)"><span>🇸🇰 Slovenčina</span></label>
-          <label class="lang-opt"><input type="radio" name="lang" value="cz" onchange="setLang(this.value)"><span>🇨🇿 Čeština</span></label>
-          <label class="lang-opt"><input type="radio" name="lang" value="en" onchange="setLang(this.value)"><span>🇬🇧 English</span></label>
-          <label class="lang-opt"><input type="radio" name="lang" value="de" onchange="setLang(this.value)"><span>🇩🇪 Deutsch</span></label>
-          <label class="lang-opt"><input type="radio" name="lang" value="hu" onchange="setLang(this.value)"><span>🇭🇺 Magyar</span></label>
-          <label class="lang-opt"><input type="radio" name="lang" value="ro" onchange="setLang(this.value)"><span>🇷🇴 Română</span></label>
-          <label class="lang-opt"><input type="radio" name="lang" value="pl" onchange="setLang(this.value)"><span>🇵🇱 Polski</span></label>
-          <label class="lang-opt"><input type="radio" name="lang" value="it" onchange="setLang(this.value)"><span>🇮🇹 Italiano</span></label>
-        </div>
-      </div>
-      <div class="cfg-section" data-show-for="c0,c1">
-        <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Texty tlačidiel</div>
-        <span class="cfg-input-label">Napísať recenziu</span>
-        <input id="inp-write" class="cfg-input" type="text" value="Napísať recenziu" oninput="S.ctaWrite=this.value;updateTexts()">
-        <span class="cfg-input-label">Zobraziť všetky</span>
-        <input id="inp-all" class="cfg-input" type="text" value="Všetky recenzie" oninput="S.ctaAll=this.value;updateTexts()">
-      </div>
-
-      <!-- ══ LOGIKA RECENZIÍ (C0, C1, C3) ══ -->
-      <div class="cfg-group" data-show-for="c0,c1,c3"><span>🔧</span> Logika recenzií</div>
-      <div class="cfg-section" data-show-for="c0,c1,c3">
-        <div class="cfg-label"><span class="cfg-label-icon">⭐</span> Minimálne hodnotenie</div>
-        <div class="cfg-row">
-          <div class="pill-btn active" data-minrating="0" onclick="setMinRating(0,this)">Všetky</div>
-          <div class="pill-btn" data-minrating="4" onclick="setMinRating(4,this)">4★ a viac</div>
-          <div class="pill-btn" data-minrating="5" onclick="setMinRating(5,this)">Len 5★</div>
-        </div>
-      </div>
-      <div class="cfg-section" data-show-for="c0,c1,c3">
-        <div class="cfg-label"><span class="cfg-label-icon">#</span> Počet recenzií</div>
-        <div class="cfg-row" id="count-row">
-          <div class="pill-btn" data-count="3" onclick="setReviewCount(3,this)">3 <span style="opacity:.55;font-size:9px">lite</span></div>
-          <div class="pill-btn active" data-count="5" onclick="setReviewCount(5,this)">5 <span style="opacity:.55;font-size:9px">default</span></div>
-          <div class="pill-btn" data-count="10" onclick="setReviewCount(10,this)">10 <span style="opacity:.55;font-size:9px">pro</span></div>
-        </div>
-      </div>
-      <div class="cfg-section" data-show-for="c0,c1,c3">
-        <div class="slider-row">
-          <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">✂</span> Dĺžka textu</div>
-          <span class="cfg-slider-val" id="textlen-val">150 znakov</span>
-        </div>
-        <input type="range" class="cfg-slider" min="60" max="400" value="150" step="10" oninput="setTextLen(this.value)">
-      </div>
-      <div class="cfg-section" data-show-for="c0,c1,c3">
-        <div class="cfg-label"><span class="cfg-label-icon">📅</span> Dátum recenzie</div>
-        <div class="toggle-wrap">
-          <div class="toggle-btn active" onclick="setDateFormat('relative',this)">Relatívny</div>
-          <div class="toggle-btn" onclick="setDateFormat('absolute',this)">Presný dátum</div>
-        </div>
-      </div>
-      <div class="cfg-section" data-show-for="c0,c1,c3">
-        <div class="cfg-label"><span class="cfg-label-icon">🗣</span> Odpoveď majiteľa</div>
-        <div class="toggle-wrap">
-          <div class="toggle-btn active" onclick="setOwnerReply('show',this)">Zobraziť</div>
-          <div class="toggle-btn" onclick="setOwnerReply('hide',this)">Skryť</div>
-        </div>
-      </div>
-
-      <!-- ══ ZOBRAZENIE ══ -->
-      <div class="cfg-group" data-show-for="c0,c1,c2,c4"><span>👁</span> Zobrazenie</div>
-      <div class="cfg-section" data-show-for="c0">
-        <div class="cfg-label"><span class="cfg-label-icon">📊</span> Doplnky</div>
-        <label class="chk-single"><input type="checkbox" checked onchange="S.showCount=this.checked;buildBadge();"><span>Zobraziť počet recenzií</span></label>
-      </div>
-      <div class="cfg-section" data-show-for="c0,c1,c2,c4">
-        <div class="cfg-label"><span class="cfg-label-icon">📺</span> Zobraziť na zariadeniach</div>
-        <label class="chk-single"><input type="checkbox" checked onchange="S.devDesktop=this.checked"><span>🖥 Počítač</span></label>
-        <label class="chk-single"><input type="checkbox" checked onchange="S.devTablet=this.checked"><span>⬜ Tablet</span></label>
-        <label class="chk-single"><input type="checkbox" checked onchange="S.devMobile=this.checked"><span>📱 Mobil</span></label>
-      </div>
-      <div class="cfg-section" data-show-for="c0,c1,c2,c4">
-        <div class="cfg-label"><span class="cfg-label-icon">📄</span> Zobraziť na stránkach</div>
-        <div class="chk-grid">
-          <label class="chk-item"><input type="checkbox" checked><span>Homepage</span></label>
-          <label class="chk-item"><input type="checkbox" checked><span>Kategórie</span></label>
-          <label class="chk-item"><input type="checkbox" checked><span>Detail produktu</span></label>
-          <label class="chk-item"><input type="checkbox" checked><span>Články</span></label>
-          <label class="chk-item"><input type="checkbox" checked><span>Košík</span></label>
-          <label class="chk-item"><input type="checkbox" checked><span>Doprava &amp; platba</span></label>
-          <label class="chk-item"><input type="checkbox" checked><span>Objednávka</span></label>
-          <label class="chk-item"><input type="checkbox" checked><span>Ďakovná str.</span></label>
-        </div>
-      </div>
-
-    </div><!-- /cfg-body -->
-  </div><!-- /config -->
+    </div>
+  </div>
 
   <!-- PREVIEW -->
   <div id="preview-stage-wrapper">
     <div id="preview-stage">
       <div id="preview-inner">
         <div id="device-label">🖥 Desktop preview</div>
-        <div class="preview-copy" id="preview-copy-content">
+        <div class="preview-copy">
           <h1>Best practices pre Google recenzie</h1>
           <p class="lead">Nastav widget tak, aby podporoval dôveru a zároveň neprekážal nákupnému procesu.</p>
           <div class="tip-grid">
             <div class="tip-card"><h3><span>📍 Pozícia</span></h3><p>Dole vpravo je istota – zákazníci sú tam zvyknutí hľadať chat aj pomoc.</p></div>
-            <div class="tip-card"><h3><span>⭐ Filter</span></h3><p>Nastav minimálne 4★. Skryješ slabšie recenzie, ale zostane prirodzený mix.</p></div>
-            <div class="tip-card"><h3><span>🎨 Štýl</span></h3><p>Classic je najuniverzálnejší, Modern sedí tech projektom, Glass je pre fashion.</p></div>
-            <div class="tip-card"><h3><span>📱 Mobile</span></h3><p>Na mobile nechaj widget len tam, kde naozaj pomáha – homepage a produkty.</p></div>
+            <div class="tip-card"><h3><span>⭐ Filter hodnotenia</span></h3><p>Nastav minimálne 4★. Skryješ slabšie recenzie, ale zostane prirodzený mix.</p></div>
+            <div class="tip-card"><h3><span>🎨 Farby &amp; štýl</span></h3><p>Drž sa farby primárneho CTA v eshope. Classic je najuniverzálnejší.</p></div>
+            <div class="tip-card"><h3><span>📱 Mobilné zobrazenie</span></h3><p>Na mobile nechaj widget len tam, kde naozaj pomáha.</p></div>
           </div>
-        </div>
-        <!-- C1 Karusel preview -->
-        <div id="preview-carousel" style="display:none">
-          <div class="carousel-preview-header">
-            <div class="carousel-biz-info">
-              <div class="carousel-logo"></div>
-              <div>
-                <div class="carousel-biz-name">Skleníky Dúha</div>
-                <div class="carousel-meta" id="carousel-meta-line"></div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-track-wrap">
-            <button class="carousel-arrow left" onclick="carouselPrev()">&#8249;</button>
-            <div class="carousel-track" id="carousel-track"></div>
-            <button class="carousel-arrow right" onclick="carouselNext()">&#8250;</button>
-          </div>
-          <div class="carousel-dots" id="carousel-dots"></div>
-        </div>
-        <!-- C2 Bar preview placeholder -->
-        <div id="preview-bar-placeholder" style="display:none">
-          <div style="padding:40px 0;text-align:center;color:#94a3b8;font-size:13px">Lišta sa zobrazí v preview stage (navrchu alebo dole)</div>
-        </div>
-        <!-- C3 Embed preview -->
-        <div id="preview-embed" style="display:none">
-          <div class="embed-header" id="embed-header">
-            <span class="embed-title">Čo hovoria naši zákazníci</span>
-            <div class="embed-meta" id="embed-meta"></div>
-          </div>
-          <div class="embed-grid" id="embed-grid"></div>
-        </div>
-        <!-- C4 CTA preview placeholder -->
-        <div id="preview-cta-placeholder" style="display:none">
-          <div style="padding:40px 0;text-align:center;color:#94a3b8;font-size:13px">CTA tlačidlo sa zobrazí v rohu preview stage</div>
         </div>
       </div>
       <div id="device-frame"><div id="device-stage"></div></div>
 
-      <!-- C0 Floating widget -->
+      <!-- C0: Floating badge + panel -->
       <div id="gr-badge" onclick="togglePanel()"></div>
       <div id="gr-panel">
         <div class="gr-panel-header">
@@ -421,15 +121,31 @@
         </div>
       </div>
 
-      <!-- C2 Sticky bar -->
-      <div id="gr-bar" style="display:none"></div>
+      <!-- C1–C4: Placeholder previews -->
+      <div id="preview-c1" class="widget-preview-placeholder" style="display:none">
+        <div class="placeholder-badge">🎠</div>
+        <div class="placeholder-title">Karusel — inline slider</div>
+        <div class="placeholder-sub">Preview príde v Časti B</div>
+      </div>
+      <div id="preview-c2" class="widget-preview-placeholder" style="display:none">
+        <div class="placeholder-badge">📌</div>
+        <div class="placeholder-title">Sticky lišta</div>
+        <div class="placeholder-sub">Preview príde v Časti C</div>
+      </div>
+      <div id="preview-c3" class="widget-preview-placeholder" style="display:none">
+        <div class="placeholder-badge">🧩</div>
+        <div class="placeholder-title">Embed HTML widget</div>
+        <div class="placeholder-sub">Preview príde v Časti D</div>
+      </div>
+      <div id="preview-c4" class="widget-preview-placeholder" style="display:none">
+        <div class="placeholder-badge">✍️</div>
+        <div class="placeholder-title">CTA tlačidlo</div>
+        <div class="placeholder-sub">Preview príde v Časti E</div>
+      </div>
 
-      <!-- C4 CTA button -->
-      <div id="gr-cta-btn" style="display:none"></div>
-
-    </div><!-- /preview-stage -->
-  </div><!-- /preview-stage-wrapper -->
-</div><!-- /app-shell -->
+    </div>
+  </div>
+</div>
 
 <script src="widget.js"></script>
 </body>

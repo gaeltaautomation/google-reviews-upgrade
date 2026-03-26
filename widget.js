@@ -2,121 +2,414 @@ const G_SVG=(w=26)=>`<svg viewBox="0 0 48 48" width="${w}" height="${w}"><path f
 const STAR=(w=14)=>`<svg viewBox="0 0 20 20" width="${w}" height="${w}"><path fill="#f59e0b" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
 
 const LANGS={
-  sk:{label:"Recenzie Google",reviews:"recenzií",writeReview:"Napísať recenziu",allReviews:"Všetky recenzie"},
-  cz:{label:"Recenze Google",reviews:"recenzí",writeReview:"Napsat recenzi",allReviews:"Všechny recenze"},
-  en:{label:"Google Reviews",reviews:"reviews",writeReview:"Write a review",allReviews:"All reviews"},
-  de:{label:"Google Bewertungen",reviews:"Bewertungen",writeReview:"Bewertung schreiben",allReviews:"Alle Bewertungen"},
-  hu:{label:"Google vélemények",reviews:"vélemény",writeReview:"Vélemény írása",allReviews:"Összes vélemény"},
-  ro:{label:"Recenzii Google",reviews:"recenzii",writeReview:"Scrieți o recenzie",allReviews:"Toate recenziile"},
-  pl:{label:"Opinie Google",reviews:"opinii",writeReview:"Napisz opinię",allReviews:"Wszystkie recenzje"},
-  it:{label:"Recensioni Google",reviews:"recensioni",writeReview:"Scrivi una recensione",allReviews:"Tutte le recensioni"}
+  sk:{label:"Recenzie Google",reviews:"recenzií",writeReview:"Napísať recenziu",allReviews:"Všetky recenzie",barText:"Naši zákazníci nás milujú",ctaText:"Napísať recenziu"},
+  cz:{label:"Recenze Google",reviews:"recenzí",writeReview:"Napsat recenzi",allReviews:"Všechny recenze",barText:"Naši zákazníci nás milují",ctaText:"Napsat recenzi"},
+  en:{label:"Google Reviews",reviews:"reviews",writeReview:"Write a review",allReviews:"All reviews",barText:"Our customers love us",ctaText:"Write a review"},
+  de:{label:"Google Bewertungen",reviews:"Bewertungen",writeReview:"Bewertung schreiben",allReviews:"Alle Bewertungen",barText:"Unsere Kunden lieben uns",ctaText:"Bewertung schreiben"},
+  hu:{label:"Google vélemények",reviews:"vélemény",writeReview:"Vélemény írása",allReviews:"Összes vélemény",barText:"Ügyfeleink szeretnek minket",ctaText:"Vélemény írása"},
+  ro:{label:"Recenzii Google",reviews:"recenzii",writeReview:"Scrieți o recenzie",allReviews:"Toate recenziile",barText:"Clienții noștri ne iubesc",ctaText:"Scrieți o recenzie"},
+  pl:{label:"Opinie Google",reviews:"opinii",writeReview:"Napisz opinię",allReviews:"Wszystkie recenzje",barText:"Nasi klienci nas kochają",ctaText:"Napisz opinię"},
+  it:{label:"Recensioni Google",reviews:"recensioni",writeReview:"Scrivi una recensione",allReviews:"Tutte le recensioni",barText:"I nostri clienti ci amano",ctaText:"Scrivi una recensione"}
 };
 
+// ── WIDGET TYPE DEFINITIONS ──────────────────────────────────────────────────
+const WIDGET_TYPES = {
+  c0: {
+    label: 'Floating', icon: '💬',
+    sections: ['appearance','position','content','reviews-logic','display']
+  },
+  c1: {
+    label: 'Karusel', icon: '🎠',
+    sections: ['appearance','content-c1','reviews-logic-c1','display-pages']
+  },
+  c2: {
+    label: 'Lišta', icon: '📌',
+    sections: ['appearance-c2','position-c2','content-c2','display-devices','display-pages']
+  },
+  c3: {
+    label: 'Embed', icon: '🧩',
+    sections: ['appearance','content-c3','reviews-logic','display-pages']
+  },
+  c4: {
+    label: 'CTA button', icon: '✍️',
+    sections: ['appearance-c4','position','content-c4','display']
+  }
+};
+
+const COMBINE_LABELS = { c0:'💬 Floating', c1:'🎠 Karusel', c2:'📌 Lišta', c4:'✍️ CTA button' };
+
+// ── SECTION RENDERERS ────────────────────────────────────────────────────────
+const SECTIONS = {
+
+  'appearance': () => `
+    <div class="cfg-group"><span>🎨</span> Vzhľad</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">✦</span> Štýl</div>
+      <div class="cfg-row">
+        <div class="pill-btn ${S.style==='classic'?'active':''}" data-style="classic" onclick="setStyle('classic',this)">Classic</div>
+        <div class="pill-btn ${S.style==='modern'?'active':''}" data-style="modern" onclick="setStyle('modern',this)">Modern</div>
+        <div class="pill-btn ${S.style==='glass'?'active':''}" data-style="glass" onclick="setStyle('glass',this)">Glass</div>
+      </div>
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">◉</span> Farba</div>
+      <div class="cfg-row" id="color-row">${renderColorRow()}</div>
+    </div>
+    <div class="cfg-section" id="mode-section">
+      <div class="cfg-label"><span class="cfg-label-icon">◐</span> Režim</div>
+      <div class="toggle-wrap">
+        <div class="toggle-btn ${S.mode==='light'?'active':''}" onclick="setMode('light',this)">☀️ Light</div>
+        <div class="toggle-btn ${S.mode==='dark'?'active':''}" onclick="setMode('dark',this)">🌙 Dark</div>
+      </div>
+    </div>
+    <div class="cfg-section">
+      <div class="slider-row">
+        <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">⌀</span> Border radius</div>
+        <span class="cfg-slider-val" id="radius-val">${S.radius}px</span>
+      </div>
+      <input type="range" class="cfg-slider" min="0" max="30" value="${S.radius}" oninput="setRadius(this.value)">
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">⊡</span> Veľkosť</div>
+      <div class="cfg-row">
+        <div class="pill-btn ${S.size==='S'?'active':''}" data-size="S" onclick="setSize('S',this)">S — Malý</div>
+        <div class="pill-btn ${S.size==='M'?'active':''}" data-size="M" onclick="setSize('M',this)">M — Stredný</div>
+        <div class="pill-btn ${S.size==='L'?'active':''}" data-size="L" onclick="setSize('L',this)">L — Veľký</div>
+      </div>
+    </div>`,
+
+  'appearance-c2': () => `
+    <div class="cfg-group"><span>🎨</span> Vzhľad</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">◉</span> Farba</div>
+      <div class="cfg-row" id="color-row">${renderColorRow()}</div>
+    </div>
+    <div class="cfg-section" id="mode-section">
+      <div class="cfg-label"><span class="cfg-label-icon">◐</span> Režim</div>
+      <div class="toggle-wrap">
+        <div class="toggle-btn ${S.mode==='light'?'active':''}" onclick="setMode('light',this)">☀️ Light</div>
+        <div class="toggle-btn ${S.mode==='dark'?'active':''}" onclick="setMode('dark',this)">🌙 Dark</div>
+      </div>
+    </div>`,
+
+  'appearance-c4': () => `
+    <div class="cfg-group"><span>🎨</span> Vzhľad</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">◉</span> Farba</div>
+      <div class="cfg-row" id="color-row">${renderColorRow()}</div>
+    </div>
+    <div class="cfg-section">
+      <div class="slider-row">
+        <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">⌀</span> Border radius</div>
+        <span class="cfg-slider-val" id="radius-val">${S.radius}px</span>
+      </div>
+      <input type="range" class="cfg-slider" min="0" max="30" value="${S.radius}" oninput="setRadius(this.value)">
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">⊡</span> Veľkosť</div>
+      <div class="cfg-row">
+        <div class="pill-btn ${S.size==='S'?'active':''}" data-size="S" onclick="setSize('S',this)">S — Malý</div>
+        <div class="pill-btn ${S.size==='M'?'active':''}" data-size="M" onclick="setSize('M',this)">M — Stredný</div>
+        <div class="pill-btn ${S.size==='L'?'active':''}" data-size="L" onclick="setSize('L',this)">L — Veľký</div>
+      </div>
+    </div>`,
+
+  'position': () => `
+    <div class="cfg-group"><span>📍</span> Umiestnenie</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">⊕</span> Pozícia</div>
+      <div class="pos-grid">
+        <div class="pos-btn ${S.pos==='top-left'?'active':''}" data-pos="top-left" onclick="setPos(this)">↖ Hore<br>vľavo</div>
+        <div class="pos-btn hb"></div>
+        <div class="pos-btn ${S.pos==='top-right'?'active':''}" data-pos="top-right" onclick="setPos(this)">↗ Hore<br>vpravo</div>
+        <div class="pos-btn hb"></div><div class="pos-btn hb"></div><div class="pos-btn hb"></div>
+        <div class="pos-btn ${S.pos==='bottom-left'?'active':''}" data-pos="bottom-left" onclick="setPos(this)">↙ Dole<br>vľavo</div>
+        <div class="pos-btn hb"></div>
+        <div class="pos-btn ${S.pos==='bottom-right'?'active':''}" data-pos="bottom-right" onclick="setPos(this)">↘ Dole<br>vpravo</div>
+      </div>
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">↔</span> Odsadenie</div>
+      <div class="offset-tabs">
+        <div class="offset-tab active" onclick="setOffsetTab('desktop',this)">🖥 Desktop</div>
+        <div class="offset-tab" onclick="setOffsetTab('mobile',this)">📱 Mobile</div>
+      </div>
+      <div id="offset-desktop-fields"></div>
+      <div id="offset-mobile-fields" style="display:none"></div>
+    </div>`,
+
+  'position-c2': () => `
+    <div class="cfg-group"><span>📍</span> Umiestnenie</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">⊕</span> Pozícia lišty</div>
+      <div class="toggle-wrap">
+        <div class="toggle-btn ${S.barPos==='top'?'active':''}" onclick="setBarPos('top',this)">▲ Navrchu</div>
+        <div class="toggle-btn ${S.barPos==='bottom'?'active':''}" onclick="setBarPos('bottom',this)">▼ Dole</div>
+      </div>
+    </div>`,
+
+  'content': () => `
+    <div class="cfg-group"><span>💬</span> Obsah</div>
+    <div class="cfg-section">${renderLangSection()}</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Texty tlačidiel</div>
+      <span class="cfg-input-label">Napísať recenziu</span>
+      <input id="inp-write" class="cfg-input" type="text" value="${S.ctaWrite}" oninput="S.ctaWrite=this.value;updateTexts()">
+      <span class="cfg-input-label">Zobraziť všetky</span>
+      <input id="inp-all" class="cfg-input" type="text" value="${S.ctaAll}" oninput="S.ctaAll=this.value;updateTexts()">
+    </div>`,
+
+  'content-c1': () => `
+    <div class="cfg-group"><span>💬</span> Obsah</div>
+    <div class="cfg-section">${renderLangSection()}</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Text tlačidla</div>
+      <input id="inp-write" class="cfg-input" type="text" value="${S.ctaWrite}" oninput="S.ctaWrite=this.value">
+    </div>`,
+
+  'content-c2': () => `
+    <div class="cfg-group"><span>💬</span> Obsah</div>
+    <div class="cfg-section">${renderLangSection()}</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Text lišty</div>
+      <input id="inp-bar" class="cfg-input" type="text" value="${S.barCustomText||''}" placeholder="${LANGS[S.lang].barText}" oninput="S.barCustomText=this.value">
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">✖</span> Zatvárateľná</div>
+      <div class="toggle-wrap">
+        <div class="toggle-btn ${S.barDismissible?'active':''}" onclick="setBarDismissible(true,this)">Áno</div>
+        <div class="toggle-btn ${!S.barDismissible?'active':''}" onclick="setBarDismissible(false,this)">Nie</div>
+      </div>
+    </div>`,
+
+  'content-c3': () => `
+    <div class="cfg-group"><span>💬</span> Obsah</div>
+    <div class="cfg-section">${renderLangSection()}</div>`,
+
+  'content-c4': () => `
+    <div class="cfg-group"><span>💬</span> Obsah</div>
+    <div class="cfg-section">${renderLangSection()}</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Text tlačidla</div>
+      <input id="inp-cta" class="cfg-input" type="text" value="${S.ctaWrite}" oninput="S.ctaWrite=this.value">
+    </div>`,
+
+  'reviews-logic': () => `
+    <div class="cfg-group"><span>🔧</span> Logika recenzií</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">⭐</span> Minimálne hodnotenie</div>
+      <div class="cfg-row">
+        <div class="pill-btn ${S.minRating===0?'active':''}" data-minrating="0" onclick="setMinRating(0,this)">Všetky</div>
+        <div class="pill-btn ${S.minRating===4?'active':''}" data-minrating="4" onclick="setMinRating(4,this)">4★ a viac</div>
+        <div class="pill-btn ${S.minRating===5?'active':''}" data-minrating="5" onclick="setMinRating(5,this)">Len 5★</div>
+      </div>
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">#</span> Počet recenzií</div>
+      <div class="cfg-row">
+        <div class="pill-btn ${S.reviewCount===3?'active':''}" data-count="3" onclick="setReviewCount(3,this)">3 <span style="opacity:.55;font-size:9px">lite</span></div>
+        <div class="pill-btn ${S.reviewCount===5?'active':''}" data-count="5" onclick="setReviewCount(5,this)">5 <span style="opacity:.55;font-size:9px">default</span></div>
+        <div class="pill-btn ${S.reviewCount===10?'active':''}" data-count="10" onclick="setReviewCount(10,this)">10 <span style="opacity:.55;font-size:9px">pro</span></div>
+      </div>
+    </div>
+    <div class="cfg-section">
+      <div class="slider-row">
+        <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">✂</span> Dĺžka textu</div>
+        <span class="cfg-slider-val" id="textlen-val">${S.textLen} znakov</span>
+      </div>
+      <input type="range" class="cfg-slider" min="60" max="400" value="${S.textLen}" step="10" oninput="setTextLen(this.value)">
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">📅</span> Dátum recenzie</div>
+      <div class="toggle-wrap">
+        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}" onclick="setDateFormat('relative',this)">Relatívny</div>
+        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}" onclick="setDateFormat('absolute',this)">Presný dátum</div>
+      </div>
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">🗣</span> Odpoveď majiteľa</div>
+      <div class="toggle-wrap">
+        <div class="toggle-btn ${S.ownerReply==='show'?'active':''}" onclick="setOwnerReply('show',this)">Zobraziť</div>
+        <div class="toggle-btn ${S.ownerReply==='hide'?'active':''}" onclick="setOwnerReply('hide',this)">Skryť</div>
+      </div>
+    </div>`,
+
+  'reviews-logic-c1': () => `
+    <div class="cfg-group"><span>🔧</span> Logika recenzií</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">⭐</span> Minimálne hodnotenie</div>
+      <div class="cfg-row">
+        <div class="pill-btn ${S.minRating===0?'active':''}" data-minrating="0" onclick="setMinRating(0,this)">Všetky</div>
+        <div class="pill-btn ${S.minRating===4?'active':''}" data-minrating="4" onclick="setMinRating(4,this)">4★ a viac</div>
+        <div class="pill-btn ${S.minRating===5?'active':''}" data-minrating="5" onclick="setMinRating(5,this)">Len 5★</div>
+      </div>
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">#</span> Počet (karty)</div>
+      <div class="cfg-row">
+        <div class="pill-btn ${S.reviewCount===3?'active':''}" data-count="3" onclick="setReviewCount(3,this)">3</div>
+        <div class="pill-btn ${S.reviewCount===5?'active':''}" data-count="5" onclick="setReviewCount(5,this)">5</div>
+        <div class="pill-btn ${S.reviewCount===8?'active':''}" data-count="8" onclick="setReviewCount(8,this)">8</div>
+      </div>
+    </div>
+    <div class="cfg-section">
+      <div class="slider-row">
+        <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">✂</span> Dĺžka textu</div>
+        <span class="cfg-slider-val" id="textlen-val">${S.textLen} znakov</span>
+      </div>
+      <input type="range" class="cfg-slider" min="60" max="300" value="${S.textLen}" step="10" oninput="setTextLen(this.value)">
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">📅</span> Dátum recenzie</div>
+      <div class="toggle-wrap">
+        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}" onclick="setDateFormat('relative',this)">Relatívny</div>
+        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}" onclick="setDateFormat('absolute',this)">Presný dátum</div>
+      </div>
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">🗣</span> Odpoveď majiteľa</div>
+      <div class="toggle-wrap">
+        <div class="toggle-btn ${S.ownerReply==='show'?'active':''}" onclick="setOwnerReply('show',this)">Zobraziť</div>
+        <div class="toggle-btn ${S.ownerReply==='hide'?'active':''}" onclick="setOwnerReply('hide',this)">Skryť</div>
+      </div>
+    </div>`,
+
+  'display': () => `
+    <div class="cfg-group"><span>👁</span> Zobrazenie</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">📊</span> Doplnky</div>
+      <label class="chk-single"><input type="checkbox" ${S.showCount?'checked':''} onchange="S.showCount=this.checked;buildBadge();"><span>Zobraziť počet recenzií</span></label>
+      <div class="cfg-label" style="margin-top:10px"><span class="cfg-label-icon">📺</span> Zobraziť na zariadeniach</div>
+      <label class="chk-single"><input type="checkbox" ${S.devDesktop?'checked':''} onchange="S.devDesktop=this.checked"><span>🖥 Počítač</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devTablet?'checked':''} onchange="S.devTablet=this.checked"><span>⬜ Tablet</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devMobile?'checked':''} onchange="S.devMobile=this.checked"><span>📱 Mobil</span></label>
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">📄</span> Zobraziť na stránkach</div>
+      ${renderPagesGrid()}
+    </div>`,
+
+  'display-devices': () => `
+    <div class="cfg-group"><span>👁</span> Zobrazenie</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">📺</span> Zobraziť na zariadeniach</div>
+      <label class="chk-single"><input type="checkbox" ${S.devDesktop?'checked':''} onchange="S.devDesktop=this.checked"><span>🖥 Počítač</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devTablet?'checked':''} onchange="S.devTablet=this.checked"><span>⬜ Tablet</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devMobile?'checked':''} onchange="S.devMobile=this.checked"><span>📱 Mobil</span></label>
+    </div>`,
+
+  'display-pages': () => `
+    <div class="cfg-group"><span>👁</span> Zobrazenie</div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">📺</span> Zobraziť na zariadeniach</div>
+      <label class="chk-single"><input type="checkbox" ${S.devDesktop?'checked':''} onchange="S.devDesktop=this.checked"><span>🖥 Počítač</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devTablet?'checked':''} onchange="S.devTablet=this.checked"><span>⬜ Tablet</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devMobile?'checked':''} onchange="S.devMobile=this.checked"><span>📱 Mobil</span></label>
+    </div>
+    <div class="cfg-section">
+      <div class="cfg-label"><span class="cfg-label-icon">📄</span> Zobraziť na stránkach</div>
+      ${renderPagesGrid()}
+    </div>`
+};
+
+function renderColorRow(){
+  const colors=['#4285F4','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#111827'];
+  return colors.map(c=>`<div class="color-swatch ${S.accent===c?'active':''}" style="background:${c}" data-color="${c}" onclick="setColor(this)"></div>`).join('')
+    + `<div class="color-custom">+<input type="color" value="${S.accent}" oninput="setColorHex(this.value)"></div>`;
+}
+
+function renderLangSection(){
+  const langs=[
+    ['sk','🇸🇰 Slovenčina'],['cz','🇨🇿 Čeština'],['en','🇬🇧 English'],['de','🇩🇪 Deutsch'],
+    ['hu','🇭🇺 Magyar'],['ro','🇷🇴 Română'],['pl','🇵🇱 Polski'],['it','🇮🇹 Italiano']
+  ];
+  return `<div class="cfg-label"><span class="cfg-label-icon">🌍</span> Jazyk widgetu</div>
+    <div class="lang-grid">${langs.map(([v,l])=>`<label class="lang-opt"><input type="radio" name="lang" value="${v}" ${S.lang===v?'checked':''} onchange="setLang(this.value)"><span>${l}</span></label>`).join('')}</div>`;
+}
+
+function renderPagesGrid(){
+  const pages=['Homepage','Kategórie','Detail produktu','Články','Košík','Doprava &amp; platba','Objednávka','Ďakovná str.'];
+  return `<div class="chk-grid">${pages.map(p=>`<label class="chk-item"><input type="checkbox" checked><span>${p}</span></label>`).join('')}</div>`;
+}
+
+// ── SWITCH TYPE ───────────────────────────────────────────────────────────────
+function switchType(type, el) {
+  S.widgetType = type;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+
+  // Show/hide combine section (not for c0)
+  const combineSection = document.getElementById('combine-section');
+  if (type !== 'c0') {
+    combineSection.style.display = 'block';
+    const opts = Object.entries(COMBINE_LABELS)
+      .filter(([k]) => k !== type)
+      .map(([k,l]) => `<label class="chk-single"><input type="checkbox" ${(S.combine||[]).includes(k)?'checked':''} onchange="toggleCombine('${k}',this.checked)"><span>${l}</span></label>`)
+      .join('');
+    document.getElementById('combine-options').innerHTML = opts;
+  } else {
+    combineSection.style.display = 'none';
+  }
+
+  // Render dynamic sections
+  const dyn = document.getElementById('cfg-dynamic');
+  dyn.innerHTML = WIDGET_TYPES[type].sections.map(s => SECTIONS[s] ? SECTIONS[s]() : '').join('');
+
+  // Show correct preview
+  ['c0','c1','c2','c3','c4'].forEach(t => {
+    const el2 = document.getElementById(t === 'c0' ? 'gr-badge' : `preview-${t}`);
+    const panel = document.getElementById('gr-panel');
+    if (t === 'c0') {
+      if (el2) el2.style.display = type === 'c0' ? '' : 'none';
+      if (panel) panel.style.display = type === 'c0' ? '' : 'none';
+    } else {
+      if (el2) el2.style.display = type === t ? 'flex' : 'none';
+    }
+  });
+
+  // Re-init position fields if c0
+  if (type === 'c0') {
+    buildOffsetFields();
+    applyTheme();
+    buildBadge();
+    applyPosition();
+  } else {
+    applyTheme();
+  }
+
+  updatePreviewLabel();
+}
+
+function toggleCombine(type, checked) {
+  if (!S.combine) S.combine = [];
+  if (checked) { if (!S.combine.includes(type)) S.combine.push(type); }
+  else { S.combine = S.combine.filter(t => t !== type); }
+}
+
+function updatePreviewLabel() {
+  const typeLabel = WIDGET_TYPES[S.widgetType].label;
+  const posL = {"bottom-right":"Dole vpravo","bottom-left":"Dole vľavo","top-right":"Hore vpravo","top-left":"Hore vľavo"};
+  const modeLabel = S.mode === 'dark' ? ' · Dark' : ' · Light';
+  document.getElementById('preview-dot').style.background = S.accent;
+  document.getElementById('preview-dot').style.boxShadow = `0 0 8px ${S.accent}`;
+  let label = typeLabel + modeLabel;
+  if (S.widgetType === 'c0') label += ` · ${S.size} · ${posL[S.pos]}`;
+  document.getElementById('preview-text').textContent = label;
+}
+
+// ── THEMES ───────────────────────────────────────────────────────────────────
 const THEMES={
   classic:{
-    light:{
-      "--gr-bg":"#fff","--gr-border-style":"1.5px solid #e5e7eb","--gr-border-raw":"#e5e7eb","--gr-logo-bg":"#f3f4f6","--gr-text":"#111","--gr-text-muted":"#6b7280","--gr-text-body":"#4b5563","--gr-divider":"#f3f4f6","--gr-chip":"#f9fafb","--gr-score-color":"#111","--gr-panel-header-bg":"transparent","--gr-review-hover":"#fafafa","--gr-close-bg":"#f9fafb","--gr-close-border":"#e5e7eb","--gr-close-icon":"#6b7280","--gr-close-blur":"none","--gr-btn-outline-bg":"#f9fafb","--gr-btn-outline-border":"#e5e7eb","--gr-btn-outline-color":"#374151","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"none","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.10)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.16)","--gr-blur":"none","--gr-blur-hover":"none","--gr-avatar-radius":"50%","--gr-panel-border-radius":"14px"
-    },
-    dark:{
-      "--gr-bg":"#1f2937","--gr-border-style":"1.5px solid #374151","--gr-border-raw":"#374151","--gr-logo-bg":"#374151","--gr-text":"#f9fafb","--gr-text-muted":"#9ca3af","--gr-text-body":"#d1d5db","--gr-divider":"#374151","--gr-chip":"#374151","--gr-score-color":"#f9fafb","--gr-panel-header-bg":"transparent","--gr-review-hover":"#374151","--gr-close-bg":"#374151","--gr-close-border":"#4b5563","--gr-close-icon":"#9ca3af","--gr-close-blur":"none","--gr-btn-outline-bg":"#374151","--gr-btn-outline-border":"#4b5563","--gr-btn-outline-color":"#f9fafb","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"none","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.4)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.55)","--gr-blur":"none","--gr-blur-hover":"none","--gr-avatar-radius":"50%","--gr-panel-border-radius":"14px"
-    }
+    light:{"--gr-bg":"#fff","--gr-border-style":"1.5px solid #e5e7eb","--gr-border-raw":"#e5e7eb","--gr-logo-bg":"#f3f4f6","--gr-text":"#111","--gr-text-muted":"#6b7280","--gr-text-body":"#4b5563","--gr-divider":"#f3f4f6","--gr-chip":"#f9fafb","--gr-score-color":"#111","--gr-panel-header-bg":"transparent","--gr-review-hover":"#fafafa","--gr-close-bg":"#f9fafb","--gr-close-border":"#e5e7eb","--gr-close-icon":"#6b7280","--gr-close-blur":"none","--gr-btn-outline-bg":"#f9fafb","--gr-btn-outline-border":"#e5e7eb","--gr-btn-outline-color":"#374151","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"none","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.10)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.16)","--gr-blur":"none","--gr-blur-hover":"none","--gr-avatar-radius":"50%","--gr-panel-border-radius":"14px"},
+    dark:{"--gr-bg":"#1f2937","--gr-border-style":"1.5px solid #374151","--gr-border-raw":"#374151","--gr-logo-bg":"#374151","--gr-text":"#f9fafb","--gr-text-muted":"#9ca3af","--gr-text-body":"#d1d5db","--gr-divider":"#374151","--gr-chip":"#374151","--gr-score-color":"#f9fafb","--gr-panel-header-bg":"transparent","--gr-review-hover":"#374151","--gr-close-bg":"#374151","--gr-close-border":"#4b5563","--gr-close-icon":"#9ca3af","--gr-close-blur":"none","--gr-btn-outline-bg":"#374151","--gr-btn-outline-border":"#4b5563","--gr-btn-outline-color":"#f9fafb","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"none","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.4)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.55)","--gr-blur":"none","--gr-blur-hover":"none","--gr-avatar-radius":"50%","--gr-panel-border-radius":"14px"}
   },
   modern:{
-    light:{
-      "--gr-bg":"#ffffff",
-      "--gr-border-style":"none",
-      "--gr-border-raw":"transparent",
-      "--gr-logo-bg":"MODERN_LOGO_BG",
-      "--gr-text":"#0f172a",
-      "--gr-text-muted":"#64748b",
-      "--gr-text-body":"#475569",
-      "--gr-divider":"transparent",
-      "--gr-chip":"#f8fafc",
-      "--gr-score-color":"ACCENT",
-      "--gr-panel-header-bg":"MODERN_HEADER_BG_L",
-      "--gr-review-hover":"MODERN_L_HOVER",
-      "--gr-close-bg":"rgba(255,255,255,0.70)",
-      "--gr-close-border":"MODERN_CLOSE_BORDER",
-      "--gr-close-icon":"ACCENT",
-      "--gr-close-blur":"none",
-      "--gr-btn-outline-bg":"#f8fafc",
-      "--gr-btn-outline-border":"MODERN_BTN_OL_BORDER",
-      "--gr-btn-outline-color":"#0f172a",
-      "--gr-btn-outline-shadow":"none",
-      "--gr-btn-outline-blur":"none",
-      "--gr-btn-primary-shadow":"MODERN_BTN_P_SHADOW",
-      "--gr-badge-shadow":"MODERN_L_S",
-      "--gr-badge-shadow-hover":"MODERN_L_SH",
-      "--gr-blur":"none",
-      "--gr-blur-hover":"none",
-      "--gr-avatar-radius":"8px",
-      "--gr-panel-border-radius":"20px"
-    },
-    dark:{
-      "--gr-bg":"#020617",
-      "--gr-border-style":"none",
-      "--gr-border-raw":"transparent",
-      "--gr-logo-bg":"MODERN_LOGO_BG",
-      "--gr-text":"#e2e8f0",
-      "--gr-text-muted":"#64748b",
-      "--gr-text-body":"#94a3b8",
-      "--gr-divider":"transparent",
-      "--gr-chip":"#0f172a",
-      "--gr-score-color":"ACCENT",
-      "--gr-panel-header-bg":"MODERN_HEADER_BG_D",
-      "--gr-review-hover":"MODERN_D_HOVER",
-      "--gr-close-bg":"rgba(255,255,255,0.06)",
-      "--gr-close-border":"MODERN_CLOSE_BORDER",
-      "--gr-close-icon":"ACCENT",
-      "--gr-close-blur":"none",
-      "--gr-btn-outline-bg":"rgba(255,255,255,0.04)",
-      "--gr-btn-outline-border":"MODERN_BTN_OL_BORDER",
-      "--gr-btn-outline-color":"#e2e8f0",
-      "--gr-btn-outline-shadow":"none",
-      "--gr-btn-outline-blur":"none",
-      "--gr-btn-primary-shadow":"MODERN_BTN_P_SHADOW",
-      "--gr-badge-shadow":"MODERN_D_S",
-      "--gr-badge-shadow-hover":"MODERN_D_SH",
-      "--gr-blur":"none",
-      "--gr-blur-hover":"none",
-      "--gr-avatar-radius":"8px",
-      "--gr-panel-border-radius":"20px"
-    }
+    light:{"--gr-bg":"#ffffff","--gr-border-style":"none","--gr-border-raw":"transparent","--gr-logo-bg":"MODERN_LOGO_BG","--gr-text":"#0f172a","--gr-text-muted":"#64748b","--gr-text-body":"#475569","--gr-divider":"transparent","--gr-chip":"#f8fafc","--gr-score-color":"ACCENT","--gr-panel-header-bg":"MODERN_HEADER_BG_L","--gr-review-hover":"MODERN_L_HOVER","--gr-close-bg":"rgba(255,255,255,0.70)","--gr-close-border":"MODERN_CLOSE_BORDER","--gr-close-icon":"ACCENT","--gr-close-blur":"none","--gr-btn-outline-bg":"#f8fafc","--gr-btn-outline-border":"MODERN_BTN_OL_BORDER","--gr-btn-outline-color":"#0f172a","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"MODERN_BTN_P_SHADOW","--gr-badge-shadow":"MODERN_L_S","--gr-badge-shadow-hover":"MODERN_L_SH","--gr-blur":"none","--gr-blur-hover":"none","--gr-avatar-radius":"8px","--gr-panel-border-radius":"20px"},
+    dark:{"--gr-bg":"#020617","--gr-border-style":"none","--gr-border-raw":"transparent","--gr-logo-bg":"MODERN_LOGO_BG","--gr-text":"#e2e8f0","--gr-text-muted":"#64748b","--gr-text-body":"#94a3b8","--gr-divider":"transparent","--gr-chip":"#0f172a","--gr-score-color":"ACCENT","--gr-panel-header-bg":"MODERN_HEADER_BG_D","--gr-review-hover":"MODERN_D_HOVER","--gr-close-bg":"rgba(255,255,255,0.06)","--gr-close-border":"MODERN_CLOSE_BORDER","--gr-close-icon":"ACCENT","--gr-close-blur":"none","--gr-btn-outline-bg":"rgba(255,255,255,0.04)","--gr-btn-outline-border":"MODERN_BTN_OL_BORDER","--gr-btn-outline-color":"#e2e8f0","--gr-btn-outline-shadow":"none","--gr-btn-outline-blur":"none","--gr-btn-primary-shadow":"MODERN_BTN_P_SHADOW","--gr-badge-shadow":"MODERN_D_S","--gr-badge-shadow-hover":"MODERN_D_SH","--gr-blur":"none","--gr-blur-hover":"none","--gr-avatar-radius":"8px","--gr-panel-border-radius":"20px"}
   },
   glass:{
-    light:{
-      "--gr-bg":"rgba(255,255,255,0.45)",
-      "--gr-border-style":"1px solid rgba(255,255,255,0.60)",
-      "--gr-border-raw":"rgba(255,255,255,0.60)",
-      "--gr-logo-bg":"rgba(255,255,255,0.50)",
-      "--gr-text":"#0f172a",
-      "--gr-text-muted":"#64748b",
-      "--gr-text-body":"#334155",
-      "--gr-divider":"rgba(15,23,42,0.08)",
-      "--gr-chip":"rgba(15,23,42,0.05)",
-      "--gr-score-color":"#0f172a",
-      "--gr-panel-header-bg":"rgba(255,255,255,0.30)",
-      "--gr-review-hover":"rgba(15,23,42,0.04)",
-      "--gr-close-bg":"rgba(255,255,255,0.50)",
-      "--gr-close-border":"rgba(15,23,42,0.12)",
-      "--gr-close-icon":"#64748b",
-      "--gr-close-blur":"blur(10px)",
-      "--gr-btn-outline-bg":"rgba(255,255,255,0.40)",
-      "--gr-btn-outline-border":"rgba(15,23,42,0.15)",
-      "--gr-btn-outline-color":"#0f172a",
-      "--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.80)",
-      "--gr-btn-outline-blur":"blur(10px)",
-      "--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW",
-      "--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.80) inset",
-      "--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.18), 0 1px 0 rgba(255,255,255,0.90) inset",
-      "--gr-blur":"blur(20px)",
-      "--gr-blur-hover":"blur(24px)",
-      "--gr-avatar-radius":"50%",
-      "--gr-panel-border-radius":"14px"
-    },
-    dark:{
-      "--gr-bg":"rgba(0,0,0,0.20)","--gr-border-style":"1px solid rgba(255,255,255,0.15)","--gr-border-raw":"rgba(255,255,255,0.15)","--gr-logo-bg":"rgba(255,255,255,0.10)","--gr-text":"#ffffff","--gr-text-muted":"rgba(255,255,255,0.60)","--gr-text-body":"rgba(255,255,255,0.75)","--gr-divider":"rgba(255,255,255,0.10)","--gr-chip":"rgba(255,255,255,0.07)","--gr-score-color":"#ffffff","--gr-panel-header-bg":"rgba(0,0,0,0.10)","--gr-review-hover":"rgba(255,255,255,0.06)","--gr-close-bg":"rgba(255,255,255,0.12)","--gr-close-border":"rgba(255,255,255,0.18)","--gr-close-icon":"rgba(255,255,255,0.70)","--gr-close-blur":"blur(10px)","--gr-btn-outline-bg":"rgba(255,255,255,0.08)","--gr-btn-outline-border":"rgba(255,255,255,0.18)","--gr-btn-outline-color":"#ffffff","--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.15)","--gr-btn-outline-blur":"blur(10px)","--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW","--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.12) inset","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.15) inset","--gr-blur":"blur(20px)","--gr-blur-hover":"blur(24px)","--gr-avatar-radius":"50%","--gr-panel-border-radius":"14px"
-    }
+    light:{"--gr-bg":"rgba(255,255,255,0.45)","--gr-border-style":"1px solid rgba(255,255,255,0.60)","--gr-border-raw":"rgba(255,255,255,0.60)","--gr-logo-bg":"rgba(255,255,255,0.50)","--gr-text":"#0f172a","--gr-text-muted":"#64748b","--gr-text-body":"#334155","--gr-divider":"rgba(15,23,42,0.08)","--gr-chip":"rgba(15,23,42,0.05)","--gr-score-color":"#0f172a","--gr-panel-header-bg":"rgba(255,255,255,0.30)","--gr-review-hover":"rgba(15,23,42,0.04)","--gr-close-bg":"rgba(255,255,255,0.50)","--gr-close-border":"rgba(15,23,42,0.12)","--gr-close-icon":"#64748b","--gr-close-blur":"blur(10px)","--gr-btn-outline-bg":"rgba(255,255,255,0.40)","--gr-btn-outline-border":"rgba(15,23,42,0.15)","--gr-btn-outline-color":"#0f172a","--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.80)","--gr-btn-outline-blur":"blur(10px)","--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW","--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.80) inset","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.18), 0 1px 0 rgba(255,255,255,0.90) inset","--gr-blur":"blur(20px)","--gr-blur-hover":"blur(24px)","--gr-avatar-radius":"50%","--gr-panel-border-radius":"14px"},
+    dark:{"--gr-bg":"rgba(0,0,0,0.20)","--gr-border-style":"1px solid rgba(255,255,255,0.15)","--gr-border-raw":"rgba(255,255,255,0.15)","--gr-logo-bg":"rgba(255,255,255,0.10)","--gr-text":"#ffffff","--gr-text-muted":"rgba(255,255,255,0.60)","--gr-text-body":"rgba(255,255,255,0.75)","--gr-divider":"rgba(255,255,255,0.10)","--gr-chip":"rgba(255,255,255,0.07)","--gr-score-color":"#ffffff","--gr-panel-header-bg":"rgba(0,0,0,0.10)","--gr-review-hover":"rgba(255,255,255,0.06)","--gr-close-bg":"rgba(255,255,255,0.12)","--gr-close-border":"rgba(255,255,255,0.18)","--gr-close-icon":"rgba(255,255,255,0.70)","--gr-close-blur":"blur(10px)","--gr-btn-outline-bg":"rgba(255,255,255,0.08)","--gr-btn-outline-border":"rgba(255,255,255,0.18)","--gr-btn-outline-color":"#ffffff","--gr-btn-outline-shadow":"inset 0 1px 0 rgba(255,255,255,0.15)","--gr-btn-outline-blur":"blur(10px)","--gr-btn-primary-shadow":"GLASS_BTN_P_SHADOW","--gr-badge-shadow":"0 4px 24px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.12) inset","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.15) inset","--gr-blur":"blur(20px)","--gr-blur-hover":"blur(24px)","--gr-avatar-radius":"50%","--gr-panel-border-radius":"14px"}
   }
 };
 
@@ -137,11 +430,14 @@ const SIZES={S:.82,M:1,L:1.22};
 const GAP=10;
 let panelOpen=false,currentDevice='desktop',activeOffsetTab='desktop';
 let S={
+  widgetType:'c0',
+  combine:[],
   style:'classic',accent:'#4285F4',mode:'light',radius:14,size:'M',pos:'bottom-right',
   offsetDesktop:{bottom:28,right:28},offsetMobile:{bottom:16,right:16},
   lang:'sk',ctaWrite:'Napísať recenziu',ctaAll:'Všetky recenzie',
   showCount:true,devDesktop:true,devTablet:true,devMobile:true,
-  minRating:0,reviewCount:5,textLen:150,dateFormat:'relative',ownerReply:'show'
+  minRating:0,reviewCount:5,textLen:150,dateFormat:'relative',ownerReply:'show',
+  barPos:'top',barDismissible:true,barCustomText:''
 };
 
 function isTop(){return S.pos.startsWith('top');}
@@ -172,25 +468,19 @@ function resolveTokens(vars){
 
 function applyTheme(){
   const root=document.documentElement;
-  const themeSet=THEMES[S.style];
+  const themeSet=THEMES[S.style]||THEMES.classic;
   const raw=themeSet[S.mode]||themeSet.light;
   const vars=resolveTokens(raw);
   for(const [k,v] of Object.entries(vars)) root.style.setProperty(k,v);
   root.style.setProperty('--accent',S.accent);
   root.style.setProperty('--radius',S.radius+'px');
-  // Modern-specific panel class
   const panel=document.getElementById('gr-panel');
   panel.classList.toggle('modern-panel', S.style==='modern');
   panel.classList.toggle('modern-dark', S.style==='modern' && S.mode==='dark');
-  document.getElementById('mode-section').style.display='block';
   const stage=document.getElementById('preview-stage');
   stage.classList.remove('glass-bg-light','glass-bg-dark');
   if(S.style==='glass') stage.classList.add(S.mode==='dark'?'glass-bg-dark':'glass-bg-light');
-  const posL={"bottom-right":"Dole vpravo","bottom-left":"Dole vľavo","top-right":"Hore vpravo","top-left":"Hore vľavo"};
-  const modeLabel=S.mode==='dark'?' · Dark':' · Light';
-  document.getElementById('preview-dot').style.background=S.accent;
-  document.getElementById('preview-dot').style.boxShadow=`0 0 8px ${S.accent}`;
-  document.getElementById('preview-text').textContent=`${S.style[0].toUpperCase()+S.style.slice(1)}${modeLabel} · ${S.size} · ${posL[S.pos]}`;
+  updatePreviewLabel();
 }
 
 function buildBadge(){
@@ -259,8 +549,10 @@ function buildOffsetFields(){
     else h+=`<p style="font-size:11px;color:#9ca3af;margin-top:8px">Tab je prichytený k hrane – horizontálny offset sa nenastavuje.</p>`;
     return h;
   }
-  document.getElementById('offset-desktop-fields').innerHTML=fields('offsetDesktop',S.offsetDesktop);
-  document.getElementById('offset-mobile-fields').innerHTML=fields('offsetMobile',S.offsetMobile);
+  const df=document.getElementById('offset-desktop-fields');
+  const mf=document.getElementById('offset-mobile-fields');
+  if(df) df.innerHTML=fields('offsetDesktop',S.offsetDesktop);
+  if(mf) mf.innerHTML=fields('offsetMobile',S.offsetMobile);
 }
 
 function setDevice(dev,el){
@@ -272,60 +564,50 @@ function setDevice(dev,el){
   frame.className=''; frame.style.display='none'; stage.classList.remove('device-mode');
   if(dev==='desktop'){ label.textContent='🖥 Desktop preview'; }
   else { frame.classList.add(dev==='mobile'?'mobile':'tablet','visible'); label.textContent=dev==='mobile'?'📱 Mobile preview':'⬜ Tablet preview'; stage.classList.add('device-mode'); }
-  applyPosition();
+  if(S.widgetType==='c0') applyPosition();
 }
 
 function updateTexts(){
-  document.getElementById('btn-write').textContent='✏️ '+S.ctaWrite;
-  document.getElementById('btn-all').textContent=S.ctaAll;
+  const bw=document.getElementById('btn-write');
+  const ba=document.getElementById('btn-all');
+  if(bw) bw.textContent='✏️ '+S.ctaWrite;
+  if(ba) ba.textContent=S.ctaAll;
 }
 
 function setLang(lang){
   S.lang=lang; const t=LANGS[lang];
   S.ctaWrite=t.writeReview; S.ctaAll=t.allReviews;
-  document.getElementById('inp-write').value=t.writeReview;
-  document.getElementById('inp-all').value=t.allReviews;
-  document.getElementById('panel-count').textContent=`· 47 ${t.reviews}`;
-  updateTexts(); buildBadge();
+  const iw=document.getElementById('inp-write'); if(iw) iw.value=t.writeReview;
+  const ia=document.getElementById('inp-all'); if(ia) ia.value=t.allReviews;
+  const pc=document.getElementById('panel-count'); if(pc) pc.textContent=`· 47 ${t.reviews}`;
+  updateTexts(); if(S.widgetType==='c0') buildBadge();
 }
 
-function setStyle(s,el){ document.querySelectorAll('[data-style]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.style=s; applyTheme(); buildBadge(); }
-function setColor(el){ document.querySelectorAll('.color-swatch').forEach(c=>c.classList.remove('active')); el.classList.add('active'); S.accent=el.dataset.color; applyTheme(); buildBadge(); }
-function setColorHex(v){ S.accent=v; applyTheme(); buildBadge(); }
+function setStyle(s,el){ document.querySelectorAll('[data-style]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.style=s; applyTheme(); if(S.widgetType==='c0') buildBadge(); }
+function setColor(el){ document.querySelectorAll('.color-swatch').forEach(c=>c.classList.remove('active')); el.classList.add('active'); S.accent=el.dataset.color; applyTheme(); if(S.widgetType==='c0') buildBadge(); }
+function setColorHex(v){ S.accent=v; applyTheme(); if(S.widgetType==='c0') buildBadge(); }
 function setMode(m,el){ document.querySelectorAll('#mode-section .toggle-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.mode=m; applyTheme(); }
-function setRadius(v){ S.radius=parseInt(v); document.getElementById('radius-val').textContent=v+'px'; applyTheme(); applyPosition(); }
-function setSize(s,el){ document.querySelectorAll('[data-size]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.size=s; applyTheme(); applyPosition(); }
-function setPos(el){ document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.pos=el.dataset.pos; const top=isTop(),left=isLeft(); S.offsetDesktop={[top?'top':'bottom']:top?100:28,...(top?{}:{[left?'left':'right']:28})}; S.offsetMobile={[top?'top':'bottom']:top?80:16,...(top?{}:{[left?'left':'right']:16})}; buildOffsetFields(); buildBadge(); applyPosition(); panelOpen=false; document.getElementById('gr-panel').classList.remove('open'); }
+function setRadius(v){ S.radius=parseInt(v); const rv=document.getElementById('radius-val'); if(rv) rv.textContent=v+'px'; applyTheme(); if(S.widgetType==='c0') applyPosition(); }
+function setSize(s,el){ document.querySelectorAll('[data-size]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.size=s; applyTheme(); if(S.widgetType==='c0') applyPosition(); }
+function setPos(el){ document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.pos=el.dataset.pos; const top=isTop(),left=isLeft(); S.offsetDesktop={[top?'top':'bottom']:top?100:28,...(top?{}:{[left?'left':'right']:28})}; S.offsetMobile={[top?'top':'bottom']:top?80:16,...(top?{}:{[left?'left':'right']:16})}; buildOffsetFields(); buildBadge(); applyPosition(); panelOpen=false; const gp=document.getElementById('gr-panel'); if(gp) gp.classList.remove('open'); }
 function setOffset(key,field,val){ S[key][field]=parseInt(val)||0; applyPosition(); }
-function setOffsetTab(tab,el){ activeOffsetTab=tab; document.querySelectorAll('.offset-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); document.getElementById('offset-desktop-fields').style.display=tab==='desktop'?'block':'none'; document.getElementById('offset-mobile-fields').style.display=tab==='mobile'?'block':'none'; }
-function togglePanel(){ panelOpen=!panelOpen; document.getElementById('gr-panel').classList.toggle('open',panelOpen); }
+function setOffsetTab(tab,el){ activeOffsetTab=tab; document.querySelectorAll('.offset-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); const df=document.getElementById('offset-desktop-fields'); const mf=document.getElementById('offset-mobile-fields'); if(df) df.style.display=tab==='desktop'?'block':'none'; if(mf) mf.style.display=tab==='mobile'?'block':'none'; }
+function setBarPos(pos,el){ S.barPos=pos; document.querySelectorAll('[onclick^="setBarPos"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }
+function setBarDismissible(val,el){ S.barDismissible=val; document.querySelectorAll('[onclick^="setBarDismissible"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }
+function togglePanel(){ panelOpen=!panelOpen; const gp=document.getElementById('gr-panel'); if(gp) gp.classList.toggle('open',panelOpen); }
 
-function setMinRating(val,el){
-  document.querySelectorAll('[data-minrating]').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active'); S.minRating=val; renderReviews();
-}
-function setReviewCount(val,el){
-  document.querySelectorAll('[data-count]').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active'); S.reviewCount=val; renderReviews();
-}
-function setTextLen(val){
-  S.textLen=parseInt(val);
-  document.getElementById('textlen-val').textContent=val+' znakov';
-  renderReviews();
-}
-function setDateFormat(fmt,el){
-  document.querySelectorAll('[onclick^="setDateFormat"]').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active'); S.dateFormat=fmt; renderReviews();
-}
-function setOwnerReply(val,el){
-  document.querySelectorAll('[onclick^="setOwnerReply"]').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active'); S.ownerReply=val; renderReviews();
-}
+function setMinRating(val,el){ document.querySelectorAll('[data-minrating]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.minRating=val; renderReviews(); }
+function setReviewCount(val,el){ document.querySelectorAll('[data-count]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.reviewCount=val; renderReviews(); }
+function setTextLen(val){ S.textLen=parseInt(val); const tv=document.getElementById('textlen-val'); if(tv) tv.textContent=val+' znakov'; renderReviews(); }
+function setDateFormat(fmt,el){ document.querySelectorAll('[onclick^="setDateFormat"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.dateFormat=fmt; renderReviews(); }
+function setOwnerReply(val,el){ document.querySelectorAll('[onclick^="setOwnerReply"]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.ownerReply=val; renderReviews(); }
 
 function renderReviews(){
   const MAX=S.textLen;
   const filtered=reviews.filter(rv=>rv.r>=S.minRating).slice(0,S.reviewCount);
-  document.getElementById('gr-reviews-list').innerHTML=filtered.map((rv,i)=>{
+  const list=document.getElementById('gr-reviews-list');
+  if(!list) return;
+  list.innerHTML=filtered.map((rv,i)=>{
     const long=rv.text.length>MAX;
     const short=long?rv.text.slice(0,MAX)+'...':rv.text;
     const dateStr=S.dateFormat==='absolute'?rv.absDate:rv.date;
@@ -345,6 +627,13 @@ function renderReviews(){
 function exp(i){ document.getElementById('s'+i).classList.add('hidden'); document.getElementById('f'+i).classList.add('visible'); }
 function col(i){ document.getElementById('s'+i).classList.remove('hidden'); document.getElementById('f'+i).classList.remove('visible'); }
 
+// ── INIT ─────────────────────────────────────────────────────────────────────
 document.getElementById('panel-stars').innerHTML=Array(5).fill(STAR(12)).join('');
-renderReviews(); buildBadge(); buildOffsetFields(); applyTheme(); applyPosition();
-window.addEventListener('resize',applyPosition);
+
+// Render initial dynamic sections for C0
+const dyn = document.getElementById('cfg-dynamic');
+dyn.innerHTML = WIDGET_TYPES['c0'].sections.map(s => SECTIONS[s] ? SECTIONS[s]() : '').join('');
+buildOffsetFields();
+
+renderReviews(); buildBadge(); applyTheme(); applyPosition();
+window.addEventListener('resize', applyPosition);
