@@ -1,6 +1,6 @@
-/* ══════════════════════════
+/* ══════════════════════════════
    RESET & ROOT
-══════════════════════════ */
+══════════════════════════════ */
 :root{ --accent:#4285F4; --radius:14px; }
 *{ margin:0; padding:0; box-sizing:border-box; }
 body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
@@ -17,25 +17,36 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   flex:1; display:flex; align-items:flex-start; justify-content:flex-start;
   padding:24px 32px 32px 0; position:relative;
 }
+
+/* Preview stage – základné */
 #preview-stage{
   position:relative; width:100%; height:calc(100vh - 64px);
   max-width:1200px; margin-left:0; border-radius:0 32px 32px 0;
-  background:#f9fafb; box-shadow:0 18px 60px rgba(15,23,42,.12); overflow:hidden;
-  transition: background 0.3s ease;
+  background:#f9fafb;
+  box-shadow:0 18px 60px rgba(15,23,42,.12);
+  overflow:hidden;
+  transition: background 0.4s ease;
 }
-/* Glass preview – farebné pozadie aby blur bol viditeľný */
-#preview-stage.glass-preview-light{
-  background: linear-gradient(135deg,
-    #e0f2fe 0%, #f0f9ff 18%,
-    #fdf4ff 36%, #fce7f3 52%,
-    #ecfdf5 68%, #fffbeb 84%,
-    #eff6ff 100%);
+
+/* ── GLASS PREVIEW BACKGROUNDS ──
+   Farebné pozadie je nevyhnutné aby backdrop-filter blur mal čo rozmazávať.
+   Tieto triedy pridáva/odoberá JS podľa style+mode.
+*/
+#preview-stage.glass-bg-light{
+  background:
+    radial-gradient(ellipse at 15% 40%, rgba(99,102,241,0.28) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 20%, rgba(236,72,153,0.22) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 80%, rgba(16,185,129,0.20) 0%, transparent 45%),
+    radial-gradient(ellipse at 70% 60%, rgba(245,158,11,0.18) 0%, transparent 40%),
+    #e8eaf6;
 }
-#preview-stage.glass-preview-dark{
-  background: radial-gradient(ellipse at 20% 50%, rgba(99,102,241,0.35) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 20%, rgba(236,72,153,0.25) 0%, transparent 50%),
-    radial-gradient(ellipse at 60% 80%, rgba(16,185,129,0.2) 0%, transparent 50%),
-    #0a0a0f;
+#preview-stage.glass-bg-dark{
+  background:
+    radial-gradient(ellipse at 15% 45%, rgba(99,102,241,0.45) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 15%, rgba(236,72,153,0.35) 0%, transparent 45%),
+    radial-gradient(ellipse at 55% 80%, rgba(16,185,129,0.30) 0%, transparent 45%),
+    radial-gradient(ellipse at 75% 55%, rgba(245,158,11,0.25) 0%, transparent 40%),
+    #060818;
 }
 
 #preview-inner{
@@ -51,21 +62,24 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 .tip-card h3 span{ font-size:13px; }
 .tip-card p{ font-size:12px; color:#6b7280; line-height:1.55; }
 
-/* Glass preview – tip cards sa prispôsobia */
-.glass-preview-light .tip-card,
-.glass-preview-dark .tip-card{
-  background:rgba(255,255,255,0.55);
-  backdrop-filter:blur(12px);
-  border-color:rgba(255,255,255,0.7);
+/* Tip cards v glass mode */
+.glass-bg-light .tip-card{
+  background:rgba(255,255,255,0.45);
+  backdrop-filter:blur(10px) saturate(1.5);
+  -webkit-backdrop-filter:blur(10px) saturate(1.5);
+  border-color:rgba(255,255,255,0.65);
+  color:#1d1d1f;
 }
-.glass-preview-dark .tip-card{
+.glass-bg-dark .tip-card{
   background:rgba(255,255,255,0.07);
+  backdrop-filter:blur(10px) saturate(1.4);
+  -webkit-backdrop-filter:blur(10px) saturate(1.4);
   border-color:rgba(255,255,255,0.12);
 }
-.glass-preview-dark .tip-card h3,
-.glass-preview-dark .preview-copy h1{ color:#f5f5f7; }
-.glass-preview-dark .tip-card p,
-.glass-preview-dark .preview-copy p.lead{ color:#98989d; }
+.glass-bg-dark .tip-card h3,
+.glass-bg-dark .preview-copy h1{ color:#f5f5f7; }
+.glass-bg-dark .tip-card p,
+.glass-bg-dark .preview-copy p.lead{ color:#98989d; }
 
 /* Device label */
 #device-label{
@@ -93,9 +107,9 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 .device-mode #preview-inner{ padding:18px 22px 22px 32px; }
 .device-mode .tip-grid{ max-width:420px; }
 
-/* ══════════════════════════
+/* ══════════════════════════════
    CONFIG PANEL
-══════════════════════════ */
+══════════════════════════════ */
 .cfg-head{
   padding:18px 20px 14px; background:linear-gradient(135deg,#1e293b 0%,#334155 100%);
   position:sticky; top:0; z-index:20;
@@ -175,29 +189,28 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 .chk-single span{ font-size:11px; font-weight:600; color:#374151; }
 .chk-single:has(input:checked){ background:#f0f7ff; border-color:var(--accent); }
 
-/* ══════════════════════════
+/* ══════════════════════════════
    WIDGET BADGE
-══════════════════════════ */
+══════════════════════════════ */
 #gr-badge{
-  cursor:pointer; user-select:none; position:fixed; z-index:9999;
-  transition:box-shadow .25s ease, transform .25s ease, backdrop-filter .25s ease;
-  /* backdrop-filter sa aplikuje cez --gr-blur CSS var */
+  cursor:pointer; user-select:none;
+  /* Pozícia je absolute vnútri #preview-stage */
+  position:absolute; z-index:200;
+  transition:box-shadow .25s ease, transform .25s ease;
+  /* Backdrop filter – kľúčové pre glass */
   backdrop-filter: var(--gr-blur, none);
   -webkit-backdrop-filter: var(--gr-blur, none);
 }
 .gr-logo-wrap{
-  border-radius:50%!important;
+  border-radius:50% !important;
   background:var(--gr-logo-bg,#f3f4f6);
   display:flex; align-items:center; justify-content:center; flex-shrink:0;
-  /* glass logo wrap blur */
-  backdrop-filter: var(--gr-logo-blur, none);
-  -webkit-backdrop-filter: var(--gr-logo-blur, none);
 }
 
 /* HORIZ badge */
 #gr-badge.horiz{
   display:flex; align-items:center; gap:10px; padding:9px 16px 9px 9px;
-  border-radius:var(--gr-badge-radius, var(--radius));
+  border-radius:var(--radius);
   background:var(--gr-bg,#fff);
   border:var(--gr-border-style,1.5px solid #e5e7eb);
   box-shadow:var(--gr-badge-shadow,0 4px 20px rgba(0,0,0,.10));
@@ -241,11 +254,11 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 #gr-badge.vert .gr-logo-wrap{ width:26px; height:26px; margin-top:1px; }
 #gr-badge.vert .gr-logo-wrap svg{ width:16px; height:16px; }
 
-/* ══════════════════════════
+/* ══════════════════════════════
    PANEL
-══════════════════════════ */
+══════════════════════════════ */
 #gr-panel{
-  position:fixed; width:356px; max-height:530px; z-index:9998;
+  position:absolute; width:356px; max-height:530px; z-index:201;
   display:flex; flex-direction:column; overflow:hidden;
   opacity:0; transform:scale(.96); pointer-events:none;
   transition:opacity .22s ease, transform .22s ease;
@@ -253,7 +266,7 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   border:var(--gr-border-style,1.5px solid #e5e7eb);
   border-radius:var(--radius);
   box-shadow:0 16px 56px rgba(0,0,0,.14);
-  /* glass blur na paneli */
+  /* Glass blur na celom paneli */
   backdrop-filter: var(--gr-blur, none);
   -webkit-backdrop-filter: var(--gr-blur, none);
 }
@@ -263,9 +276,6 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   border-bottom:1px solid var(--gr-divider,#f3f4f6);
   display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
   background:var(--gr-panel-header-bg,transparent);
-  /* glass header extra layer */
-  backdrop-filter: var(--gr-header-blur, none);
-  -webkit-backdrop-filter: var(--gr-header-blur, none);
 }
 .gr-panel-header-left{ display:flex; align-items:center; gap:10px; min-width:0; }
 .gr-panel-logo-wrap{ width:36px; height:36px; border-radius:50%!important; background:var(--gr-logo-bg,#f3f4f6); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
