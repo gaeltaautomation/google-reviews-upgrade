@@ -429,7 +429,7 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   font-size:12px; color:var(--gr-text-body,#4b5563); line-height:1.55; margin:0;
 }
 .glass-bg-light .gr-owner-reply, #gr-panel.glass-light .gr-owner-reply{
-  background:rgba(255,255,255,0.12); border-left-color:rgba(255,255,255,0.60);
+  background:rgba(255,255,255,0.18); border-left-color:rgba(255,255,255,0.60);
   backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
 }
 .glass-bg-light .gr-owner-label, #gr-panel.glass-light .gr-owner-label{ color:rgba(255,255,255,0.85); }
