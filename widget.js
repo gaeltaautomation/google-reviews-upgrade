@@ -262,11 +262,11 @@ const SECTIONS = {
     <div class="cfg-group"><span>👁</span> Zobrazenie</div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">📊</span> Doplnky</div>
-      <label class="chk-single"><input type="checkbox" ${S.showCount?'checked':''} onchange="S.showCount=this.checked;buildBadge();\"><span>Zobraziť počet recenzií (napr. 47)</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.showCount?'checked':''} onchange="S.showCount=this.checked;buildBadge();"><span>Zobraziť počet recenzií (napr. 47)</span></label>
       <div class="cfg-label" style="margin-top:10px"><span class="cfg-label-icon">📺</span> Na ktorých zariadeniach zobrazovať</div>
-      <label class="chk-single"><input type="checkbox" ${S.devDesktop?'checked':''} onchange="S.devDesktop=this.checked\"><span>🖥 Počítač</span></label>
-      <label class="chk-single"><input type="checkbox" ${S.devTablet?'checked':''} onchange="S.devTablet=this.checked\"><span>⬜ Tablet</span></label>
-      <label class="chk-single"><input type="checkbox" ${S.devMobile?'checked':''} onchange="S.devMobile=this.checked\"><span>📱 Mobil</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devDesktop?'checked':''} onchange="S.devDesktop=this.checked"><span>🖥 Počítač</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devTablet?'checked':''} onchange="S.devTablet=this.checked"><span>⬜ Tablet</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devMobile?'checked':''} onchange="S.devMobile=this.checked"><span>📱 Mobil</span></label>
     </div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">📄</span> Na ktorých stránkach zobrazovať</div>
@@ -277,18 +277,18 @@ const SECTIONS = {
     <div class="cfg-group"><span>👁</span> Zobrazenie</div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">📺</span> Na ktorých zariadeniach zobrazovať</div>
-      <label class="chk-single"><input type="checkbox" ${S.devDesktop?'checked':''} onchange="S.devDesktop=this.checked\"><span>🖥 Počítač</span></label>
-      <label class="chk-single"><input type="checkbox" ${S.devTablet?'checked':''} onchange="S.devTablet=this.checked\"><span>⬜ Tablet</span></label>
-      <label class="chk-single"><input type="checkbox" ${S.devMobile?'checked':''} onchange="S.devMobile=this.checked\"><span>📱 Mobil</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devDesktop?'checked':''} onchange="S.devDesktop=this.checked"><span>🖥 Počítač</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devTablet?'checked':''} onchange="S.devTablet=this.checked"><span>⬜ Tablet</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devMobile?'checked':''} onchange="S.devMobile=this.checked"><span>📱 Mobil</span></label>
     </div>`,
 
   'display-pages': () => `
     <div class="cfg-group"><span>👁</span> Zobrazenie</div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">📺</span> Na ktorých zariadeniach zobrazovať</div>
-      <label class="chk-single"><input type="checkbox" ${S.devDesktop?'checked':''} onchange="S.devDesktop=this.checked\"><span>🖥 Počítač</span></label>
-      <label class="chk-single"><input type="checkbox" ${S.devTablet?'checked':''} onchange="S.devTablet=this.checked\"><span>⬜ Tablet</span></label>
-      <label class="chk-single"><input type="checkbox" ${S.devMobile?'checked':''} onchange="S.devMobile=this.checked\"><span>📱 Mobil</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devDesktop?'checked':''} onchange="S.devDesktop=this.checked"><span>🖥 Počítač</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devTablet?'checked':''} onchange="S.devTablet=this.checked"><span>⬜ Tablet</span></label>
+      <label class="chk-single"><input type="checkbox" ${S.devMobile?'checked':''} onchange="S.devMobile=this.checked"><span>📱 Mobil</span></label>
     </div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">📄</span> Na ktorých stránkach zobrazovať</div>
@@ -308,7 +308,7 @@ function renderLangSection(){
     ['hu','🇭🇺 Magyar'],['ro','🇷🇴 Română'],['pl','🇵🇱 Polski'],['it','🇮🇹 Italiano']
   ];
   return `<div class="cfg-label"><span class="cfg-label-icon">🌍</span> Jazyk widgetu</div>
-    <div class="lang-grid">${langs.map(([v,l])=>`<label class="lang-opt"><input type="radio" name="lang" value="${v}" ${S.lang===v?'checked':''} onchange="setLang(this.value)\"><span>${l}</span></label>`).join('')}</div>`;
+    <div class="lang-grid">${langs.map(([v,l])=>`<label class="lang-opt"><input type="radio" name="lang" value="${v}" ${S.lang===v?'checked':''} onchange="setLang(this.value)"><span>${l}</span></label>`).join('')}</div>`;
 }
 
 function renderPagesGrid(){
@@ -403,7 +403,7 @@ const CONTEXT_COPY = {
       {
         icon: '📍',
         title: 'Zaradiť medzi obsahové bloky',
-        text: 'Ideálne miesto je po predstavení benefi tov produktu/služby alebo pred sekciou „O nás".'
+        text: 'Ideálne miesto je po predstavení benefitov produktu/služby alebo pred sekciou „O nás".'
       },
       {
         icon: '🧩',
@@ -439,7 +439,7 @@ const CONTEXT_COPY = {
       {
         icon: '🎨',
         title: 'Ladiť s primárnym CTA',
-        text: 'CTA na recenzie by vizuálne nemalo prebíjať hlavné konverzné tlačidlá (napr. „Pridať do košíka").' 
+        text: 'CTA na recenzie by vizuálne nemalo prebíjať hlavné konverzné tlačidlá (napr. „Pridať do košíka").'
       },
       {
         icon: '🧪',
@@ -488,26 +488,51 @@ function switchType(type, el) {
   // update best practices / context copy for selected widget
   buildContextCopy(type);
 
+  // Reset preview stage visibility
+  const badge = document.getElementById('gr-badge');
+  const panel = document.getElementById('gr-panel');
+  
   ['c0','c1','c2','c3','c4'].forEach(t => {
-    const el2 = document.getElementById(t === 'c0' ? 'gr-badge' : `preview-${t}`);
-    const panel = document.getElementById('gr-panel');
+    const el2 = t === 'c0' ? null : document.getElementById(`preview-${t}`);
     if (t === 'c0') {
-      if (el2) el2.style.display = type === 'c0' ? '' : 'none';
+      if (badge) badge.style.display = type === 'c0' ? '' : 'none';
       if (panel) panel.style.display = type === 'c0' ? '' : 'none';
     } else {
       if (el2) el2.style.display = type === t ? 'flex' : 'none';
     }
   });
 
+  // Rebuild widget preview
   if (type === 'c0') {
-    buildOffsetFields(); applyTheme(); buildBadge(); applyPosition();
+    buildOffsetFields();
+    applyTheme();
+    buildBadge();
+    applyPosition();
   } else if (type === 'c1') {
-    applyTheme(); buildCarousel();
+    applyTheme();
+    buildCarousel();
   } else if (type === 'c2') {
-    applyTheme(); buildBar();
+    applyTheme();
+    buildBar();
   } else if (type === 'c3') {
     applyTheme();
   } else if (type === 'c4') {
-    applyTheme(); buildCTA();
+    applyTheme();
+    buildCTA();
+  }
+}
+
+// ── SET LANGUAGE ──────────────────────────────────────────────────────────────
+function setLang(lang){
+  S.lang = lang;
+  // Update context copy when language changes
+  buildContextCopy(S.widgetType);
+  // Rebuild widget preview with new language
+  if (S.widgetType === 'c0') {
+    updateTexts();
+  } else if (S.widgetType === 'c1') {
+    buildCarousel();
+  } else if (S.widgetType === 'c2') {
+    buildBar();
   }
 }
