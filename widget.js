@@ -17,7 +17,7 @@ const WIDGET_TYPES = {
   c1: { label: 'Karusel', icon: '🎠', sections: ['appearance','content-c1','reviews-logic-c1','display-pages'] },
   c2: { label: 'Lišta', icon: '📌', sections: ['appearance-c2','position-c2','content-c2','display-devices','display-pages'] },
   c3: { label: 'Embed', icon: '🧩', sections: ['appearance','content-c3','reviews-logic','display-pages'] },
-  c4: { label: 'CTA button', icon: '✍️', sections: ['appearance-c4','position','content-c4','display'] }
+  c4: { label: 'CTA tlačidlo', icon: '✍️', sections: ['appearance-c4','position','content-c4','display'] }
 };
 
 const SECTIONS = {
@@ -37,15 +37,15 @@ const SECTIONS = {
       <div class="cfg-row" id="color-row">${renderColorRow()}</div>
     </div>
     <div class="cfg-section" id="mode-section">
-      <div class="cfg-label"><span class="cfg-label-icon">◐</span> Režim</div>
+      <div class="cfg-label"><span class="cfg-label-icon">◐</span> Farebná schéma</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.mode==='light'?'active':''}" onclick="setMode('light',this)">☀️ Light</div>
-        <div class="toggle-btn ${S.mode==='dark'?'active':''}" onclick="setMode('dark',this)">🌙 Dark</div>
+        <div class="toggle-btn ${S.mode==='light'?'active':''}" onclick="setMode('light',this)">☀️ Svetlá</div>
+        <div class="toggle-btn ${S.mode==='dark'?'active':''}" onclick="setMode('dark',this)">🌙 Tmavá</div>
       </div>
     </div>
     <div class="cfg-section">
       <div class="slider-row">
-        <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">⌀</span> Border radius</div>
+        <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">⌀</span> Zaoblenie rohov</div>
         <span class="cfg-slider-val" id="radius-val">${S.radius}px</span>
       </div>
       <input type="range" class="cfg-slider" min="0" max="30" value="${S.radius}" oninput="setRadius(this.value)">
@@ -53,9 +53,9 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">⊡</span> Veľkosť</div>
       <div class="cfg-row">
-        <div class="pill-btn ${S.size==='S'?'active':''}" data-size="S" onclick="setSize('S',this)">S — Malý</div>
-        <div class="pill-btn ${S.size==='M'?'active':''}" data-size="M" onclick="setSize('M',this)">M — Stredný</div>
-        <div class="pill-btn ${S.size==='L'?'active':''}" data-size="L" onclick="setSize('L',this)">L — Veľký</div>
+        <div class="pill-btn ${S.size==='S'?'active':''}" data-size="S" onclick="setSize('S',this)">S · Malý</div>
+        <div class="pill-btn ${S.size==='M'?'active':''}" data-size="M" onclick="setSize('M',this)">M · Stredný</div>
+        <div class="pill-btn ${S.size==='L'?'active':''}" data-size="L" onclick="setSize('L',this)">L · Veľký</div>
       </div>
     </div>`,
 
@@ -66,10 +66,10 @@ const SECTIONS = {
       <div class="cfg-row" id="color-row">${renderColorRow()}</div>
     </div>
     <div class="cfg-section" id="mode-section">
-      <div class="cfg-label"><span class="cfg-label-icon">◐</span> Režim</div>
+      <div class="cfg-label"><span class="cfg-label-icon">◐</span> Farebná schéma</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.mode==='light'?'active':''}" onclick="setMode('light',this)">☀️ Light</div>
-        <div class="toggle-btn ${S.mode==='dark'?'active':''}" onclick="setMode('dark',this)">🌙 Dark</div>
+        <div class="toggle-btn ${S.mode==='light'?'active':''}" onclick="setMode('light',this)">☀️ Svetlá</div>
+        <div class="toggle-btn ${S.mode==='dark'?'active':''}" onclick="setMode('dark',this)">🌙 Tmavá</div>
       </div>
     </div>`,
 
@@ -81,7 +81,7 @@ const SECTIONS = {
     </div>
     <div class="cfg-section">
       <div class="slider-row">
-        <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">⌀</span> Border radius</div>
+        <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">⌀</span> Zaoblenie rohov</div>
         <span class="cfg-slider-val" id="radius-val">${S.radius}px</span>
       </div>
       <input type="range" class="cfg-slider" min="0" max="30" value="${S.radius}" oninput="setRadius(this.value)">
@@ -89,16 +89,16 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">⊡</span> Veľkosť</div>
       <div class="cfg-row">
-        <div class="pill-btn ${S.size==='S'?'active':''}" data-size="S" onclick="setSize('S',this)">S — Malý</div>
-        <div class="pill-btn ${S.size==='M'?'active':''}" data-size="M" onclick="setSize('M',this)">M — Stredný</div>
-        <div class="pill-btn ${S.size==='L'?'active':''}" data-size="L" onclick="setSize('L',this)">L — Veľký</div>
+        <div class="pill-btn ${S.size==='S'?'active':''}" data-size="S" onclick="setSize('S',this)">S · Malý</div>
+        <div class="pill-btn ${S.size==='M'?'active':''}" data-size="M" onclick="setSize('M',this)">M · Stredný</div>
+        <div class="pill-btn ${S.size==='L'?'active':''}" data-size="L" onclick="setSize('L',this)">L · Veľký</div>
       </div>
     </div>`,
 
   'position': () => `
     <div class="cfg-group"><span>📍</span> Umiestnenie</div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">⊕</span> Pozícia</div>
+      <div class="cfg-label"><span class="cfg-label-icon">⊕</span> Pozícia na stránke</div>
       <div class="pos-grid">
         <div class="pos-btn ${S.pos==='top-left'?'active':''}" data-pos="top-left" onclick="setPos(this)">↖ Hore<br>vľavo</div>
         <div class="pos-btn hb"></div>
@@ -110,7 +110,7 @@ const SECTIONS = {
       </div>
     </div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">↔</span> Odsadenie</div>
+      <div class="cfg-label"><span class="cfg-label-icon">↔</span> Odsadenie od okraja</div>
       <div class="offset-tabs">
         <div class="offset-tab active" onclick="setOffsetTab('desktop',this)">🖥 Desktop</div>
         <div class="offset-tab" onclick="setOffsetTab('mobile',this)">📱 Mobile</div>
@@ -122,10 +122,10 @@ const SECTIONS = {
   'position-c2': () => `
     <div class="cfg-group"><span>📍</span> Umiestnenie</div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">⊕</span> Pozícia lišty</div>
+      <div class="cfg-label"><span class="cfg-label-icon">⊕</span> Kde sa lišta zobrazí</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.barPos==='top'?'active':''}" onclick="setBarPos('top',this)">▲ Navrchu</div>
-        <div class="toggle-btn ${S.barPos==='bottom'?'active':''}" onclick="setBarPos('bottom',this)">▼ Dole</div>
+        <div class="toggle-btn ${S.barPos==='top'?'active':''}" onclick="setBarPos('top',this)">▲ Nad hlavičkou</div>
+        <div class="toggle-btn ${S.barPos==='bottom'?'active':''}" onclick="setBarPos('bottom',this)">▼ Pod hlavičkou</div>
       </div>
     </div>`,
 
@@ -133,10 +133,10 @@ const SECTIONS = {
     <div class="cfg-group"><span>💬</span> Obsah</div>
     <div class="cfg-section">${renderLangSection()}</div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Texty tlačidiel</div>
-      <span class="cfg-input-label">Napísať recenziu</span>
+      <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Upraviť texty</div>
+      <span class="cfg-input-label">Tlačidlo — napísať recenziu</span>
       <input id="inp-write" class="cfg-input" type="text" value="${S.ctaWrite}" oninput="S.ctaWrite=this.value;updateTexts()">
-      <span class="cfg-input-label">Zobraziť všetky</span>
+      <span class="cfg-input-label">Tlačidlo — zobraziť všetky</span>
       <input id="inp-all" class="cfg-input" type="text" value="${S.ctaAll}" oninput="S.ctaAll=this.value;updateTexts()">
     </div>`,
 
@@ -144,7 +144,8 @@ const SECTIONS = {
     <div class="cfg-group"><span>💬</span> Obsah</div>
     <div class="cfg-section">${renderLangSection()}</div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Text tlačidla</div>
+      <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Upraviť texty</div>
+      <span class="cfg-input-label">Tlačidlo — napísať recenziu</span>
       <input id="inp-write" class="cfg-input" type="text" value="${S.ctaWrite}" oninput="S.ctaWrite=this.value;buildCarousel()">
     </div>`,
 
@@ -152,11 +153,12 @@ const SECTIONS = {
     <div class="cfg-group"><span>💬</span> Obsah</div>
     <div class="cfg-section">${renderLangSection()}</div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Text lišty</div>
+      <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Upraviť texty</div>
+      <span class="cfg-input-label">Text v lište</span>
       <input id="inp-bar" class="cfg-input" type="text" value="${S.barCustomText||''}" placeholder="${LANGS[S.lang].barText}" oninput="S.barCustomText=this.value;buildBar()">
     </div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">✖</span> Zatvárateľná</div>
+      <div class="cfg-label"><span class="cfg-label-icon">✖</span> Návštevník môže zatvoriť</div>
       <div class="toggle-wrap">
         <div class="toggle-btn ${S.barDismissible?'active':''}" onclick="setBarDismissible(true,this)">Áno</div>
         <div class="toggle-btn ${!S.barDismissible?'active':''}" onclick="setBarDismissible(false,this)">Nie</div>
@@ -171,12 +173,13 @@ const SECTIONS = {
     <div class="cfg-group"><span>💬</span> Obsah</div>
     <div class="cfg-section">${renderLangSection()}</div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Text tlačidla</div>
+      <div class="cfg-label"><span class="cfg-label-icon">✏️</span> Upraviť texty</div>
+      <span class="cfg-input-label">Text na tlačidle</span>
       <input id="inp-cta" class="cfg-input" type="text" value="${S.ctaWrite}" oninput="S.ctaWrite=this.value;buildCTA()">
     </div>`,
 
   'reviews-logic': () => `
-    <div class="cfg-group"><span>🔧</span> Logika recenzií</div>
+    <div class="cfg-group"><span>🔧</span> Filtre recenzií</div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">⭐</span> Minimálne hodnotenie</div>
       <div class="cfg-row">
@@ -186,7 +189,7 @@ const SECTIONS = {
       </div>
     </div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">#</span> Koľko recenzií zobraziť</div>
+      <div class="cfg-label"><span class="cfg-label-icon">#</span> Počet zobrazených recenzií</div>
       <div class="cfg-row">
         <div class="pill-btn ${S.reviewCount===3?'active':''}" data-count="3" onclick="setReviewCount(3,this)">3 <span style="opacity:.55;font-size:9px">lite</span></div>
         <div class="pill-btn ${S.reviewCount===5?'active':''}" data-count="5" onclick="setReviewCount(5,this)">5 <span style="opacity:.55;font-size:9px">default</span></div>
@@ -195,7 +198,7 @@ const SECTIONS = {
     </div>
     <div class="cfg-section">
       <div class="slider-row">
-        <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">✂</span> Dĺžka textu</div>
+        <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">✂</span> Skrátiť text recenzie</div>
         <span class="cfg-slider-val" id="textlen-val">${S.textLen} znakov</span>
       </div>
       <input type="range" class="cfg-slider" min="60" max="400" value="${S.textLen}" step="10" oninput="setTextLen(this.value)">
@@ -203,12 +206,12 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">📅</span> Dátum recenzie</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}" onclick="setDateFormat('relative',this)">Relatívny</div>
-        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}" onclick="setDateFormat('absolute',this)">Presný dátum</div>
+        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}" onclick="setDateFormat('relative',this)">pred X dňami</div>
+        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}" onclick="setDateFormat('absolute',this)">Konkrétny dátum</div>
       </div>
     </div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">🗣</span> Odpoveď majiteľa</div>
+      <div class="cfg-label"><span class="cfg-label-icon">🗣</span> Zobraziť odpoveď obchodu</div>
       <div class="toggle-wrap">
         <div class="toggle-btn ${S.ownerReply==='show'?'active':''}" onclick="setOwnerReply('show',this)">Zobraziť</div>
         <div class="toggle-btn ${S.ownerReply==='hide'?'active':''}" onclick="setOwnerReply('hide',this)">Skryť</div>
@@ -216,7 +219,7 @@ const SECTIONS = {
     </div>`,
 
   'reviews-logic-c1': () => `
-    <div class="cfg-group"><span>🔧</span> Logika recenzií</div>
+    <div class="cfg-group"><span>🔧</span> Filtre recenzií</div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">⭐</span> Minimálne hodnotenie</div>
       <div class="cfg-row">
@@ -226,7 +229,7 @@ const SECTIONS = {
       </div>
     </div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">#</span> Koľko kariet zobraziť</div>
+      <div class="cfg-label"><span class="cfg-label-icon">#</span> Počet kariet v karuseli</div>
       <div class="cfg-row">
         <div class="pill-btn ${S.reviewCount===3?'active':''}" data-count="3" onclick="setReviewCount(3,this)">3</div>
         <div class="pill-btn ${S.reviewCount===5?'active':''}" data-count="5" onclick="setReviewCount(5,this)">5</div>
@@ -235,7 +238,7 @@ const SECTIONS = {
     </div>
     <div class="cfg-section">
       <div class="slider-row">
-        <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">✂</span> Dĺžka textu</div>
+        <div class="cfg-label" style="margin:0"><span class="cfg-label-icon">✂</span> Skrátiť text recenzie</div>
         <span class="cfg-slider-val" id="textlen-val">${S.textLen} znakov</span>
       </div>
       <input type="range" class="cfg-slider" min="60" max="300" value="${S.textLen}" step="10" oninput="setTextLen(this.value)">
@@ -243,12 +246,12 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">📅</span> Dátum recenzie</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}" onclick="setDateFormat('relative',this)">Relatívny</div>
-        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}" onclick="setDateFormat('absolute',this)">Presný dátum</div>
+        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}" onclick="setDateFormat('relative',this)">pred X dňami</div>
+        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}" onclick="setDateFormat('absolute',this)">Konkrétny dátum</div>
       </div>
     </div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">🗣</span> Odpoveď majiteľa</div>
+      <div class="cfg-label"><span class="cfg-label-icon">🗣</span> Zobraziť odpoveď obchodu</div>
       <div class="toggle-wrap">
         <div class="toggle-btn ${S.ownerReply==='show'?'active':''}" onclick="setOwnerReply('show',this)">Zobraziť</div>
         <div class="toggle-btn ${S.ownerReply==='hide'?'active':''}" onclick="setOwnerReply('hide',this)">Skryť</div>
@@ -259,21 +262,21 @@ const SECTIONS = {
     <div class="cfg-group"><span>👁</span> Zobrazenie</div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">📊</span> Doplnky</div>
-      <label class="chk-single"><input type="checkbox" ${S.showCount?'checked':''} onchange="S.showCount=this.checked;buildBadge();"><span>Zobraziť počet recenzií</span></label>
-      <div class="cfg-label" style="margin-top:10px"><span class="cfg-label-icon">📺</span> Zobraziť na zariadeniach</div>
+      <label class="chk-single"><input type="checkbox" ${S.showCount?'checked':''} onchange="S.showCount=this.checked;buildBadge();"><span>Zobraziť počet recenzií (napr. 47)</span></label>
+      <div class="cfg-label" style="margin-top:10px"><span class="cfg-label-icon">📺</span> Na ktorých zariadeniach zobrazovať</div>
       <label class="chk-single"><input type="checkbox" ${S.devDesktop?'checked':''} onchange="S.devDesktop=this.checked"><span>🖥 Počítač</span></label>
       <label class="chk-single"><input type="checkbox" ${S.devTablet?'checked':''} onchange="S.devTablet=this.checked"><span>⬜ Tablet</span></label>
       <label class="chk-single"><input type="checkbox" ${S.devMobile?'checked':''} onchange="S.devMobile=this.checked"><span>📱 Mobil</span></label>
     </div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">📄</span> Zobraziť na stránkach</div>
+      <div class="cfg-label"><span class="cfg-label-icon">📄</span> Na ktorých stránkach zobrazovať</div>
       ${renderPagesGrid()}
     </div>`,
 
   'display-devices': () => `
     <div class="cfg-group"><span>👁</span> Zobrazenie</div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">📺</span> Zobraziť na zariadeniach</div>
+      <div class="cfg-label"><span class="cfg-label-icon">📺</span> Na ktorých zariadeniach zobrazovať</div>
       <label class="chk-single"><input type="checkbox" ${S.devDesktop?'checked':''} onchange="S.devDesktop=this.checked"><span>🖥 Počítač</span></label>
       <label class="chk-single"><input type="checkbox" ${S.devTablet?'checked':''} onchange="S.devTablet=this.checked"><span>⬜ Tablet</span></label>
       <label class="chk-single"><input type="checkbox" ${S.devMobile?'checked':''} onchange="S.devMobile=this.checked"><span>📱 Mobil</span></label>
@@ -282,13 +285,13 @@ const SECTIONS = {
   'display-pages': () => `
     <div class="cfg-group"><span>👁</span> Zobrazenie</div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">📺</span> Zobraziť na zariadeniach</div>
+      <div class="cfg-label"><span class="cfg-label-icon">📺</span> Na ktorých zariadeniach zobrazovať</div>
       <label class="chk-single"><input type="checkbox" ${S.devDesktop?'checked':''} onchange="S.devDesktop=this.checked"><span>🖥 Počítač</span></label>
       <label class="chk-single"><input type="checkbox" ${S.devTablet?'checked':''} onchange="S.devTablet=this.checked"><span>⬜ Tablet</span></label>
       <label class="chk-single"><input type="checkbox" ${S.devMobile?'checked':''} onchange="S.devMobile=this.checked"><span>📱 Mobil</span></label>
     </div>
     <div class="cfg-section">
-      <div class="cfg-label"><span class="cfg-label-icon">📄</span> Zobraziť na stránkach</div>
+      <div class="cfg-label"><span class="cfg-label-icon">📄</span> Na ktorých stránkach zobrazovať</div>
       ${renderPagesGrid()}
     </div>`
 };
@@ -351,12 +354,12 @@ function switchType(type, el) {
 function updatePreviewLabel() {
   const typeLabel = WIDGET_TYPES[S.widgetType].label;
   const posL = {"bottom-right":"Dole vpravo","bottom-left":"Dole vľavo","top-right":"Hore vpravo","top-left":"Hore vľavo"};
-  const modeLabel = S.mode === 'dark' ? ' · Dark' : ' · Light';
+  const modeLabel = S.mode === 'dark' ? ' · Tmavá' : ' · Svetlá';
   document.getElementById('preview-dot').style.background = S.accent;
   document.getElementById('preview-dot').style.boxShadow = `0 0 8px ${S.accent}`;
   let label = typeLabel + modeLabel;
   if (S.widgetType === 'c0') label += ` · ${S.size} · ${posL[S.pos]}`;
-  if (S.widgetType === 'c2') label += ` · ${S.barPos === 'top' ? '▲ Navrchu' : '▼ Dole'}`;
+  if (S.widgetType === 'c2') label += ` · ${S.barPos === 'top' ? '▲ Nad hlavičkou' : '▼ Pod hlavičkou'}`;
   if (S.widgetType === 'c4') label += ` · ${S.size} · ${posL[S.pos]}`;
   document.getElementById('preview-text').textContent = label;
 }
@@ -481,10 +484,9 @@ function buildCTA(){
   const t = LANGS[S.lang];
   const sc = SIZES[S.size];
 
-  // resolve variant class based on style + mode
   let variantClass = 'cta-btn';
   if(S.style === 'classic'){
-    variantClass += S.mode === 'dark' ? ' cta-outline' : ' cta-outline';
+    variantClass += ' cta-outline';
   } else if(S.style === 'modern'){
     variantClass += ' cta-modern';
   } else if(S.style === 'glass'){
@@ -807,9 +809,9 @@ function buildOffsetFields(){
   const top=isTop(),left=isLeft();
   const vKey=top?'top':'bottom', hKey=left?'left':'right';
   function fields(prefix,obj){
-    let h=`<div class="offset-row"><label>${top?'Od vrchu':'Od spodu'}</label><input class="offset-input" type="number" value="${obj[vKey]||28}" min="0" max="400" oninput="setOffset('${prefix}','${vKey}',this.value)"> px</div>`;
-    if(!top) h+=`<div class="offset-row" style="margin-top:6px"><label>${left?'Od ľava':'Od prava'}</label><input class="offset-input" type="number" value="${obj[hKey]||28}" min="0" max="400" oninput="setOffset('${prefix}','${hKey}',this.value)"> px</div>`;
-    else h+=`<p style="font-size:11px;color:#9ca3af;margin-top:8px">Tab je prichytený k hrane – horizontálny offset sa nenastavuje.</p>`;
+    let h=`<div class="offset-row"><label>${top?'Odsadenie od vrchu':'Odsadenie od spodku'}</label><input class="offset-input" type="number" value="${obj[vKey]||28}" min="0" max="400" oninput="setOffset('${prefix}','${vKey}',this.value)"> px</div>`;
+    if(!top) h+=`<div class="offset-row" style="margin-top:6px"><label>${left?'Odsadenie od ľava':'Odsadenie od prava'}</label><input class="offset-input" type="number" value="${obj[hKey]||28}" min="0" max="400" oninput="setOffset('${prefix}','${hKey}',this.value)"> px</div>`;
+    else h+=`<p style="font-size:11px;color:#9ca3af;margin-top:8px">Widget je prichytený k hrane – horizontálny offset sa nenastavuje.</p>`;
     return h;
   }
   const df=document.getElementById('offset-desktop-fields');
@@ -882,7 +884,7 @@ function renderReviews(){
     const short=long?rv.text.slice(0,MAX)+'...':rv.text;
     const dateStr=S.dateFormat==='absolute'?rv.absDate:rv.date;
     const replyHtml=(S.ownerReply==='show' && rv.ownerReply)
-      ?`<div class="gr-owner-reply"><span class="gr-owner-label">💬 Odpoveď majiteľa</span><p>${rv.ownerReply}</p></div>`
+      ?`<div class="gr-owner-reply"><span class="gr-owner-label">💬 Odpoveď obchodu</span><p>${rv.ownerReply}</p></div>`
       :'';
     return `<div class="gr-review-item">`
       +`<div class="gr-review-top"><div class="gr-avatar" style="background:${rv.col};border-radius:var(--gr-avatar-radius,50%)">${rv.init}</div>`
