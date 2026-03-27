@@ -316,6 +316,159 @@ function renderPagesGrid(){
   return `<div class="chk-grid">${pages.map(p=>`<label class="chk-item"><input type="checkbox" checked><span>${p}</span></label>`).join('')}</div>`;
 }
 
+// ── CONTEXT COPY ─────────────────────────────────────────────────────────────
+const CONTEXT_COPY = {
+  c0: {
+    title: 'Floating badge + panel',
+    lead: 'Ideálna kombinácia pre budovanie dôvery v rohu stránky bez agresívneho zásahu do layoutu.',
+    tips: [
+      {
+        icon: '📍',
+        title: 'Umiestniť do pravého dolného rohu',
+        text: 'Je to vzorové miesto pre chaty a widgety – používatelia ho intuitívne hľadajú a neprekryje hlavnú navigáciu.'
+      },
+      {
+        icon: '🧱',
+        title: 'Nerušiť nákupný proces',
+        text: 'Na mobiloch dávaj pozor, aby badge neprekrýval tlačidlo do košíka alebo fixnú spodnú lištu.'
+      },
+      {
+        icon: '✨',
+        title: 'Použiť farbu značky',
+        text: 'Zvoľ farbu, ktorá ladí s primárnym CTA na webe. Vyhni sa dvom rôznym dominantným farbám vedľa seba.'
+      },
+      {
+        icon: '🧪',
+        title: 'Najprv desktop, potom mobile',
+        text: 'Začni s nastavením na desktope, až potom dolaď správanie na mobile – vyhneš sa chaosu v pozíciách.'
+      }
+    ]
+  },
+  c1: {
+    title: 'Karusel recenzií',
+    lead: 'Sekcia vhodná do homepage, landing page alebo pod produktové benefity.',
+    tips: [
+      {
+        icon: '🧱',
+        title: 'Tvoriť blok, nie rušivý prvok',
+        text: 'Karusel je obsahová sekcia – umiestni ho medzi bloky, nie ako prekryvný prvok nad obsahom.'
+      },
+      {
+        icon: '📐',
+        title: '2–3 karty na šírku',
+        text: 'Na desktope nech je viditeľných aspoň 2, max. 3 karty. Viac kariet znižuje čitateľnosť.'
+      },
+      {
+        icon: '✂️',
+        title: 'Skrátiť dlhé texty',
+        text: 'Dlhé recenzie orež posuvníkom dĺžky textu a nechaj používateľa prescrollovať karusel, nie čítať „stenu textu“.'
+      },
+      {
+        icon: '📲',
+        title: 'Na mobile jedna karta',
+        text: 'Na mobile by mala byť v karuseli vždy jedna karta na šírku – používateľ ľahko pochopí swipe správanie.'
+      }
+    ]
+  },
+  c2: {
+    title: 'Sticky lišta hore/dole',
+    lead: 'Silný prvok pre zvýraznenie hodnotenia v košíku alebo pri promo akciách.',
+    tips: [
+      {
+        icon: '🛒',
+        title: 'Primárne do košíka a objednávky',
+        text: 'V krokoch objednávky lišta znižuje obavy pred nákupom. Na homepage ju používaj striedmo, aby nevyrušovala.'
+      },
+      {
+        icon: '📏',
+        title: 'Nepridávaj druhú sticky lištu',
+        text: 'Ak tvoj šablónový header používa fixnú lištu, testuj, aby sa dve lišty nezliali a neschovali dôležité CTA.'
+      },
+      {
+        icon: '✖',
+        title: 'Rozumne nastaviť zavretie',
+        text: 'Možnosť zatvoriť je fajn, ale pri kritických stránkach (košík, objednávka) zvaž radšej nezatvárateľnú verziu.'
+      },
+      {
+        icon: '📱',
+        title: 'Špeciálne pozor na mobil',
+        text: 'Na mobiloch používaj kratší text a sleduj, či lišta neprekrýva spodnú navigáciu alebo cookie lištu.'
+      }
+    ]
+  },
+  c3: {
+    title: 'Embed blok recenzií',
+    lead: 'Najuniverzálnejší widget – využi ho ako samostatnú sekciu s recenziami kdekoľvek na webe.',
+    tips: [
+      {
+        icon: '📍',
+        title: 'Zaradiť medzi obsahové bloky',
+        text: 'Ideálne miesto je po predstavení benefi tov produktu/služby alebo pred sekciou „O nás“.'
+      },
+      {
+        icon: '🧩',
+        title: 'Použiť rovnaký grid ako zvyšok webu',
+        text: 'Drž šírku embed bloku v rámci layoutu (container) – vyhni sa full‑width bez dôvodu, aby sekcia nepôsobila vytrhnuto.'
+      },
+      {
+        icon: '🗣',
+        title: 'Ukázať aj odpovede majiteľa',
+        text: 'Zapni zobrazenie odpovedí pri aspoň časti recenzií – pôsobí to profesionálne a zvyšuje dôveryhodnosť.'
+      },
+      {
+        icon: '🔢',
+        title: 'Menej je niekedy viac',
+        text: 'Na homepage stačí 3–6 recenzií. Celý zoznam odporúčame nechať na samostatnú stránku s filtrami.'
+      }
+    ]
+  },
+  c4: {
+    title: 'CTA tlačidlo na recenzie',
+    lead: 'Jednoduchý spôsob, ako motivovať existujúcich zákazníkov k pridaniu novej recenzie.',
+    tips: [
+      {
+        icon: '🧭',
+        title: 'Použiť v zákazníckej zóne',
+        text: 'Najlepšie funguje v sekcii „Môj účet“, na ďakovnej stránke alebo v e‑maili po doručení objednávky.'
+      },
+      {
+        icon: '🎯',
+        title: 'Jasný mikrokopík CTA',
+        text: 'Namiesto všeobecného „Hodnotenia“ použi priame CTA typu „Napísať recenziu na Google“.'
+      },
+      {
+        icon: '🎨',
+        title: 'Ladiť s primárnym CTA',
+        text: 'CTA na recenzie by vizuálne nemalo prebíjať hlavné konverzné tlačidlá (napr. „Pridať do košíka“).' 
+      },
+      {
+        icon: '🧪',
+        title: 'Testovať umiestnenie',
+        text: 'Začni konzervatívne – napr. iba ďakovná stránka. Až keď vidíš výsledky, rozšír CTA na ďalšie miesta.'
+      }
+    ]
+  }
+};
+
+function buildContextCopy(type){
+  const cfg = CONTEXT_COPY[type] || CONTEXT_COPY.c0;
+  const container = document.querySelector('.preview-copy');
+  const grid = document.querySelector('.tip-grid');
+  if(!container || !grid) return;
+
+  const h1 = container.querySelector('h1');
+  const lead = container.querySelector('p.lead');
+  if(h1) h1.textContent = cfg.title;
+  if(lead) lead.textContent = cfg.lead;
+
+  grid.innerHTML = cfg.tips.map(t => `
+    <div class="tip-card">
+      <h3><span>${t.icon}</span>${t.title}</h3>
+      <p>${t.text}</p>
+    </div>`
+  ).join('');
+}
+
 // ── SWITCH TYPE ───────────────────────────────────────────────────────────────
 function switchType(type, el) {
   S.widgetType = type;
@@ -324,6 +477,9 @@ function switchType(type, el) {
 
   const dyn = document.getElementById('cfg-dynamic');
   dyn.innerHTML = WIDGET_TYPES[type].sections.map(s => SECTIONS[s] ? SECTIONS[s]() : '').join('');
+
+  // update best practices / context copy for selected widget
+  buildContextCopy(type);
 
   ['c0','c1','c2','c3','c4'].forEach(t => {
     const el2 = document.getElementById(t === 'c0' ? 'gr-badge' : `preview-${t}`);
@@ -848,6 +1004,7 @@ function setLang(lang){
   const ic=document.getElementById('inp-cta'); if(ic) ic.value=t.writeReview;
   const pc=document.getElementById('panel-count'); if(pc) pc.textContent=`· 47 ${t.reviews}`;
   updateTexts();
+  buildContextCopy(S.widgetType);
   if(S.widgetType==='c0') buildBadge();
   if(S.widgetType==='c1') buildCarousel();
   if(S.widgetType==='c2') buildBar();
@@ -907,4 +1064,6 @@ dyn.innerHTML = WIDGET_TYPES['c0'].sections.map(s => SECTIONS[s] ? SECTIONS[s]()
 buildOffsetFields();
 
 renderReviews(); buildBadge(); applyTheme(); applyPosition();
+buildContextCopy('c0');
+
 window.addEventListener('resize', applyPosition);
