@@ -504,7 +504,10 @@ let S={
   style:'classic',accent:'#4285F4',mode:'light',radius:14,size:'M',pos:'bottom-right',
   offsetDesktop:{bottom:28,right:28},offsetMobile:{bottom:16,right:16},
   lang:'sk',ctaWrite:'Napísať recenziu',ctaAll:'Všetky recenzie',
-  showCount:true,devDesktop:true,devTablet:true,devMobile:true
+  showCount:true,devDesktop:true,devTablet:true,devMobile:true,
+  widgetType:'c0',
+  minRating:0,reviewCount:5,textLen:130,dateFormat:'relative',ownerReply:'show',
+  barPos:'top',barCustomText:'',barDismissible:true
 };
 
 
@@ -623,16 +626,6 @@ function switchType(type, el) {
 
   const dyn = document.getElementById('cfg-dynamic');
   dyn.innerHTML = WIDGET_TYPES[type].sections.map(s => SECTIONS[s] ? SECTIONS[s]() : '').join('');
-
-  // Sticky save footer — always present, above Safari toolbar
-  const existingFooter = document.getElementById('cfg-save-footer');
-  if (!existingFooter) {
-    const footer = document.createElement('div');
-    footer.id = 'cfg-save-footer';
-    footer.className = 'cfg-save-footer';
-    footer.innerHTML = '<button class="cfg-save-btn" onclick="window.parent.postMessage({type:\'GET_CONFIG\'},\'*\')">✓ Uložiť widget</button>';
-    document.getElementById('config').appendChild(footer);
-  }
 
   // update best practices / context copy for selected widget
   buildContextCopy(type);
@@ -760,7 +753,35 @@ function col(i){ document.getElementById('s'+i).classList.remove('hidden'); docu
 
 renderReviews(); buildBadge(); buildOffsetFields(); applyTheme(); applyPosition();
 if (S._initType) switchType(S._initType, document.querySelector(`.type-btn[data-type="${S._initType}"]`));
-window.addEventListener('resize',applyPosition);
+window.addEventListener('resize', applyPosition);
+
+// ── doSave — called by save button ──────────────────────────────────────────
+function doSave() {
+  const btn = document.getElementById('cfg-save-btn');
+  if (btn) { btn.textContent = '⏳ Ukladám...'; btn.disabled = true; }
+  const config = Object.assign({}, S, { widgetType: S.widgetType||'c0', type: S.widgetType||'c0' });
+  // if inside iframe → tell parent
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: 'CONFIG_DATA', config: config }, '*');
+  } else {
+    // standalone mode — just show toast
+    if (typeof showToast === 'function') showToast('Widget uložený ✓', 'success');
+  }
+  setTimeout(() => {
+    if (btn) { btn.textContent = '✓ Uložiť widget'; btn.disabled = false; }
+  }, 1500);
+}
+
+// ── Single save footer — added ONCE after full init ──────────────────────────
+(function() {
+  const cfg = document.getElementById('config');
+  if (!cfg || document.getElementById('cfg-save-footer')) return;
+  const f = document.createElement('div');
+  f.id = 'cfg-save-footer';
+  f.className = 'cfg-save-footer';
+  f.innerHTML = '<button class="cfg-save-btn" id="cfg-save-btn" onclick="doSave()">✓ Uložiť widget</button>';
+  cfg.appendChild(f);
+})();
 
 // ── IFRAME POSTMESSAGE BRIDGE (pre admin konfigurátor) ───────────────────────
 // Admin posiela LOAD_CONFIG → načítame stav do S a prestavíme UI
