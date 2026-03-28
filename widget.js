@@ -206,15 +206,15 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">📅</span> Dátum recenzie</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}" onclick="setDateFormat('relative',this)">pred X dňami</div>
-        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}" onclick="setDateFormat('absolute',this)">Konkrétny dátum</div>
+        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}" data-datefmt="relative" onclick="setDateFormat('relative',this)">pred X dňami</div>
+        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}" data-datefmt="absolute" onclick="setDateFormat('absolute',this)">Konkrétny dátum</div>
       </div>
     </div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">🗣</span> Zobraziť odpoveď obchodu</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.ownerReply==='show'?'active':''}" onclick="setOwnerReply('show',this)">Zobraziť</div>
-        <div class="toggle-btn ${S.ownerReply==='hide'?'active':''}" onclick="setOwnerReply('hide',this)">Skryť</div>
+        <div class="toggle-btn ${S.ownerReply==='show'?'active':''}" data-ownerreply="show" onclick="setOwnerReply('show',this)">Zobraziť</div>
+        <div class="toggle-btn ${S.ownerReply==='hide'?'active':''}" data-ownerreply="hide" onclick="setOwnerReply('hide',this)">Skryť</div>
       </div>
     </div>`,
 
@@ -246,15 +246,15 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">📅</span> Dátum recenzie</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}" onclick="setDateFormat('relative',this)">pred X dňami</div>
-        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}" onclick="setDateFormat('absolute',this)">Konkrétny dátum</div>
+        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}" data-datefmt="relative" onclick="setDateFormat('relative',this)">pred X dňami</div>
+        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}" data-datefmt="absolute" onclick="setDateFormat('absolute',this)">Konkrétny dátum</div>
       </div>
     </div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">🗣</span> Zobraziť odpoveď obchodu</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.ownerReply==='show'?'active':''}" onclick="setOwnerReply('show',this)">Zobraziť</div>
-        <div class="toggle-btn ${S.ownerReply==='hide'?'active':''}" onclick="setOwnerReply('hide',this)">Skryť</div>
+        <div class="toggle-btn ${S.ownerReply==='show'?'active':''}" data-ownerreply="show" onclick="setOwnerReply('show',this)">Zobraziť</div>
+        <div class="toggle-btn ${S.ownerReply==='hide'?'active':''}" data-ownerreply="hide" onclick="setOwnerReply('hide',this)">Skryť</div>
       </div>
     </div>`,
 
