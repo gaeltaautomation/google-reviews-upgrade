@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Test Site — Google Reviews Widget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <style>
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Inter',system-ui,sans-serif;background:#f8fafc;color:#1e293b;}
@@ -47,117 +50,146 @@
     .section-title{font-size:21px;font-weight:700;margin-bottom:20px;}
     .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
     .product-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);}
-    .product-img{width:100%;height:130px;display:flex;align-items:center;justify-content:center;font-size:42px;background:linear-gradient(135deg,#e0e7ff,#f0fdf4);}
-    .product-info{padding:13px;}
-    .product-name{font-weight:600;font-size:13px;margin-bottom:5px;}
-    .product-price{color:#4285F4;font-weight:700;font-size:16px;}
-    .product-btn{width:100%;margin-top:9px;background:#f1f5f9;border:none;padding:7px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;color:#1e293b;}
-    .product-btn:active{background:#4285F4;color:#fff;}
+    .product-img{width:100%;height:130px;display:flex;align-items:center;justify-content:center;font-size:40px;background:#f1f5f9;}
+    .product-info{padding:12px;}
+    .product-name{font-size:13px;font-weight:600;margin-bottom:4px;}
+    .product-price{font-size:15px;font-weight:700;color:#4285F4;}
+    .product-btn{width:100%;margin-top:8px;background:#f8fafc;border:1px solid #e2e8f0;padding:7px;border-radius:8px;font-size:12px;cursor:pointer;}
 
-    /* widget iframe — invisible overlay, pointer-events passthrough */
-    .widget-iframe{position:fixed;inset:0;width:100%;height:100%;border:none;
-      pointer-events:none;z-index:200;background:transparent;}
-    .widget-iframe.loaded{pointer-events:auto;}
+    footer{background:#0f172a;color:#94a3b8;text-align:center;padding:28px 20px;font-size:12px;
+      padding-bottom:calc(28px + var(--sab));}
 
     /* empty state */
-    .empty-state{text-align:center;padding:48px 20px;color:#94a3b8;}
-    .empty-state .icon{font-size:48px;margin-bottom:12px;}
-    .empty-state h3{font-size:16px;font-weight:600;color:#64748b;margin-bottom:8px;}
-    .empty-state a{color:#4285F4;text-decoration:none;font-size:13px;}
-
-    /* footer */
-    .footer{background:#1e293b;color:#94a3b8;text-align:center;
-      padding:24px 20px;padding-bottom:calc(24px + var(--sab));
-      font-size:12px;margin-top:60px;line-height:1.7;}
-
-    /* mobile */
-    @media(max-width:480px){
-      .shop-nav{display:none;}
-      .hero h1{font-size:24px;}
-      .hero p{font-size:13px;}
-      .products{grid-template-columns:repeat(2,1fr);gap:10px;}
-      .product-img{height:100px;font-size:34px;}
-      .section{padding:32px 14px;}
-    }
+    .empty-state{display:none;text-align:center;padding:60px 24px;color:#94a3b8;}
+    .empty-state h3{font-size:16px;margin-bottom:8px;color:#475569;}
+    .empty-state p{font-size:13px;margin-bottom:16px;}
+    .empty-state a{color:#4285F4;text-decoration:none;font-weight:600;}
   </style>
 </head>
 <body>
 
-<!-- debug bar -->
 <div class="widget-bar">
   <div class="widget-bar-left">
-    <span>🔧</span>
-    <span id="ab" class="wbar-badge none">—</span>
-    <span id="w1b" class="wbar-badge none">W1: —</span>
-    <span id="w2b" class="wbar-badge none">W2: —</span>
+    <span>🔬 Test Site</span>
+    <span class="wbar-badge none" id="ab">Načítavam...</span>
+    <span class="wbar-badge none" id="w1b">W1: —</span>
+    <span class="wbar-badge none" id="w2b">W2: —</span>
   </div>
   <div class="wbar-right">
-    <button class="refresh-btn" onclick="reload()">↻ Obnoviť</button>
     <a href="admin.html">⚙️ Admin</a>
+    <button class="refresh-btn" onclick="reload()">↺ Reload</button>
   </div>
 </div>
 
-<!-- shop -->
 <header class="shop-header">
-  <div class="shop-logo">Demo<span>Shop</span>.sk</div>
-  <nav class="shop-nav">
-    <a href="#">Domov</a><a href="#">Produkty</a><a href="#">O nás</a><a href="#">Kontakt</a>
-  </nav>
-  <button class="shop-cart">🛒 Košík</button>
+  <div class="shop-logo">Shop<span>Blue</span></div>
+  <nav class="shop-nav"><a href="#">Produkty</a><a href="#">O nás</a><a href="#">Kontakt</a></nav>
+  <button class="shop-cart">🛒 Košík (2)</button>
 </header>
 
-<section class="hero">
-  <h1>Najlepší online obchod</h1>
-  <p>Kvalitné produkty · Rýchle doručenie</p>
+<div class="hero">
+  <h1>Najlepšie produkty<br>za skvelé ceny</h1>
+  <p>Overené tisíckami spokojných zákazníkov</p>
   <button class="hero-btn">Nakupovať →</button>
-</section>
+</div>
 
 <section class="section">
-  <div class="section-title">Obľúbené produkty</div>
+  <div class="section-title">Odporúčané produkty</div>
   <div class="products">
-    <div class="product-card"><div class="product-img">👟</div><div class="product-info"><div class="product-name">Bežecké topánky Pro</div><div class="product-price">89,90 €</div><button class="product-btn">Do košíka</button></div></div>
-    <div class="product-card"><div class="product-img">🎒</div><div class="product-info"><div class="product-name">Cestovný ruksak 40L</div><div class="product-price">59,90 €</div><button class="product-btn">Do košíka</button></div></div>
-    <div class="product-card"><div class="product-img">⌚</div><div class="product-info"><div class="product-name">Smart hodinky Series 5</div><div class="product-price">149,00 €</div><button class="product-btn">Do košíka</button></div></div>
-    <div class="product-card"><div class="product-img">🎧</div><div class="product-info"><div class="product-name">Bezdrôtové slúchadlá</div><div class="product-price">79,00 €</div><button class="product-btn">Do košíka</button></div></div>
+    <div class="product-card"><div class="product-img">👟</div><div class="product-info"><div class="product-name">Bežecké topánky Pro</div><div class="product-price">89,99 €</div><button class="product-btn">Pridať do košíka</button></div></div>
+    <div class="product-card"><div class="product-img">🎒</div><div class="product-info"><div class="product-name">Mestský ruksak XL</div><div class="product-price">54,90 €</div><button class="product-btn">Pridať do košíka</button></div></div>
+    <div class="product-card"><div class="product-img">⌚</div><div class="product-info"><div class="product-name">Smart hodinky Fit</div><div class="product-price">129,00 €</div><button class="product-btn">Pridať do košíka</button></div></div>
+    <div class="product-card"><div class="product-img">🎧</div><div class="product-info"><div class="product-name">Bezdrôtové slúchadlá</div><div class="product-price">79,00 €</div><button class="product-btn">Pridať do košíka</button></div></div>
+    <div class="product-card"><div class="product-img">📱</div><div class="product-info"><div class="product-name">Mobilné puzdro Carbon</div><div class="product-price">19,90 €</div><button class="product-btn">Pridať do košíka</button></div></div>
+    <div class="product-card"><div class="product-img">💡</div><div class="product-info"><div class="product-name">Smart lampa RGB</div><div class="product-price">34,90 €</div><button class="product-btn">Pridať do košíka</button></div></div>
   </div>
 </section>
 
 <section class="section" style="padding-top:0">
-  <div class="section-title">Kategórie</div>
+  <div class="section-title">Zákazníci o nás</div>
   <div class="products">
-    <div class="product-card"><div class="product-img">👕</div><div class="product-info"><div class="product-name">Oblečenie</div></div></div>
-    <div class="product-card"><div class="product-img">💻</div><div class="product-info"><div class="product-name">Elektronika</div></div></div>
-    <div class="product-card"><div class="product-img">🏠</div><div class="product-info"><div class="product-name">Dom a záhrada</div></div></div>
-    <div class="product-card"><div class="product-img">🍳</div><div class="product-info"><div class="product-name">Kuchyňa</div></div></div>
+    <div class="product-card"><div class="product-img" style="font-size:16px;padding:16px;height:auto;text-align:left">⭐⭐⭐⭐⭐<br><b style="font-size:13px">Skvelý obchod!</b><p style="font-size:12px;color:#64748b;margin-top:4px">Dodanie do 2 dní, kvalitný tovar.</p></div></div>
+    <div class="product-card"><div class="product-img" style="font-size:16px;padding:16px;height:auto;text-align:left">⭐⭐⭐⭐⭐<br><b style="font-size:13px">Odporúčam!</b><p style="font-size:12px;color:#64748b;margin-top:4px">Perfektná komunikácia a balenie.</p></div></div>
+    <div class="product-card"><div class="product-img" style="font-size:16px;padding:16px;height:auto;text-align:left">⭐⭐⭐⭐☆<br><b style="font-size:13px">Dobrá cena</b><p style="font-size:12px;color:#64748b;margin-top:4px">Spokojný s nákupom, vrátim sa.</p></div></div>
   </div>
 </section>
 
-<!-- empty state shown when no widget configured -->
-<div id="empty-state" class="empty-state" style="display:none">
-  <div class="icon">⚙️</div>
+<div class="empty-state" id="empty-state">
   <h3>Widget nie je nastavený</h3>
-  <p style="margin-bottom:12px;font-size:13px;">Nastav a ulož widget v admin paneli</p>
-  <a href="admin.html">Otvoriť admin →</a>
+  <p>Nastav widget v admin paneli a uvidíš ho tu naživo.</p>
+  <a href="admin.html">⚙️ Otvoriť Admin →</a>
 </div>
 
-<!-- widget iframes injected here -->
-<div id="widget-frames"></div>
+<footer>© 2025 ShopBlue s.r.o. · Všetky práva vyhradené · Powered by Google Reviews Widget</footer>
 
-<footer class="footer">
-  © 2026 DemoShop.sk<br>
-  <span style="opacity:.5;font-size:11px;">Testovacia stránka — Google Reviews Widget</span>
-</footer>
+<!-- WIDGET SKELETON — naplní widget.js -->
+<div id="gr-badge" onclick="togglePanel()" style="display:none"></div>
+<div id="gr-panel" style="display:none">
+  <div class="gr-panel-header">
+    <div class="gr-panel-header-left">
+      <div class="gr-panel-logo-wrap">
+        <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      </div>
+      <div style="min-width:0">
+        <div class="gr-panel-biz-name">ShopBlue</div>
+        <div class="gr-panel-subtitle">
+          <span class="gr-panel-score">5.0</span>
+          <div class="gr-panel-stars" id="panel-stars"></div>
+          <span class="gr-panel-count" id="panel-count">· 47 recenzií</span>
+        </div>
+      </div>
+    </div>
+    <div class="gr-close" onclick="togglePanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+  </div>
+  <div class="gr-reviews" id="gr-reviews-list"></div>
+  <div class="gr-panel-footer">
+    <button id="btn-write" class="gr-btn gr-btn-outline">✏️ Napísať recenziu</button>
+    <button id="btn-all" class="gr-btn gr-btn-primary">Všetky recenzie</button>
+  </div>
+</div>
+<div id="preview-c1" style="display:none;position:fixed;z-index:200;left:0;right:0;bottom:0;top:auto"></div>
+<div id="preview-c2" style="display:none;position:fixed;z-index:200;left:0;right:0;bottom:0"></div>
+<div id="preview-c3" style="display:none;position:fixed;z-index:200"></div>
+<div id="preview-c4" style="display:none;position:fixed;z-index:200"></div>
+<!-- needed by widget.js internals even if unused -->
+<div id="preview-stage" style="display:none"></div>
+<div id="device-stage" style="display:none"></div>
+<div id="cfg-dynamic" style="display:none"></div>
+<div id="preview-dot" style="display:none"></div>
+<div id="preview-text" style="display:none"></div>
+<div id="mode-section" style="display:none"></div>
 
 <script>
 const KEY = 'gr_admin_v2';
 const LABELS = {c0:'💬 Floating',c1:'🎠 Karusel',c2:'📌 Lišta',c3:'🧩 Embed',c4:'✍️ CTA'};
-const BASE = 'google_reviews_widget_v9.html';
+const IS_DISPLAY = true; // standalone embed mode
+
+let _widgetLoaded = false;
+let _pendingConfig = null;
+
+function applyWidgetConfig(cfg) {
+  if (!cfg) return;
+  if (!_widgetLoaded) { _pendingConfig = cfg; return; }
+  // Show skeleton elements
+  document.getElementById('gr-badge').style.display = '';
+  document.getElementById('gr-panel').style.display = '';
+  // Feed config to widget.js via postMessage-like direct call
+  if (window.S) {
+    Object.keys(cfg).forEach(k => { window.S[k] = cfg[k]; });
+    if (cfg.type) window.S._initType = cfg.type;
+    if (cfg.widgetType) window.S._initType = cfg.widgetType;
+  }
+  if (window.switchType) {
+    const t = cfg.type || cfg.widgetType || 'c0';
+    const el = document.querySelector(\`.type-btn[data-type="\${t}"]\`);
+    window.switchType(t, el || {classList:{add:()=>{},remove:()=>{}}});
+  }
+  if (window.applyTheme) window.applyTheme();
+  if (window.applyPosition) window.applyPosition();
+  if (window.buildBadge) window.buildBadge();
+}
 
 function reload() {
-  // Remove existing iframes
-  document.getElementById('widget-frames').innerHTML = '';
-  document.querySelectorAll('.widget-iframe').forEach(f => f.remove());
-
   const raw = localStorage.getItem(KEY);
   const ab = document.getElementById('ab');
   const w1b = document.getElementById('w1b');
@@ -179,36 +211,48 @@ function reload() {
   ab.className = 'wbar-badge' + (state.active ? '' : ' off');
 
   const w1 = state.widget1, w2 = state.widget2;
+  const activeCfg = w1 || w2; // slot1 má prednosť
   w1b.textContent = w1 ? 'W1: '+(LABELS[w1.type||w1.widgetType]||'?') : 'W1: —';
   w1b.className = 'wbar-badge'+(w1?'':' none');
   w2b.textContent = w2 ? 'W2: '+(LABELS[w2.type||w2.widgetType]||'?') : 'W2: —';
   w2b.className = 'wbar-badge'+(w2?'':' none');
 
-  const hasWidget = w1 || w2;
-  empty.style.display = (!state.active || !hasWidget) ? 'block' : 'none';
-  if (!state.active || !hasWidget) return;
+  empty.style.display = (!state.active || !activeCfg) ? 'block' : 'none';
+  if (!state.active || !activeCfg) return;
 
-  [w1, w2].forEach((cfg, i) => {
-    if (!cfg) return;
-    const iframe = document.createElement('iframe');
-    iframe.className = 'widget-iframe';
-    iframe.setAttribute('scrolling', 'no');
-    iframe.setAttribute('allowtransparency', 'true');
-    iframe.src = BASE + '?slot=' + (i+1) + '&display=1&t=' + Date.now();
-    // When loaded → send config via postMessage
-    iframe.addEventListener('load', () => {
-      iframe.classList.add('loaded');
-      setTimeout(() => {
-        iframe.contentWindow.postMessage({ type: 'LOAD_CONFIG', config: cfg }, '*');
-      }, 300);
-    });
-    document.body.appendChild(iframe);
-  });
+  applyWidgetConfig(activeCfg);
 }
 
-reload();
-// Auto-reload when admin saves in another tab
 window.addEventListener('storage', e => { if (e.key === KEY) reload(); });
+
+// Widget.js signals ready
+window.addEventListener('message', e => {
+  if (e.data && e.data.type === 'WIDGET_READY') {
+    _widgetLoaded = true;
+    if (_pendingConfig) { applyWidgetConfig(_pendingConfig); _pendingConfig = null; }
+  }
+});
 </script>
+
+<!-- Load widget engine directly — no iframe needed -->
+<script>
+// Override IS_DISPLAY — inject display=1 param before widget.js reads URLSearchParams
+(function(){
+  const u = new URL(location.href);
+  if(!u.searchParams.get('display')) {
+    u.searchParams.set('display','1');
+    history.replaceState(null,'',u.toString());
+  }
+  window.currentDevice = 'desktop';
+})();
+</script>
+<script src="widget.js"></script>
+<script>
+// After widget.js loads, trigger init
+_widgetLoaded = true;
+reload();
+if (_pendingConfig) { applyWidgetConfig(_pendingConfig); _pendingConfig = null; }
+</script>
+
 </body>
 </html>
