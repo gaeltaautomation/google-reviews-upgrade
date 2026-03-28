@@ -1,8 +1,3 @@
-// Google Reviews Widget — widget.js (complete)
-// Merged: UI builder + core widget logic + iOS safeLeft fix
-// 2026-03-28
-
-// ── PART 1: UI BUILDER (LANGS, SECTIONS, builders) ───────────────────────────
 const G_SVG=(w=26)=>`<svg viewBox="0 0 48 48" width="${w}" height="${w}"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>`;
 const STAR=(w=14)=>`<svg viewBox="0 0 20 20" width="${w}" height="${w}"><path fill="#f59e0b" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
 
@@ -529,190 +524,21 @@ function switchType(type, el) {
 
 // ── SET LANGUAGE ──────────────────────────────────────────────────────────────
 function setLang(lang){
-  S.lang = lang;
-  // Update context copy when language changes
+  S.lang=lang;
+  const t=LANGS[lang];
+  S.ctaWrite=t.writeReview; S.ctaAll=t.allReviews;
+  const inpW=document.getElementById('inp-write'); if(inpW) inpW.value=t.writeReview;
+  const inpA=document.getElementById('inp-all'); if(inpA) inpA.value=t.allReviews;
+  const cnt=document.getElementById('panel-count'); if(cnt) cnt.textContent=`· 47 ${t.reviews}`;
   buildContextCopy(S.widgetType);
-  // Rebuild widget preview with new language
-  if (S.widgetType === 'c0') {
-    updateTexts();
-  } else if (S.widgetType === 'c1') {
-    buildCarousel();
-  } else if (S.widgetType === 'c2') {
-    buildBar();
-  }
+  if(S.widgetType==='c0'){ updateTexts(); buildBadge(); }
+  else if(S.widgetType==='c1'){ buildCarousel(); }
+  else if(S.widgetType==='c2'){ buildBar(); }
 }
-
-// ── PART 2: WIDGET CORE (state, buildBadge, applyPosition, applyTheme) ───────
-const G_SVG=(w=26)=>`<svg viewBox="0 0 48 48" width="${w}" height="${w}"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>`;
-const STAR=(w=14)=>`<svg viewBox="0 0 20 20" width="${w}" height="${w}"><path fill="#f59e0b" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
-
-const LANGS={
-  sk:{label:"Recenzie Google",reviews:"recenzií",writeReview:"Napísať recenziu",allReviews:"Všetky recenzie"},
-  cz:{label:"Recenze Google",reviews:"recenzí",writeReview:"Napsat recenzi",allReviews:"Všechny recenze"},
-  en:{label:"Google Reviews",reviews:"reviews",writeReview:"Write a review",allReviews:"All reviews"},
-  de:{label:"Google Bewertungen",reviews:"Bewertungen",writeReview:"Bewertung schreiben",allReviews:"Alle Bewertungen"},
-  hu:{label:"Google vélemények",reviews:"vélemény",writeReview:"Vélemény írása",allReviews:"Összes vélemény"},
-  ro:{label:"Recenzii Google",reviews:"recenzii",writeReview:"Scrieți o recenzie",allReviews:"Toate recenziile"},
-  pl:{label:"Opinie Google",reviews:"opinii",writeReview:"Napisz opinię",allReviews:"Wszystkie recenzje"},
-  it:{label:"Recensioni Google",reviews:"recensioni",writeReview:"Scrivi una recensione",allReviews:"Tutte le recensioni"}
-};
-
-const THEMES={
-  classic:{
-    light:{"--gr-bg":"#fff","--gr-border-style":"1.5px solid #e5e7eb","--gr-border-raw":"#e5e7eb","--gr-logo-bg":"#f3f4f6","--gr-text":"#111","--gr-text-muted":"#6b7280","--gr-text-body":"#4b5563","--gr-divider":"#f3f4f6","--gr-chip":"#f9fafb","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.10)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.16)","--gr-blur":"none"},
-    dark:{"--gr-bg":"#1f2937","--gr-border-style":"1.5px solid #374151","--gr-border-raw":"#374151","--gr-logo-bg":"#374151","--gr-text":"#f9fafb","--gr-text-muted":"#9ca3af","--gr-text-body":"#d1d5db","--gr-divider":"#374151","--gr-chip":"#374151","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.4)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.55)","--gr-blur":"none"}
-  },
-  modern:{base:{"--gr-bg":"#020617","--gr-border-style":"1.5px solid rgba(15,23,42,.9)","--gr-border-raw":"rgba(15,23,42,.9)","--gr-logo-bg":"#020617","--gr-text":"#e5e7eb","--gr-text-muted":"#9ca3af","--gr-text-body":"#cbd5e1","--gr-divider":"rgba(148,163,184,.3)","--gr-chip":"#020617","--gr-badge-shadow":"MODERN_S","--gr-badge-shadow-hover":"MODERN_SH","--gr-blur":"none"}},
-  glass:{base:{"--gr-bg":"rgba(255,255,255,.86)","--gr-border-style":"1px solid rgba(255,255,255,.95)","--gr-border-raw":"rgba(209,213,219,1)","--gr-logo-bg":"rgba(243,244,246,.96)","--gr-text":"#111827","--gr-text-muted":"#6b7280","--gr-text-body":"#4b5563","--gr-divider":"rgba(209,213,219,.9)","--gr-chip":"rgba(249,250,251,.9)","--gr-badge-shadow":"0 10px 32px rgba(15,23,42,.16)","--gr-badge-shadow-hover":"0 16px 46px rgba(15,23,42,.2)","--gr-blur":"blur(26px) saturate(1.9)"}}
-};
-
-function rgba(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgba(${r},${g},${b},${a})`;}
-
-const reviews=[
-  {name:"Jana Klincová",init:"JK",col:"#8b5cf6",r:5,date:"pred týždňom",text:"Spoluprácu s firmou pri migrácii na Shoptet hodnotím veľmi pozitívne. Celý proces prebehol hladko, profesionálne a bez zbytočných komplikácií."},
-  {name:"Erik Svitek",init:"ES",col:"#059669",r:5,date:"pred týždňom",text:"Maximálna spokojnosť. Na všetko našli riešenie rýchlo. Vrelo odporúčam!"},
-  {name:"Dimo Van",init:"DV",col:"#2563eb",r:5,date:"pred mesiacom",text:"S firmou Gaelta som mal výbornú skúsenosť. Oceňujem promptnú komunikáciu, profesionalitu a precízne spracovanie každého detailu."},
-  {name:"Sarah Ivičičová",init:"SI",col:"#db2777",r:5,date:"pred mesiacom",text:"Skvelá práca, veľmi odporúčam!"},
-  {name:"Amer Arslan",init:"AA",col:"#d97706",r:5,date:"pred mesiacom",text:"Profesionálni, efektívni a ľahko sa s nimi spolupracuje. Vrelo odporúčam!"}
-];
-
-const SIZES={S:.82,M:1,L:1.22};
-const GAP=10;
-let panelOpen=false,currentDevice='desktop',activeOffsetTab='desktop';
-let S={
-  style:'classic',accent:'#4285F4',mode:'light',radius:14,size:'M',pos:'bottom-right',
-  offsetDesktop:{bottom:28,right:28},offsetMobile:{bottom:16,right:16},
-  lang:'sk',ctaWrite:'Napísať recenziu',ctaAll:'Všetky recenzie',
-  showCount:true,devDesktop:true,devTablet:true,devMobile:true
-};
-
-function isTop(){return S.pos.startsWith('top');}
-function isLeft(){return S.pos.endsWith('left');}
-
-function applyTheme(){
-  const root=document.documentElement; let vars;
-  if(S.style==='classic') vars={...THEMES.classic[S.mode]};
-  else if(S.style==='modern') vars={...THEMES.modern.base};
-  else vars={...THEMES.glass.base};
-  for(const [k,v] of Object.entries(vars)){
-    let val=v;
-    if(val==='MODERN_S') val=`0 0 0 1px rgba(15,23,42,.9), 0 0 26px ${rgba(S.accent,.45)}`;
-    if(val==='MODERN_SH') val=`0 0 0 1px ${rgba(S.accent,.75)}, 0 0 40px ${rgba(S.accent,.6)}`;
-    root.style.setProperty(k,val);
-  }
-  root.style.setProperty('--accent',S.accent);
-  root.style.setProperty('--radius',S.radius+'px');
-  document.getElementById('mode-section').style.display=S.style==='classic'?'block':'none';
-  const posL={"bottom-right":"Dole vpravo","bottom-left":"Dole vľavo","top-right":"Hore vpravo","top-left":"Hore vľavo"};
-  const modeL=S.style==='classic'?(S.mode==='dark'?' · Dark':' · Light'):'';
-  document.getElementById('preview-dot').style.background=S.accent;
-  document.getElementById('preview-dot').style.boxShadow=`0 0 8px ${S.accent}`;
-  document.getElementById('preview-text').textContent=`${S.style[0].toUpperCase()+S.style.slice(1)}${modeL} · ${S.size} · ${posL[S.pos]}`;
-}
-
-function buildBadge(){
-  const badge=document.getElementById('gr-badge');
-  const top=isTop(),left=isLeft(); const t=LANGS[S.lang];
-  badge.className=top?'vert':'horiz'; if(top) badge.classList.add(left?'side-left':'side-right');
-  if(top){
-    badge.innerHTML=`<div class="vert-stars">${Array(5).fill(STAR(14)).join('')}</div>`+(S.showCount?`<span class="vert-count">47 ${t.reviews}</span>`:'')+`<div class="vert-divider"></div><span class="vert-score">5.0</span><div class="gr-logo-wrap" style="width:26px;height:26px;margin-top:2px">${G_SVG(16)}</div>`;
-  }else{
-    const scoreColor=S.style==='modern'?S.accent:'var(--gr-text,#111)';
-    badge.innerHTML=`<div class="gr-logo-wrap" style="width:42px;height:42px">${G_SVG(26)}</div><div class="gr-badge-info"><span class="gr-badge-label">${t.label}</span><div class="gr-score-block"><span class="gr-badge-score" style="color:${scoreColor}">5.0</span><div class="gr-stars-count"><div class="gr-badge-stars">${Array(5).fill(STAR(14)).join('')}</div>${S.showCount?`<span class="gr-badge-count">47 ${t.reviews}</span>`:''}</div></div></div>`;
-  }
-}
-
-function applyPosition(){
-  const badge=document.getElementById('gr-badge'); const panel=document.getElementById('gr-panel');
-  const top=isTop(),left=isLeft(); const o=currentDevice==='mobile'?S.offsetMobile:S.offsetDesktop; const sc=SIZES[S.size];
-
-  if(currentDevice==='desktop'){
-    if(top){
-      badge.style.position='fixed'; badge.style.top=(o.top||100)+'px'; badge.style.bottom='auto'; badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
-      badge.style.transform=`scale(${sc})`; badge.style.transformOrigin=`top ${left?'left':'right'}`;
-    }else{
-      const safeLeft=left?Math.max(o.left||16,0):0; // iOS fix: removed hardcoded desktop offset
-      badge.style.position='fixed'; badge.style.top='auto'; badge.style.bottom=(o.bottom||28)+'px'; badge.style.left=left?safeLeft+'px':'auto'; badge.style.right=!left?(o.right||28)+'px':'auto';
-      badge.style.transform=`scale(${sc})`; badge.style.transformOrigin=`bottom ${left?'left':'right'}`;
-    }
-    setTimeout(()=>{
-      const br=badge.getBoundingClientRect();
-      if(top){
-        if(left){ panel.style.left=(br.right+GAP)+'px'; panel.style.right='auto'; }
-        else{ panel.style.right=(window.innerWidth-br.left+GAP)+'px'; panel.style.left='auto'; }
-        panel.style.top=Math.max(8,br.top)+'px'; panel.style.bottom='auto';
-      }else{
-        panel.style.bottom=((o.bottom||28)+br.height+GAP)+'px'; panel.style.top='auto'; panel.style.left=left?(Math.max(o.left||28,300))+'px':'auto'; panel.style.right=!left?(o.right||28)+'px':'auto';
-      }
-    },40);
-  }else{
-    const stage=document.getElementById('device-stage'); const sRect=stage.getBoundingClientRect();
-    badge.style.position='absolute'; badge.style.transform=`scale(${sc})`;
-    if(top){
-      badge.style.top=(o.top||40)+'px'; badge.style.bottom='auto'; badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
-    }else{
-      badge.style.top='auto'; badge.style.bottom=(o.bottom||32)+'px'; badge.style.left=left?(o.left||24)+'px':'auto'; badge.style.right=!left?(o.right||24)+'px':'auto';
-    }
-    setTimeout(()=>{
-      const br=badge.getBoundingClientRect();
-      if(top){
-        if(left){ panel.style.left=(br.right+GAP)+'px'; panel.style.right='auto'; }
-        else{ panel.style.right=(sRect.right-br.left+GAP)+'px'; panel.style.left='auto'; }
-        panel.style.top=Math.max(sRect.top+8,br.top)+'px'; panel.style.bottom='auto';
-      }else{
-        panel.style.bottom=(sRect.bottom-br.bottom+GAP)+'px'; panel.style.top='auto'; panel.style.left=left?br.left+'px':'auto'; panel.style.right=!left?(sRect.right-br.right)+'px':'auto';
-      }
-    },40);
-  }
-}
-
-function buildOffsetFields(){
-  const top=isTop(),left=isLeft(); const vKey=top?'top':'bottom',hKey=left?'left':'right';
-  function fields(prefix,obj){
-    let h=`<div class="offset-row"><label>${top?'Od vrchu':'Od spodu'}</label><input class="offset-input" type="number" value="${obj[vKey]||28}" min="0" max="400" oninput="setOffset('${prefix}','${vKey}',this.value)"> px</div>`;
-    if(!top) h+=`<div class="offset-row" style="margin-top:6px"><label>${left?'Od ľava':'Od prava'}</label><input class="offset-input" type="number" value="${obj[hKey]||28}" min="0" max="400" oninput="setOffset('${prefix}','${hKey}',this.value)"> px</div>`;
-    else h+=`<p style="font-size:11px;color:#9ca3af;margin-top:8px">Tab je prichytený k hrane – horizontálny offset sa nenastavuje.</p>`;
-    return h;
-  }
-  document.getElementById('offset-desktop-fields').innerHTML=fields('offsetDesktop',S.offsetDesktop);
-  document.getElementById('offset-mobile-fields').innerHTML=fields('offsetMobile',S.offsetMobile);
-}
-
-function setDevice(dev,el){
-  currentDevice=dev; document.querySelectorAll('.dev-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active');
-  const frame=document.getElementById('device-frame'); const label=document.getElementById('device-label'); const stage=document.getElementById('preview-stage');
-  frame.className=''; frame.style.display='none'; stage.classList.remove('device-mode');
-  if(dev==='desktop'){ label.textContent='🖥 Desktop preview'; badgeToFixed(); }
-  else{
-    frame.classList.add(dev==='mobile'?'mobile':'tablet','visible'); label.textContent=dev==='mobile'?'📱 Mobile preview':'⬜ Tablet preview'; stage.classList.add('device-mode'); badgeToDevice();
-  }
-}
-
-function badgeToFixed(){ document.getElementById('gr-badge').style.position='fixed'; applyPosition(); }
-function badgeToDevice(){ document.getElementById('gr-badge').style.position='absolute'; applyPosition(); }
-
-function updateTexts(){ document.getElementById('btn-write').textContent='✏️ '+S.ctaWrite; document.getElementById('btn-all').textContent=S.ctaAll; }
-
-function setLang(lang){ S.lang=lang; const t=LANGS[lang]; S.ctaWrite=t.writeReview; S.ctaAll=t.allReviews; document.getElementById('inp-write').value=t.writeReview; document.getElementById('inp-all').value=t.allReviews; document.getElementById('panel-count').textContent=`· 47 ${t.reviews}`; updateTexts(); buildBadge(); }
-
-/* CONTROLS */
-
-// ── PART 3: CONTROLS (setStyle, setColor, setMode, setPos...) ────────────────
-
-function setStyle(s,el){ document.querySelectorAll('[data-style]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.style=s; applyTheme(); buildBadge(); }
-function setColor(el){ document.querySelectorAll('.color-swatch').forEach(c=>c.classList.remove('active')); el.classList.add('active'); S.accent=el.dataset.color; applyTheme(); }
-function setColorHex(v){ S.accent=v; applyTheme(); }
-function setMode(m,el){ document.querySelectorAll('#mode-section .toggle-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.mode=m; applyTheme(); }
-function setRadius(v){ S.radius=parseInt(v); document.getElementById('radius-val').textContent=v+'px'; applyTheme(); applyPosition(); }
-function setSize(s,el){ document.querySelectorAll('[data-size]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.size=s; applyTheme(); applyPosition(); }
-function setPos(el){ document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.pos=el.dataset.pos; const top=isTop(),left=isLeft(); S.offsetDesktop={[top?'top':'bottom']:top?100:28,...(top?{}:{[left?'left':'right']:28})}; S.offsetMobile={[top?'top':'bottom']:top?80:16,...(top?{}:{[left?'left':'right']:16})}; buildOffsetFields(); buildBadge(); applyPosition(); panelOpen=false; document.getElementById('gr-panel').classList.remove('open'); }
-function setOffset(key,field,val){ S[key][field]=parseInt(val)||0; applyPosition(); }
-function setOffsetTab(tab,el){ activeOffsetTab=tab; document.querySelectorAll('.offset-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); document.getElementById('offset-desktop-fields').style.display=tab==='desktop'?'block':'none'; document.getElementById('offset-mobile-fields').style.display=tab==='mobile'?'block':'none'; }
-
-
-// ── PART 4: TOGGLE + DEVICE ──────────────────────────────────────────────────
+// ── TOGGLE PANEL ─────────────────────────────────────────────────────────────
 function togglePanel(){ panelOpen=!panelOpen; document.getElementById('gr-panel').classList.toggle('open',panelOpen); }
 
+// ── DEVICE SWITCHER ──────────────────────────────────────────────────────────
 function setDevice(dev,el){
   currentDevice=dev; document.querySelectorAll('.dev-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active');
   const frame=document.getElementById('device-frame'); const label=document.getElementById('device-label'); const stage=document.getElementById('preview-stage');
@@ -728,7 +554,6 @@ function badgeToDevice(){ document.getElementById('gr-badge').style.position='ab
 
 function updateTexts(){ document.getElementById('btn-write').textContent='✏️ '+S.ctaWrite; document.getElementById('btn-all').textContent=S.ctaAll; }
 
-function setLang(lang){ S.lang=lang; const t=LANGS[lang]; S.ctaWrite=t.writeReview; S.ctaAll=t.allReviews; document.getElementById('inp-write').value=t.writeReview; document.getElementById('inp-all').value=t.allReviews; document.getElementById('panel-count').textContent=`· 47 ${t.reviews}`; updateTexts(); buildBadge(); }
 
 /* CONTROLS */
 function setStyle(s,el){ document.querySelectorAll('[data-style]').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.style=s; applyTheme(); buildBadge(); }
@@ -741,8 +566,7 @@ function setPos(el){ document.querySelectorAll('.pos-btn').forEach(b=>b.classLis
 function setOffset(key,field,val){ S[key][field]=parseInt(val)||0; applyPosition(); }
 function setOffsetTab(tab,el){ activeOffsetTab=tab; document.querySelectorAll('.offset-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); document.getElementById('offset-desktop-fields').style.display=tab==='desktop'?'block':'none'; document.getElementById('offset-mobile-fields').style.display=tab==='mobile'?'block':'none'; }
 
-
-// ── PART 5: REVIEWS + INIT ───────────────────────────────────────────────────
+// ── REVIEWS RENDERER + INIT ──────────────────────────────────────────────────
 document.getElementById('panel-stars').innerHTML=Array(5).fill(STAR(12)).join('');
 
 function renderReviews(){
