@@ -157,6 +157,8 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{border-left:4px solid var(--success)}
 .toast.error{border-left:4px solid var(--danger)}
+.toast.info{border-left:4px solid #3b82f6}
+.toast.warning{border-left:4px solid #f59e0b}
 </style>
 </head>
 <body>
@@ -805,18 +807,22 @@ function handleOverlayClick(e) {
 
 function saveFromConfigurator() {
   const iframe = document.getElementById('cfg-iframe');
-  if (!iframe || !iframe.contentWindow) {
-    showToast('Konfigurátor sa načítava...', 'warning'); return;
+  if (!iframe || !iframe.contentWindow || !iframe.contentWindow.S) {
+    showToast('Konfigurátor sa ešte načítava, skús znova', 'error'); return;
   }
-  const btn = document.getElementById('modal-save-btn');
-  if (btn) { btn.disabled = true;
-    btn.innerHTML = '⏳ Ukladám...';
-    setTimeout(() => { btn.disabled = false;
-      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Uložiť widget';
-    }, 2500);
-  }
-  iframe.contentWindow.postMessage({type:'GET_CONFIG'}, '*');
+  const S = iframe.contentWindow.S;
+  const config = Object.assign({}, S, {
+    widgetType: S.widgetType || 'c0',
+    type: S.widgetType || 'c0',
+    savedAt: new Date().toISOString()
+  });
+  if (activeSlot===1) state.widget1 = config; else state.widget2 = config;
+  renderSlot(activeSlot, config);
+  closeConfigurator();
+  saveSettings();
+  showToast('Widget uložený ✓', 'success');
 }
+
 
 window.addEventListener('message', e => {
   if (!e.data?.type) return;
