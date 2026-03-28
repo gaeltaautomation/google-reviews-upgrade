@@ -476,6 +476,130 @@ function buildContextCopy(type){
   }
 }
 
+
+// ── WIDGET CORE (themes, state, badge, position) ─────────────────────────────
+const THEMES={
+  classic:{
+    light:{"--gr-bg":"#fff","--gr-border-style":"1.5px solid #e5e7eb","--gr-border-raw":"#e5e7eb","--gr-logo-bg":"#f3f4f6","--gr-text":"#111","--gr-text-muted":"#6b7280","--gr-text-body":"#4b5563","--gr-divider":"#f3f4f6","--gr-chip":"#f9fafb","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.10)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.16)","--gr-blur":"none"},
+    dark:{"--gr-bg":"#1f2937","--gr-border-style":"1.5px solid #374151","--gr-border-raw":"#374151","--gr-logo-bg":"#374151","--gr-text":"#f9fafb","--gr-text-muted":"#9ca3af","--gr-text-body":"#d1d5db","--gr-divider":"#374151","--gr-chip":"#374151","--gr-badge-shadow":"0 4px 20px rgba(0,0,0,.4)","--gr-badge-shadow-hover":"0 8px 32px rgba(0,0,0,.55)","--gr-blur":"none"}
+  },
+  modern:{base:{"--gr-bg":"#020617","--gr-border-style":"1.5px solid rgba(15,23,42,.9)","--gr-border-raw":"rgba(15,23,42,.9)","--gr-logo-bg":"#020617","--gr-text":"#e5e7eb","--gr-text-muted":"#9ca3af","--gr-text-body":"#cbd5e1","--gr-divider":"rgba(148,163,184,.3)","--gr-chip":"#020617","--gr-badge-shadow":"MODERN_S","--gr-badge-shadow-hover":"MODERN_SH","--gr-blur":"none"}},
+  glass:{base:{"--gr-bg":"rgba(255,255,255,.86)","--gr-border-style":"1px solid rgba(255,255,255,.95)","--gr-border-raw":"rgba(209,213,219,1)","--gr-logo-bg":"rgba(243,244,246,.96)","--gr-text":"#111827","--gr-text-muted":"#6b7280","--gr-text-body":"#4b5563","--gr-divider":"rgba(209,213,219,.9)","--gr-chip":"rgba(249,250,251,.9)","--gr-badge-shadow":"0 10px 32px rgba(15,23,42,.16)","--gr-badge-shadow-hover":"0 16px 46px rgba(15,23,42,.2)","--gr-blur":"blur(26px) saturate(1.9)"}}
+};
+
+function rgba(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgba(${r},${g},${b},${a})`;}
+
+const reviews=[
+  {name:"Jana Klincová",init:"JK",col:"#8b5cf6",r:5,date:"pred týždňom",text:"Spoluprácu s firmou pri migrácii na Shoptet hodnotím veľmi pozitívne. Celý proces prebehol hladko, profesionálne a bez zbytočných komplikácií."},
+  {name:"Erik Svitek",init:"ES",col:"#059669",r:5,date:"pred týždňom",text:"Maximálna spokojnosť. Na všetko našli riešenie rýchlo. Vrelo odporúčam!"},
+  {name:"Dimo Van",init:"DV",col:"#2563eb",r:5,date:"pred mesiacom",text:"S firmou Gaelta som mal výbornú skúsenosť. Oceňujem promptnú komunikáciu, profesionalitu a precízne spracovanie každého detailu."},
+  {name:"Sarah Ivičičová",init:"SI",col:"#db2777",r:5,date:"pred mesiacom",text:"Skvelá práca, veľmi odporúčam!"},
+  {name:"Amer Arslan",init:"AA",col:"#d97706",r:5,date:"pred mesiacom",text:"Profesionálni, efektívni a ľahko sa s nimi spolupracuje. Vrelo odporúčam!"}
+];
+
+const SIZES={S:.82,M:1,L:1.22};
+const GAP=10;
+let panelOpen=false,currentDevice='desktop',activeOffsetTab='desktop';
+let S={
+  style:'classic',accent:'#4285F4',mode:'light',radius:14,size:'M',pos:'bottom-right',
+  offsetDesktop:{bottom:28,right:28},offsetMobile:{bottom:16,right:16},
+  lang:'sk',ctaWrite:'Napísať recenziu',ctaAll:'Všetky recenzie',
+  showCount:true,devDesktop:true,devTablet:true,devMobile:true
+};
+
+function isTop(){return S.pos.startsWith('top');}
+function isLeft(){return S.pos.endsWith('left');}
+
+function applyTheme(){
+  const root=document.documentElement; let vars;
+  if(S.style==='classic') vars={...THEMES.classic[S.mode]};
+  else if(S.style==='modern') vars={...THEMES.modern.base};
+  else vars={...THEMES.glass.base};
+  for(const [k,v] of Object.entries(vars)){
+    let val=v;
+    if(val==='MODERN_S') val=`0 0 0 1px rgba(15,23,42,.9), 0 0 26px ${rgba(S.accent,.45)}`;
+    if(val==='MODERN_SH') val=`0 0 0 1px ${rgba(S.accent,.75)}, 0 0 40px ${rgba(S.accent,.6)}`;
+    root.style.setProperty(k,val);
+  }
+  root.style.setProperty('--accent',S.accent);
+  root.style.setProperty('--radius',S.radius+'px');
+  document.getElementById('mode-section').style.display=S.style==='classic'?'block':'none';
+  const posL={"bottom-right":"Dole vpravo","bottom-left":"Dole vľavo","top-right":"Hore vpravo","top-left":"Hore vľavo"};
+  const modeL=S.style==='classic'?(S.mode==='dark'?' · Dark':' · Light'):'';
+  document.getElementById('preview-dot').style.background=S.accent;
+  document.getElementById('preview-dot').style.boxShadow=`0 0 8px ${S.accent}`;
+  document.getElementById('preview-text').textContent=`${S.style[0].toUpperCase()+S.style.slice(1)}${modeL} · ${S.size} · ${posL[S.pos]}`;
+}
+
+function buildBadge(){
+  const badge=document.getElementById('gr-badge');
+  const top=isTop(),left=isLeft(); const t=LANGS[S.lang];
+  badge.className=top?'vert':'horiz'; if(top) badge.classList.add(left?'side-left':'side-right');
+  if(top){
+    badge.innerHTML=`<div class="vert-stars">${Array(5).fill(STAR(14)).join('')}</div>`+(S.showCount?`<span class="vert-count">47 ${t.reviews}</span>`:'')+`<div class="vert-divider"></div><span class="vert-score">5.0</span><div class="gr-logo-wrap" style="width:26px;height:26px;margin-top:2px">${G_SVG(16)}</div>`;
+  }else{
+    const scoreColor=S.style==='modern'?S.accent:'var(--gr-text,#111)';
+    badge.innerHTML=`<div class="gr-logo-wrap" style="width:42px;height:42px">${G_SVG(26)}</div><div class="gr-badge-info"><span class="gr-badge-label">${t.label}</span><div class="gr-score-block"><span class="gr-badge-score" style="color:${scoreColor}">5.0</span><div class="gr-stars-count"><div class="gr-badge-stars">${Array(5).fill(STAR(14)).join('')}</div>${S.showCount?`<span class="gr-badge-count">47 ${t.reviews}</span>`:''}</div></div></div>`;
+  }
+}
+
+function applyPosition(){
+  const badge=document.getElementById('gr-badge'); const panel=document.getElementById('gr-panel');
+  const top=isTop(),left=isLeft(); const o=currentDevice==='mobile'?S.offsetMobile:S.offsetDesktop; const sc=SIZES[S.size];
+
+  if(currentDevice==='desktop'){
+    if(top){
+      badge.style.position='fixed'; badge.style.top=(o.top||100)+'px'; badge.style.bottom='auto'; badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
+      badge.style.transform=`scale(${sc})`; badge.style.transformOrigin=`top ${left?'left':'right'}`;
+    }else{
+      const safeLeft=left?Math.max(o.left||28,300):0; // nesmie ísť pod sidebar
+      badge.style.position='fixed'; badge.style.top='auto'; badge.style.bottom=(o.bottom||28)+'px'; badge.style.left=left?safeLeft+'px':'auto'; badge.style.right=!left?(o.right||28)+'px':'auto';
+      badge.style.transform=`scale(${sc})`; badge.style.transformOrigin=`bottom ${left?'left':'right'}`;
+    }
+    setTimeout(()=>{
+      const br=badge.getBoundingClientRect();
+      if(top){
+        if(left){ panel.style.left=(br.right+GAP)+'px'; panel.style.right='auto'; }
+        else{ panel.style.right=(window.innerWidth-br.left+GAP)+'px'; panel.style.left='auto'; }
+        panel.style.top=Math.max(8,br.top)+'px'; panel.style.bottom='auto';
+      }else{
+        panel.style.bottom=((o.bottom||28)+br.height+GAP)+'px'; panel.style.top='auto'; panel.style.left=left?(Math.max(o.left||28,300))+'px':'auto'; panel.style.right=!left?(o.right||28)+'px':'auto';
+      }
+    },40);
+  }else{
+    const stage=document.getElementById('device-stage'); const sRect=stage.getBoundingClientRect();
+    badge.style.position='absolute'; badge.style.transform=`scale(${sc})`;
+    if(top){
+      badge.style.top=(o.top||40)+'px'; badge.style.bottom='auto'; badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
+    }else{
+      badge.style.top='auto'; badge.style.bottom=(o.bottom||32)+'px'; badge.style.left=left?(o.left||24)+'px':'auto'; badge.style.right=!left?(o.right||24)+'px':'auto';
+    }
+    setTimeout(()=>{
+      const br=badge.getBoundingClientRect();
+      if(top){
+        if(left){ panel.style.left=(br.right+GAP)+'px'; panel.style.right='auto'; }
+        else{ panel.style.right=(sRect.right-br.left+GAP)+'px'; panel.style.left='auto'; }
+        panel.style.top=Math.max(sRect.top+8,br.top)+'px'; panel.style.bottom='auto';
+      }else{
+        panel.style.bottom=(sRect.bottom-br.bottom+GAP)+'px'; panel.style.top='auto'; panel.style.left=left?br.left+'px':'auto'; panel.style.right=!left?(sRect.right-br.right)+'px':'auto';
+      }
+    },40);
+  }
+}
+
+function buildOffsetFields(){
+  const top=isTop(),left=isLeft(); const vKey=top?'top':'bottom',hKey=left?'left':'right';
+  function fields(prefix,obj){
+    let h=`<div class="offset-row"><label>${top?'Od vrchu':'Od spodu'}</label><input class="offset-input" type="number" value="${obj[vKey]||28}" min="0" max="400" oninput="setOffset('${prefix}','${vKey}',this.value)"> px</div>`;
+    if(!top) h+=`<div class="offset-row" style="margin-top:6px"><label>${left?'Od ľava':'Od prava'}</label><input class="offset-input" type="number" value="${obj[hKey]||28}" min="0" max="400" oninput="setOffset('${prefix}','${hKey}',this.value)"> px</div>`;
+    else h+=`<p style="font-size:11px;color:#9ca3af;margin-top:8px">Tab je prichytený k hrane – horizontálny offset sa nenastavuje.</p>`;
+    return h;
+  }
+  document.getElementById('offset-desktop-fields').innerHTML=fields('offsetDesktop',S.offsetDesktop);
+  document.getElementById('offset-mobile-fields').innerHTML=fields('offsetMobile',S.offsetMobile);
+}
+
+
 // ── SWITCH TYPE ───────────────────────────────────────────────────────────────
 function switchType(type, el) {
   S.widgetType = type;
