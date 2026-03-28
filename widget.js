@@ -567,21 +567,25 @@ function applyPosition(){
 
   if(currentDevice==='desktop'){
     if(top){
-      badge.style.position='fixed'; badge.style.top=(o.top||100)+'px'; badge.style.bottom='auto'; badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
+      badge.style.position='absolute'; badge.style.top=(o.top||100)+'px'; badge.style.bottom='auto'; badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
       badge.style.transform=`scale(${sc})`; badge.style.transformOrigin=`top ${left?'left':'right'}`;
     }else{
-      const safeLeft=left?Math.max(o.left||28,300):0; // nesmie ísť pod sidebar
-      badge.style.position='fixed'; badge.style.top='auto'; badge.style.bottom=(o.bottom||28)+'px'; badge.style.left=left?safeLeft+'px':'auto'; badge.style.right=!left?(o.right||28)+'px':'auto';
+      badge.style.position='absolute'; badge.style.top='auto'; badge.style.bottom=(o.bottom||28)+'px'; badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
       badge.style.transform=`scale(${sc})`; badge.style.transformOrigin=`bottom ${left?'left':'right'}`;
     }
     setTimeout(()=>{
+      const stage=document.getElementById('preview-stage')||document.body;
+      const sr=stage.getBoundingClientRect();
       const br=badge.getBoundingClientRect();
+      const relBottom=sr.bottom-br.bottom; const relRight=sr.right-br.right;
+      const relLeft=br.left-sr.left; const relTop=br.top-sr.top;
       if(top){
-        if(left){ panel.style.left=(br.right+GAP)+'px'; panel.style.right='auto'; }
-        else{ panel.style.right=(window.innerWidth-br.left+GAP)+'px'; panel.style.left='auto'; }
-        panel.style.top=Math.max(8,br.top)+'px'; panel.style.bottom='auto';
+        if(left){ panel.style.left=(relLeft+br.width+GAP)+'px'; panel.style.right='auto'; }
+        else{ panel.style.right=(relRight+br.width+GAP)+'px'; panel.style.left='auto'; }
+        panel.style.top=Math.max(8,relTop)+'px'; panel.style.bottom='auto';
       }else{
-        panel.style.bottom=((o.bottom||28)+br.height+GAP)+'px'; panel.style.top='auto'; panel.style.left=left?(Math.max(o.left||28,300))+'px':'auto'; panel.style.right=!left?(o.right||28)+'px':'auto';
+        panel.style.bottom=(relBottom+br.height+GAP)+'px'; panel.style.top='auto';
+        panel.style.left=left?(o.left||28)+'px':'auto'; panel.style.right=!left?(o.right||28)+'px':'auto';
       }
     },40);
   }else{
@@ -755,33 +759,6 @@ renderReviews(); buildBadge(); buildOffsetFields(); applyTheme(); applyPosition(
 if (S._initType) switchType(S._initType, document.querySelector(`.type-btn[data-type="${S._initType}"]`));
 window.addEventListener('resize', applyPosition);
 
-// ── doSave — called by save button ──────────────────────────────────────────
-function doSave() {
-  const btn = document.getElementById('cfg-save-btn');
-  if (btn) { btn.textContent = '⏳ Ukladám...'; btn.disabled = true; }
-  const config = Object.assign({}, S, { widgetType: S.widgetType||'c0', type: S.widgetType||'c0' });
-  // if inside iframe → tell parent
-  if (window.parent && window.parent !== window) {
-    window.parent.postMessage({ type: 'CONFIG_DATA', config: config }, '*');
-  } else {
-    // standalone mode — just show toast
-    if (typeof showToast === 'function') showToast('Widget uložený ✓', 'success');
-  }
-  setTimeout(() => {
-    if (btn) { btn.textContent = '✓ Uložiť widget'; btn.disabled = false; }
-  }, 1500);
-}
-
-// ── Single save footer — added ONCE after full init ──────────────────────────
-(function() {
-  const cfg = document.getElementById('config');
-  if (!cfg || document.getElementById('cfg-save-footer')) return;
-  const f = document.createElement('div');
-  f.id = 'cfg-save-footer';
-  f.className = 'cfg-save-footer';
-  f.innerHTML = '<button class="cfg-save-btn" id="cfg-save-btn" onclick="doSave()">✓ Uložiť widget</button>';
-  cfg.appendChild(f);
-})();
 
 // ── IFRAME POSTMESSAGE BRIDGE (pre admin konfigurátor) ───────────────────────
 // Admin posiela LOAD_CONFIG → načítame stav do S a prestavíme UI
