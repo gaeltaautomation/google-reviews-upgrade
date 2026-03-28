@@ -441,9 +441,30 @@ let obStep = 1;
 function init() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) { try { Object.assign(state, JSON.parse(saved)); } catch(e) {} }
-  applyState();
-  loadGMBProfiles();
-  updateLastSavedBadge();
+  // Load from Rails - overrides localStorage with server truth
+  fetch('/shop/data', { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' } })
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (!data) return;
+      if (data.active !== undefined) state.active = data.active;
+      if (data.place_id) state.placeIdManual = data.place_id;
+      if (data.widget1) state.widget1 = data.widget1;
+      if (data.widget2) state.widget2 = data.widget2;
+      if (data.logo_url) state.logoUrl = data.logo_url;
+      state._shopName = data.shop_name;
+      state._rating = data.rating;
+      state._ratingsTotal = data.ratings_total;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      applyState();
+      loadGMBProfiles();
+      updateLastSavedBadge();
+    })
+    .catch(() => {
+      // Offline fallback - use localStorage
+      applyState();
+      loadGMBProfiles();
+      updateLastSavedBadge();
+    });
   if (!localStorage.getItem(OB_KEY)) showOnboarding();
 }
 
@@ -528,8 +549,32 @@ function saveSettings() {
   dirty = false;
   document.getElementById('save-bar').classList.remove('visible');
   updateLastSavedBadge();
-  showToast('Nastavenia uložené', 'success');
-  // POST na Rails: /shop/update_settings
+
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+  fetch('/shop/update_new_admin', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'X-CSRF-Token': csrfToken,
+      'X-Requested-With': 'XMLHttpRequest'
+    },
+    body: JSON.stringify({
+      active: state.active,
+      place_id: state.placeIdManual || state.gmbProfileId,
+      widget1: state.widget1,
+      widget2: state.widget2
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.ok) {
+      showToast('Nastavenia uložené', 'success');
+    } else {
+      showToast('Chyba pri ukladaní: ' + (data.errors||[]).join(', '), 'error');
+    }
+  })
+  .catch(() => showToast('Nastavenia uložené lokálne (offline)', 'warning'));
 }
 
 function updateLastSavedBadge() {
