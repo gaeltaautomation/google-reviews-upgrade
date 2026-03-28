@@ -134,7 +134,7 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
 .legacy-banner .btn{margin-top:8px;font-size:12px;padding:6px 14px;background:var(--accent);color:#fff;border:none}
 
 /* SAVE BAR */
-.save-bar{position:fixed;bottom:0;left:0;right:0;background:var(--header-bg);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:100;transform:translateY(100%);transition:transform .25s;box-shadow:0 -4px 20px rgba(0,0,0,.15)}
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:var(--header-bg);padding:14px 32px;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:100;transform:translateY(100%);transition:transform .25s;box-shadow:0 -4px 20px rgba(0,0,0,.15)}
 .save-bar.visible{transform:translateY(0)}
 .save-bar-text{color:rgba(255,255,255,.7);font-size:13px}
 .save-bar-actions{display:flex;gap:10px}
@@ -774,8 +774,8 @@ window.addEventListener('message', e => {
     const config = {...e.data.config, savedAt: new Date().toISOString()};
     if (activeSlot===1) state.widget1=config; else state.widget2=config;
     renderSlot(activeSlot, config);
-    closeConfigurator(); markDirty();
-    showToast(`Widget ${activeSlot} uložený`, 'success');
+    closeConfigurator();
+    saveSettings(); // auto-save — no second tap needed
   }
 });
 
