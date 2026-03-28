@@ -424,7 +424,7 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeConfigurator()">Zrušiť</button>
-      <button class="btn btn-primary" onclick="saveFromConfigurator()">
+      <button class="btn btn-primary" id="modal-save-btn" onclick="saveFromConfigurator()" style="min-width:140px;font-size:14px;padding:10px 20px;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         Uložiť widget
       </button>
@@ -766,7 +766,18 @@ function handleOverlayClick(e) {
 }
 
 function saveFromConfigurator() {
-  document.getElementById('cfg-iframe').contentWindow.postMessage({type:'GET_CONFIG'},'*');
+  const iframe = document.getElementById('cfg-iframe');
+  if (!iframe || !iframe.contentWindow) {
+    showToast('Konfigurátor sa načítava...', 'warning'); return;
+  }
+  const btn = document.getElementById('modal-save-btn');
+  if (btn) { btn.disabled = true;
+    btn.innerHTML = '⏳ Ukladám...';
+    setTimeout(() => { btn.disabled = false;
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Uložiť widget';
+    }, 2500);
+  }
+  iframe.contentWindow.postMessage({type:'GET_CONFIG'}, '*');
 }
 
 window.addEventListener('message', e => {
