@@ -807,10 +807,16 @@ function handleOverlayClick(e) {
 
 function saveFromConfigurator() {
   const iframe = document.getElementById('cfg-iframe');
-  if (!iframe || !iframe.contentWindow || !iframe.contentWindow.S) {
-    showToast('Konfigurátor sa ešte načítava, skús znova', 'error'); return;
+  if (!iframe || !iframe.contentWindow) {
+    showToast('Konfigurátor sa ešte načítava', 'error'); return;
   }
+  // S is var-scoped in widget.js → accessible via contentWindow
   const S = iframe.contentWindow.S;
+  if (!S) {
+    // Fallback: postMessage for edge cases
+    iframe.contentWindow.postMessage({type:'GET_CONFIG'}, '*');
+    return;
+  }
   const config = Object.assign({}, S, {
     widgetType: S.widgetType || 'c0',
     type: S.widgetType || 'c0',
@@ -822,6 +828,7 @@ function saveFromConfigurator() {
   saveSettings();
   showToast('Widget uložený ✓', 'success');
 }
+
 
 
 window.addEventListener('message', e => {
