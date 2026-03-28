@@ -628,7 +628,7 @@ function buildOffsetFields(){
 function switchType(type, el) {
   S.widgetType = type;
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
+  if (el) el.classList.add('active');
 
   const dyn = document.getElementById('cfg-dynamic');
   if (dyn) dyn.innerHTML = WIDGET_TYPES[type].sections.map(s => SECTIONS[s] ? SECTIONS[s]() : '').join('');
@@ -1027,6 +1027,10 @@ function _init() {
   const _type = S.widgetType || 'c0';
   const _el = document.querySelector(`.type-btn[data-type="${_type}"]`);
   switchType(_type, _el || {classList:{add:()=>{},remove:()=>{}}});
+  // Signal parent admin that widget is ready — AFTER full render
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: 'WIDGET_READY' }, '*');
+  }
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', _init);
@@ -1034,10 +1038,6 @@ if (document.readyState === 'loading') {
   _init();
 }
 window.addEventListener('resize', applyPosition);
-// Notify admin parent that widget is fully initialised
-if (window.parent && window.parent !== window) {
-  window.parent.postMessage({ type: 'WIDGET_READY' }, '*');
-}
 
 
 // ── IFRAME POSTMESSAGE BRIDGE (pre admin konfigurátor) ───────────────────────
