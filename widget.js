@@ -27,9 +27,9 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">✦</span> Štýl</div>
       <div class="cfg-row">
-        <div class="pill-btn ${S.style==='classic'?'active':''}\" data-style="classic" onclick="setStyle('classic',this)">Classic</div>
-        <div class="pill-btn ${S.style==='modern'?'active':''}\" data-style="modern" onclick="setStyle('modern',this)">Modern</div>
-        <div class="pill-btn ${S.style==='glass'?'active':''}\" data-style="glass" onclick="setStyle('glass',this)">Glass</div>
+        <div class="pill-btn ${S.style==='classic'?'active':''}" data-style="classic" onclick="setStyle('classic',this)">Classic</div>
+        <div class="pill-btn ${S.style==='modern'?'active':''}" data-style="modern" onclick="setStyle('modern',this)">Modern</div>
+        <div class="pill-btn ${S.style==='glass'?'active':''}" data-style="glass" onclick="setStyle('glass',this)">Glass</div>
       </div>
     </div>
     <div class="cfg-section">
@@ -39,8 +39,8 @@ const SECTIONS = {
     <div class="cfg-section" id="mode-section">
       <div class="cfg-label"><span class="cfg-label-icon">◐</span> Farebná schéma</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.mode==='light'?'active':''}\" onclick="setMode('light',this)">☀️ Svetlá</div>
-        <div class="toggle-btn ${S.mode==='dark'?'active':''}\" onclick="setMode('dark',this)">🌙 Tmavá</div>
+        <div class="toggle-btn ${S.mode==='light'?'active':''}" onclick="setMode('light',this)">☀️ Svetlá</div>
+        <div class="toggle-btn ${S.mode==='dark'?'active':''}" onclick="setMode('dark',this)">🌙 Tmavá</div>
       </div>
     </div>
     <div class="cfg-section">
@@ -53,9 +53,9 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">⊡</span> Veľkosť</div>
       <div class="cfg-row">
-        <div class="pill-btn ${S.size==='S'?'active':''}\" data-size="S" onclick="setSize('S',this)">S · Malý</div>
-        <div class="pill-btn ${S.size==='M'?'active':''}\" data-size="M" onclick="setSize('M',this)">M · Stredný</div>
-        <div class="pill-btn ${S.size==='L'?'active':''}\" data-size="L" onclick="setSize('L',this)">L · Veľký</div>
+        <div class="pill-btn ${S.size==='S'?'active':''}" data-size="S" onclick="setSize('S',this)">S · Malý</div>
+        <div class="pill-btn ${S.size==='M'?'active':''}" data-size="M" onclick="setSize('M',this)">M · Stredný</div>
+        <div class="pill-btn ${S.size==='L'?'active':''}" data-size="L" onclick="setSize('L',this)">L · Veľký</div>
       </div>
     </div>`,
 
@@ -68,8 +68,8 @@ const SECTIONS = {
     <div class="cfg-section" id="mode-section">
       <div class="cfg-label"><span class="cfg-label-icon">◐</span> Farebná schéma</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.mode==='light'?'active':''}\" onclick="setMode('light',this)">☀️ Svetlá</div>
-        <div class="toggle-btn ${S.mode==='dark'?'active':''}\" onclick="setMode('dark',this)">🌙 Tmavá</div>
+        <div class="toggle-btn ${S.mode==='light'?'active':''}" onclick="setMode('light',this)">☀️ Svetlá</div>
+        <div class="toggle-btn ${S.mode==='dark'?'active':''}" onclick="setMode('dark',this)">🌙 Tmavá</div>
       </div>
     </div>`,
 
@@ -89,9 +89,9 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">⊡</span> Veľkosť</div>
       <div class="cfg-row">
-        <div class="pill-btn ${S.size==='S'?'active':''}\" data-size="S" onclick="setSize('S',this)">S · Malý</div>
-        <div class="pill-btn ${S.size==='M'?'active':''}\" data-size="M" onclick="setSize('M',this)">M · Stredný</div>
-        <div class="pill-btn ${S.size==='L'?'active':''}\" data-size="L" onclick="setSize('L',this)">L · Veľký</div>
+        <div class="pill-btn ${S.size==='S'?'active':''}" data-size="S" onclick="setSize('S',this)">S · Malý</div>
+        <div class="pill-btn ${S.size==='M'?'active':''}" data-size="M" onclick="setSize('M',this)">M · Stredný</div>
+        <div class="pill-btn ${S.size==='L'?'active':''}" data-size="L" onclick="setSize('L',this)">L · Veľký</div>
       </div>
     </div>`,
 
@@ -100,13 +100,13 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">⊕</span> Pozícia na stránke</div>
       <div class="pos-grid">
-        <div class="pos-btn ${S.pos==='top-left'?'active':''}\" data-pos="top-left" onclick="setPos(this)">↖ Hore<br>vľavo</div>
+        <div class="pos-btn ${S.pos==='top-left'?'active':''}" data-pos="top-left" onclick="setPos(this)">↖ Hore<br>vľavo</div>
         <div class="pos-btn hb"></div>
-        <div class="pos-btn ${S.pos==='top-right'?'active':''}\" data-pos="top-right" onclick="setPos(this)">↗ Hore<br>vpravo</div>
+        <div class="pos-btn ${S.pos==='top-right'?'active':''}" data-pos="top-right" onclick="setPos(this)">↗ Hore<br>vpravo</div>
         <div class="pos-btn hb"></div><div class="pos-btn hb"></div><div class="pos-btn hb"></div>
-        <div class="pos-btn ${S.pos==='bottom-left'?'active':''}\" data-pos="bottom-left" onclick="setPos(this)">↙ Dole<br>vľavo</div>
+        <div class="pos-btn ${S.pos==='bottom-left'?'active':''}" data-pos="bottom-left" onclick="setPos(this)">↙ Dole<br>vľavo</div>
         <div class="pos-btn hb"></div>
-        <div class="pos-btn ${S.pos==='bottom-right'?'active':''}\" data-pos="bottom-right" onclick="setPos(this)">↘ Dole<br>vpravo</div>
+        <div class="pos-btn ${S.pos==='bottom-right'?'active':''}" data-pos="bottom-right" onclick="setPos(this)">↘ Dole<br>vpravo</div>
       </div>
     </div>
     <div class="cfg-section">
@@ -124,8 +124,8 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">⊕</span> Kde sa lišta zobrazí</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.barPos==='top'?'active':''}\" onclick="setBarPos('top',this)">▲ Nad hlavičkou</div>
-        <div class="toggle-btn ${S.barPos==='bottom'?'active':''}\" onclick="setBarPos('bottom',this)">▼ Pod hlavičkou</div>
+        <div class="toggle-btn ${S.barPos==='top'?'active':''}" onclick="setBarPos('top',this)">▲ Nad hlavičkou</div>
+        <div class="toggle-btn ${S.barPos==='bottom'?'active':''}" onclick="setBarPos('bottom',this)">▼ Pod hlavičkou</div>
       </div>
     </div>`,
 
@@ -160,8 +160,8 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">✖</span> Návštevník môže zatvoriť</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.barDismissible?'active':''}\" onclick="setBarDismissible(true,this)">Áno</div>
-        <div class="toggle-btn ${!S.barDismissible?'active':''}\" onclick="setBarDismissible(false,this)">Nie</div>
+        <div class="toggle-btn ${S.barDismissible?'active':''}" onclick="setBarDismissible(true,this)">Áno</div>
+        <div class="toggle-btn ${!S.barDismissible?'active':''}" onclick="setBarDismissible(false,this)">Nie</div>
       </div>
     </div>`,
 
@@ -183,17 +183,17 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">⭐</span> Minimálne hodnotenie</div>
       <div class="cfg-row">
-        <div class="pill-btn ${S.minRating===0?'active':''}\" data-minrating="0" onclick="setMinRating(0,this)">Všetky</div>
-        <div class="pill-btn ${S.minRating===4?'active':''}\" data-minrating="4" onclick="setMinRating(4,this)">4★ a viac</div>
-        <div class="pill-btn ${S.minRating===5?'active':''}\" data-minrating="5" onclick="setMinRating(5,this)">Len 5★</div>
+        <div class="pill-btn ${S.minRating===0?'active':''}" data-minrating="0" onclick="setMinRating(0,this)">Všetky</div>
+        <div class="pill-btn ${S.minRating===4?'active':''}" data-minrating="4" onclick="setMinRating(4,this)">4★ a viac</div>
+        <div class="pill-btn ${S.minRating===5?'active':''}" data-minrating="5" onclick="setMinRating(5,this)">Len 5★</div>
       </div>
     </div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">#</span> Počet zobrazených recenzií</div>
       <div class="cfg-row">
-        <div class="pill-btn ${S.reviewCount===3?'active':''}\" data-count="3" onclick="setReviewCount(3,this)">3 <span style="opacity:.55;font-size:9px">lite</span></div>
-        <div class="pill-btn ${S.reviewCount===5?'active':''}\" data-count="5" onclick="setReviewCount(5,this)">5 <span style="opacity:.55;font-size:9px">default</span></div>
-        <div class="pill-btn ${S.reviewCount===10?'active':''}\" data-count="10" onclick="setReviewCount(10,this)">10 <span style="opacity:.55;font-size:9px">pro</span></div>
+        <div class="pill-btn ${S.reviewCount===3?'active':''}" data-count="3" onclick="setReviewCount(3,this)">3 <span style="opacity:.55;font-size:9px">lite</span></div>
+        <div class="pill-btn ${S.reviewCount===5?'active':''}" data-count="5" onclick="setReviewCount(5,this)">5 <span style="opacity:.55;font-size:9px">default</span></div>
+        <div class="pill-btn ${S.reviewCount===10?'active':''}" data-count="10" onclick="setReviewCount(10,this)">10 <span style="opacity:.55;font-size:9px">pro</span></div>
       </div>
     </div>
     <div class="cfg-section">
@@ -206,15 +206,15 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">📅</span> Dátum recenzie</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}\" onclick="setDateFormat('relative',this)">pred X dňami</div>
-        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}\" onclick="setDateFormat('absolute',this)">Konkrétny dátum</div>
+        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}" onclick="setDateFormat('relative',this)">pred X dňami</div>
+        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}" onclick="setDateFormat('absolute',this)">Konkrétny dátum</div>
       </div>
     </div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">🗣</span> Zobraziť odpoveď obchodu</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.ownerReply==='show'?'active':''}\" onclick="setOwnerReply('show',this)">Zobraziť</div>
-        <div class="toggle-btn ${S.ownerReply==='hide'?'active':''}\" onclick="setOwnerReply('hide',this)">Skryť</div>
+        <div class="toggle-btn ${S.ownerReply==='show'?'active':''}" onclick="setOwnerReply('show',this)">Zobraziť</div>
+        <div class="toggle-btn ${S.ownerReply==='hide'?'active':''}" onclick="setOwnerReply('hide',this)">Skryť</div>
       </div>
     </div>`,
 
@@ -223,17 +223,17 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">⭐</span> Minimálne hodnotenie</div>
       <div class="cfg-row">
-        <div class="pill-btn ${S.minRating===0?'active':''}\" data-minrating="0" onclick="setMinRating(0,this)">Všetky</div>
-        <div class="pill-btn ${S.minRating===4?'active':''}\" data-minrating="4" onclick="setMinRating(4,this)">4★ a viac</div>
-        <div class="pill-btn ${S.minRating===5?'active':''}\" data-minrating="5" onclick="setMinRating(5,this)">Len 5★</div>
+        <div class="pill-btn ${S.minRating===0?'active':''}" data-minrating="0" onclick="setMinRating(0,this)">Všetky</div>
+        <div class="pill-btn ${S.minRating===4?'active':''}" data-minrating="4" onclick="setMinRating(4,this)">4★ a viac</div>
+        <div class="pill-btn ${S.minRating===5?'active':''}" data-minrating="5" onclick="setMinRating(5,this)">Len 5★</div>
       </div>
     </div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">#</span> Počet kariet v karuseli</div>
       <div class="cfg-row">
-        <div class="pill-btn ${S.reviewCount===3?'active':''}\" data-count="3" onclick="setReviewCount(3,this)">3</div>
-        <div class="pill-btn ${S.reviewCount===5?'active':''}\" data-count="5" onclick="setReviewCount(5,this)">5</div>
-        <div class="pill-btn ${S.reviewCount===8?'active':''}\" data-count="8" onclick="setReviewCount(8,this)">8</div>
+        <div class="pill-btn ${S.reviewCount===3?'active':''}" data-count="3" onclick="setReviewCount(3,this)">3</div>
+        <div class="pill-btn ${S.reviewCount===5?'active':''}" data-count="5" onclick="setReviewCount(5,this)">5</div>
+        <div class="pill-btn ${S.reviewCount===8?'active':''}" data-count="8" onclick="setReviewCount(8,this)">8</div>
       </div>
     </div>
     <div class="cfg-section">
@@ -246,15 +246,15 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">📅</span> Dátum recenzie</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}\" onclick="setDateFormat('relative',this)">pred X dňami</div>
-        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}\" onclick="setDateFormat('absolute',this)">Konkrétny dátum</div>
+        <div class="toggle-btn ${S.dateFormat==='relative'?'active':''}" onclick="setDateFormat('relative',this)">pred X dňami</div>
+        <div class="toggle-btn ${S.dateFormat==='absolute'?'active':''}" onclick="setDateFormat('absolute',this)">Konkrétny dátum</div>
       </div>
     </div>
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">🗣</span> Zobraziť odpoveď obchodu</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.ownerReply==='show'?'active':''}\" onclick="setOwnerReply('show',this)">Zobraziť</div>
-        <div class="toggle-btn ${S.ownerReply==='hide'?'active':''}\" onclick="setOwnerReply('hide',this)">Skryť</div>
+        <div class="toggle-btn ${S.ownerReply==='show'?'active':''}" onclick="setOwnerReply('show',this)">Zobraziť</div>
+        <div class="toggle-btn ${S.ownerReply==='hide'?'active':''}" onclick="setOwnerReply('hide',this)">Skryť</div>
       </div>
     </div>`,
 
@@ -298,7 +298,7 @@ const SECTIONS = {
 
 function renderColorRow(){
   const colors=['#4285F4','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#111827'];
-  return colors.map(c=>`<div class="color-swatch ${S.accent===c?'active':''}\" style="background:${c}" data-color="${c}" onclick="setColor(this)"></div>`).join('')
+  return colors.map(c=>`<div class="color-swatch ${S.accent===c?'active':''}" style="background:${c}" data-color="${c}" onclick="setColor(this)"></div>`).join('')
     + `<div class="color-custom">+<input type="color" value="${S.accent}" oninput="setColorHex(this.value)"></div>`;
 }
 
@@ -758,6 +758,10 @@ function col(i){ document.getElementById('s'+i).classList.remove('hidden'); docu
 renderReviews(); buildBadge(); buildOffsetFields(); applyTheme(); applyPosition();
 if (S._initType) switchType(S._initType, document.querySelector(`.type-btn[data-type="${S._initType}"]`));
 window.addEventListener('resize', applyPosition);
+// Notify admin parent that widget is fully initialised
+if (window.parent && window.parent !== window) {
+  window.parent.postMessage({ type: 'WIDGET_READY' }, '*');
+}
 
 
 // ── IFRAME POSTMESSAGE BRIDGE (pre admin konfigurátor) ───────────────────────
