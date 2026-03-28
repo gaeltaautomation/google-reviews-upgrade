@@ -454,6 +454,8 @@ function init() {
       state._shopName = data.shop_name;
       state._rating = data.rating;
       state._ratingsTotal = data.ratings_total;
+      // Detekcia starých klientov: majú widget_style ale nemajú nový widget config
+      if (data.is_legacy_shop && !data.widget1 && !data.widget2) state.isLegacy = true;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       applyState();
       loadGMBProfiles();
@@ -482,12 +484,40 @@ function applyState() {
 
 function loadGMBProfiles() {
   const select = document.getElementById('gmb-select');
-  const profiles = [
-    {id:'', label:'— Vyberte profil —'},
-    {id:'ChIJexample1', label:'Sklníky Dúha – Bratislava'},
-    {id:'ChIJexample2', label:'Moja firma – Košice'}
-  ];
-  select.innerHTML = profiles.map(p => `<option value="${p.id}"${p.id===state.gmbProfileId?' selected':''}>${p.label}</option>`).join('');
+  const currentId = state.placeIdManual || state.gmbProfileId || '';
+  const currentName = state._shopName || '';
+  // Build profiles: empty + current shop from Rails (if exists) + manual option
+  const profiles = [{id:'', label:'— Vyberte profil —'}];
+  if (currentId && currentName) profiles.push({id: currentId, label: currentName});
+  select.innerHTML = profiles.map(p =>
+    `<option value="${p.id}"${p.id===currentId?' selected':''}>${p.label}</option>`
+  ).join('');
+  // Live search: debounced fetch to /place_search?s=
+  const searchInput = document.getElementById('place-id-input');
+  if (searchInput && !searchInput._psWired) {
+    searchInput._psWired = true;
+    let _t;
+    searchInput.addEventListener('input', function() {
+      clearTimeout(_t);
+      const q = this.value.trim();
+      if (q.length < 3) return;
+      _t = setTimeout(() => {
+        fetch(`/place_search?s=${encodeURIComponent(q)}`, {
+          headers: {'Accept':'application/json','X-Requested-With':'XMLHttpRequest'}
+        })
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (!data || !data.candidates) return;
+          const opts = [{id:'',label:'— Vyberte profil —'}];
+          data.candidates.forEach(c => opts.push({id: c.place_id, label: c.name + (c.formatted_address ? ' – ' + c.formatted_address : '')}));
+          select.innerHTML = opts.map(p =>
+            `<option value="${p.id}">${p.label}</option>`
+          ).join('');
+        })
+        .catch(()=>{});
+      }, 400);
+    });
+  }
 }
 
 // ONBOARDING
@@ -593,9 +623,22 @@ function handleLogoUpload(e) {
   const file = e.target.files[0];
   if (!file) return;
   if (file.size > 2*1024*1024) { showToast('Logo je väčšie ako 2 MB', 'error'); return; }
+  // Preview immediately
   const reader = new FileReader();
   reader.onload = ev => { state.logoUrl = ev.target.result; setLogoPreview(ev.target.result); markDirty(); };
   reader.readAsDataURL(file);
+  // Upload to Rails ActiveStorage
+  const fd = new FormData();
+  fd.append('shop[logo]', file);
+  const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+  fetch('/shop/update_new_admin', {
+    method: 'PATCH',
+    headers: { 'X-CSRF-Token': csrf, 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+    body: fd
+  })
+  .then(r => r.json())
+  .then(d => { if (d.ok) showToast('Logo uložené', 'success'); })
+  .catch(() => {});
 }
 
 function setLogoPreview(url) {
@@ -614,6 +657,14 @@ function removeLogo() {
   document.getElementById('logo-actions').style.display = 'none';
   document.getElementById('logo-file-input').value = '';
   markDirty();
+  // Inform Rails to remove logo
+  const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+  fetch('/shop/update_new_admin', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf,
+               'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+    body: JSON.stringify({ remove_logo: true })
+  }).catch(()=>{});
 }
 
 function toggleManualPlaceId() {
