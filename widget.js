@@ -768,8 +768,9 @@ function setBarDismissible(v, el) {
 function exp(i){ document.getElementById('s'+i).classList.add('hidden'); document.getElementById('f'+i).classList.add('visible'); }
 function col(i){ document.getElementById('s'+i).classList.remove('hidden'); document.getElementById('f'+i).classList.remove('visible'); }
 
-renderReviews(); buildBadge(); buildOffsetFields(); applyTheme(); applyPosition();
-if (S._initType) switchType(S._initType, document.querySelector(`.type-btn[data-type="${S._initType}"]`));
+renderReviews(); buildOffsetFields();
+// Always call switchType on init so sidebar sections AND preview visibility are correct
+switchType(S.widgetType || 'c0', document.querySelector(`.type-btn[data-type="${S.widgetType || 'c0'}"]`) || {classList:{add:()=>{},remove:()=>{}}});
 window.addEventListener('resize', applyPosition);
 // Notify admin parent that widget is fully initialised
 if (window.parent && window.parent !== window) {
