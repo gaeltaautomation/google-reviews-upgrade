@@ -451,12 +451,11 @@ const CONTEXT_COPY = {
 };
 
 function buildContextCopy(type){
-  const _isDisplay = new URLSearchParams(window.location.search).get('display') === '1';
   const cfg = CONTEXT_COPY[type] || CONTEXT_COPY.c0;
   const container = document.querySelector('.preview-copy');
   const grid = document.querySelector('.tip-grid');
   if(!container || !grid) return;
-  if (_isDisplay) { container.style.display='none'; grid.style.display='none'; return; }
+  if (IS_DISPLAY) { container.style.display='none'; grid.style.display='none'; return; }
 
   const h1 = container.querySelector('h1');
   const lead = container.querySelector('p.lead');
@@ -567,8 +566,7 @@ function applyPosition(){
   const badge=document.getElementById('gr-badge'); const panel=document.getElementById('gr-panel');
   const top=isTop(),left=isLeft(); const o=currentDevice==='mobile'?S.offsetMobile:S.offsetDesktop; const sc=SIZES[S.size];
 
-  const _isDisplay = new URLSearchParams(window.location.search).get('display') === '1';
-  const _pos = _isDisplay ? 'fixed' : 'absolute';
+  const _pos = IS_DISPLAY ? 'fixed' : 'absolute';
   if(currentDevice==='desktop'){
     if(top){
       badge.style.position=_pos; badge.style.top=(o.top||100)+'px'; badge.style.bottom='auto'; badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
@@ -633,7 +631,7 @@ function switchType(type, el) {
   el.classList.add('active');
 
   const dyn = document.getElementById('cfg-dynamic');
-  dyn.innerHTML = WIDGET_TYPES[type].sections.map(s => SECTIONS[s] ? SECTIONS[s]() : '').join('');
+  if (dyn) dyn.innerHTML = WIDGET_TYPES[type].sections.map(s => SECTIONS[s] ? SECTIONS[s]() : '').join('');
 
   // update best practices / context copy for selected widget
   buildContextCopy(type);
@@ -666,6 +664,7 @@ function switchType(type, el) {
     buildBar();
   } else if (type === 'c3') {
     applyTheme();
+    buildEmbed();
   } else if (type === 'c4') {
     applyTheme();
     buildCTA();
@@ -715,6 +714,8 @@ function setSize(s,el){ document.querySelectorAll('[data-size]').forEach(b=>b.cl
 function setPos(el){ document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); S.pos=el.dataset.pos; const top=isTop(),left=isLeft(); S.offsetDesktop={[top?'top':'bottom']:top?100:28,...(top?{}:{[left?'left':'right']:28})}; S.offsetMobile={[top?'top':'bottom']:top?80:16,...(top?{}:{[left?'left':'right']:16})}; buildOffsetFields(); buildBadge(); applyPosition(); panelOpen=false; document.getElementById('gr-panel').classList.remove('open'); }
 function setOffset(key,field,val){ S[key][field]=parseInt(val)||0; applyPosition(); }
 function setOffsetTab(tab,el){ activeOffsetTab=tab; document.querySelectorAll('.offset-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); document.getElementById('offset-desktop-fields').style.display=tab==='desktop'?'block':'none'; document.getElementById('offset-mobile-fields').style.display=tab==='mobile'?'block':'none'; }
+
+const IS_DISPLAY = new URLSearchParams(window.location.search).get('display') === '1';
 
 // ── REVIEWS RENDERER + INIT ──────────────────────────────────────────────────
 document.getElementById('panel-stars').innerHTML=Array(5).fill(STAR(12)).join('');
@@ -771,6 +772,255 @@ function setBarDismissible(v, el) {
 
 function exp(i){ document.getElementById('s'+i).classList.add('hidden'); document.getElementById('f'+i).classList.add('visible'); }
 function col(i){ document.getElementById('s'+i).classList.remove('hidden'); document.getElementById('f'+i).classList.remove('visible'); }
+
+
+function buildBar(){
+  const wrap = document.getElementById('preview-c2');
+  if(!wrap) return;
+
+  const t = LANGS[S.lang];
+  const barText = S.barCustomText || t.barText;
+
+  wrap.className = '';
+  wrap.style.display = 'flex';
+  wrap.classList.add(S.barPos === 'top' ? 'bar-top' : 'bar-bottom');
+
+  const dismissHtml = S.barDismissible
+    ? `<button class="gr-bar-dismiss" onclick="dismissBar()" title="Zavrieť">
+         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+           <path d="M5 5l10 10M15 5L5 15"/>
+         </svg>
+       </button>`
+    : '';
+
+  wrap.innerHTML = `
+    <div class="gr-bar gr-bar-enter">
+      <div class="gr-bar-left">
+        <div class="gr-bar-logo">${G_SVG(18)}</div>
+        <span class="gr-bar-score">5.0</span>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div class="gr-bar-stars">${Array(5).fill(STAR(13)).join('')}</div>
+          <span class="gr-bar-count">47 ${t.reviews}</span>
+        </div>
+      </div>
+      <div class="gr-bar-center">${barText}</div>
+      <div class="gr-bar-right">
+        <button class="gr-bar-cta">✏️ ${t.ctaText}</button>
+        ${dismissHtml}
+      </div>
+    </div>`;
+}
+
+function buildCarousel(){
+  const wrap = document.getElementById('preview-c1');
+  if(!wrap) return;
+  const t = LANGS[S.lang];
+  const MAX = S.textLen;
+  const filtered = reviews.filter(rv => rv.r >= S.minRating).slice(0, S.reviewCount);
+  carouselIndex = Math.min(carouselIndex, Math.max(0, filtered.length - 1));
+
+  const isDark = S.mode === 'dark';
+  const isGlass = S.style === 'glass';
+  const isModern = S.style === 'modern';
+
+  const cardBg = isDark
+    ? (isGlass ? 'rgba(255,255,255,0.07)' : isModern ? '#0f172a' : '#1f2937')
+    : (isGlass ? 'rgba(255,255,255,0.55)' : '#fff');
+  const cardBorder = isDark
+    ? (isGlass ? '1px solid rgba(255,255,255,0.14)' : '1.5px solid #374151')
+    : (isGlass ? '1px solid rgba(255,255,255,0.65)' : '1.5px solid #e5e7eb');
+  const textCol = isDark ? '#f1f5f9' : '#111827';
+  const mutedCol = isDark ? '#94a3b8' : '#6b7280';
+  const bodyCol = isDark ? '#cbd5e1' : '#4b5563';
+  const headerBg = isDark
+    ? (isGlass ? 'rgba(0,0,0,0.25)' : isModern ? `linear-gradient(135deg,${rgba(S.accent,.18)} 0%,rgba(2,6,23,0) 100%)` : '#1e293b')
+    : (isGlass ? 'rgba(255,255,255,0.35)' : isModern ? `linear-gradient(135deg,${rgba(S.accent,.08)} 0%,rgba(248,250,252,0) 100%)` : '#f8fafc');
+  const wrapBg = isDark
+    ? (isGlass ? 'transparent' : isModern ? '#020617' : '#111827')
+    : (isGlass ? 'transparent' : isModern ? '#f8fafc' : '#f3f4f6');
+  const navBg = isDark ? rgba(S.accent,.18) : rgba(S.accent,.10);
+  const navCol = S.accent;
+  const blur = isGlass ? 'blur(18px)' : 'none';
+
+  const cards = filtered.map((rv,i) => {
+    const short = rv.text.length > MAX ? rv.text.slice(0,MAX)+'...' : rv.text;
+    const dateStr = S.dateFormat==='absolute' ? rv.absDate : rv.date;
+    const replyHtml = (S.ownerReply==='show' && rv.ownerReply)
+      ? `<div class="cr-reply" style="background:${rgba(S.accent,.08)};border-left:3px solid ${S.accent};margin-top:10px;padding:8px 10px;border-radius:6px">
+           <div style="font-size:10px;font-weight:700;color:${S.accent};text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">💬 Odpoveď</div>
+           <p style="font-size:12px;color:${bodyCol};margin:0;line-height:1.5">${rv.ownerReply}</p>
+         </div>` : '';
+    const active = i === carouselIndex;
+    return `<div class="cr-card${active?' cr-active':''}" style="
+      min-width:280px;max-width:320px;padding:20px;
+      background:${cardBg};border:${cardBorder};
+      border-radius:${S.radius+4}px;
+      backdrop-filter:${blur};-webkit-backdrop-filter:${blur};
+      box-shadow:${isDark?'0 4px 24px rgba(0,0,0,.45)':'0 4px 20px rgba(0,0,0,.08)'};
+      flex-shrink:0;
+      transition:transform .3s ease,opacity .3s ease;
+      opacity:${active?1:.45};
+      transform:${active?'scale(1)':'scale(0.93)'};
+    ">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="width:36px;height:36px;border-radius:${S.style==='classic'?'50%':'8px'};background:${rv.col};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0">${rv.init}</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:${textCol}">${rv.name}</div>
+          <div style="font-size:11px;color:${mutedCol};margin-top:1px">${dateStr}</div>
+        </div>
+        <div style="margin-left:auto;opacity:.8">${G_SVG(16)}</div>
+      </div>
+      <div style="display:flex;gap:1px;margin-bottom:9px">${Array(rv.r).fill(STAR(13)).join('')}</div>
+      <p style="font-size:13px;color:${bodyCol};line-height:1.55;margin:0">${short}</p>
+      ${replyHtml}
+    </div>`;
+  }).join('');
+
+  const total = filtered.length;
+  const dots = filtered.map((_,i) =>
+    `<div onclick="carouselGo(${i})" style="width:${i===carouselIndex?18:7}px;height:7px;border-radius:999px;background:${i===carouselIndex?S.accent:isDark?'rgba(255,255,255,0.25)':'#d1d5db'};cursor:pointer;transition:all .25s"></div>`
+  ).join('');
+
+  const scoreCol = isModern ? S.accent : textCol;
+
+  wrap.innerHTML = `
+    <div class="cr-shell" style="width:100%;max-width:820px;background:${wrapBg};border-radius:${S.radius+8}px;overflow:hidden;backdrop-filter:${blur};-webkit-backdrop-filter:${blur}">
+      <div class="cr-header" style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px 14px;background:${headerBg};gap:12px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:${isModern?'10px':'50%'};background:${rgba(S.accent,.12)};display:flex;align-items:center;justify-content:center">${G_SVG(22)}</div>
+          <div>
+            <div style="font-size:12px;font-weight:800;color:${isModern?S.accent:mutedCol};text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px">${t.label}</div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="font-size:22px;font-weight:900;color:${scoreCol};letter-spacing:-.5px">5.0</span>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="display:flex;gap:1px">${Array(5).fill(STAR(13)).join('')}</div>
+                <span style="font-size:11px;color:${mutedCol}">47 ${t.reviews}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button onclick="this.blur()" style="padding:8px 16px;background:${S.accent};color:#fff;border:none;border-radius:${S.radius}px;font-size:12px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif">✏️ ${S.ctaWrite}</button>
+      </div>
+      <div class="cr-track-wrap" style="padding:20px 24px 16px;position:relative;overflow:hidden">
+        <div class="cr-track" id="cr-track" style="display:flex;gap:16px;transition:transform .35s cubic-bezier(.4,0,.2,1)">${cards}</div>
+      </div>
+      <div class="cr-footer" style="display:flex;align-items:center;justify-content:space-between;padding:10px 24px 18px">
+        <div style="display:flex;gap:6px;align-items:center">${dots}</div>
+        <div style="display:flex;gap:8px">
+          <button onclick="carouselPrev()" style="width:34px;height:34px;border-radius:50%;background:${navBg};border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:${navCol}" title="Predchádzajúci">‹</button>
+          <button onclick="carouselNext(${total})" style="width:34px;height:34px;border-radius:50%;background:${navBg};border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:${navCol}" title="Nasledujúci">›</button>
+        </div>
+      </div>
+    </div>`;
+
+  updateCarouselTrack(filtered.length);
+}
+
+function buildCTA(){
+  const wrap = document.getElementById('preview-c4');
+  if(!wrap) return;
+
+  const t = LANGS[S.lang];
+  const sc = SIZES[S.size];
+
+  // resolve variant class based on style + mode
+  let variantClass = 'cta-btn';
+  if(S.style === 'classic'){
+    variantClass += S.mode === 'dark' ? ' cta-outline' : ' cta-outline';
+  } else if(S.style === 'modern'){
+    variantClass += ' cta-modern';
+  } else if(S.style === 'glass'){
+    variantClass += S.mode === 'dark' ? ' cta-glass-dark' : ' cta-glass';
+  }
+
+  const sizeClass = `cta-size-${S.size.toLowerCase()}`;
+
+  wrap.innerHTML = `
+    <button class="${variantClass} ${sizeClass} cta-pop-in"
+      style="--accent:${S.accent};border-radius:${S.radius}px;"
+      onclick="this.blur()">
+      <span class="cta-logo-wrap">${G_SVG(18)}</span>
+      <span class="cta-text-block">
+        <span class="cta-label">${t.label}</span>
+        <span class="cta-stars">${Array(5).fill(STAR(11)).join('')}
+          <span class="cta-score">5.0</span>
+        </span>
+      </span>
+      <span class="cta-divider"></span>
+      <span class="cta-action">✏️ ${S.ctaWrite}</span>
+    </button>`;
+
+  applyCTAPosition();
+}
+
+function buildEmbed(){
+  const wrap = document.getElementById('preview-c3');
+  if(!wrap) return;
+
+  const t = LANGS[S.lang];
+  const MAX = S.textLen;
+  const filtered = reviews.filter(rv => rv.r >= S.minRating).slice(0, S.reviewCount);
+
+  const isModern = S.style === 'modern';
+  const scoreCol = isModern ? S.accent : 'var(--gr-score-color, var(--gr-text, #111))';
+  const avatarRadius = S.style === 'classic' ? '50%' : (S.style === 'modern' ? '8px' : '50%');
+
+  const headerBg = isModern
+    ? (S.mode === 'dark'
+        ? `linear-gradient(135deg, ${rgba(S.accent,.18)} 0%, rgba(2,6,23,0) 100%)`
+        : `linear-gradient(135deg, ${rgba(S.accent,.08)} 0%, rgba(248,250,252,0) 100%)`)
+    : 'var(--gr-panel-header-bg, transparent)';
+
+  const logoRadius = isModern ? '10px' : '50%';
+
+  const cards = filtered.map((rv, i) => {
+    const short = rv.text.length > MAX ? rv.text.slice(0, MAX) + '...' : rv.text;
+    const dateStr = S.dateFormat === 'absolute' ? rv.absDate : rv.date;
+    const replyHtml = (S.ownerReply === 'show' && rv.ownerReply)
+      ? `<div class="emb-card-reply">
+           <div class="emb-reply-label">💬 Odpoveď</div>
+           <div class="emb-reply-text">${rv.ownerReply}</div>
+         </div>`
+      : '';
+    return `<div class="emb-card emb-card-enter" style="animation-delay:${i * 0.05}s">
+      <div class="emb-card-top">
+        <div class="emb-avatar" style="background:${rv.col};border-radius:${avatarRadius}">${rv.init}</div>
+        <div>
+          <div class="emb-name">${rv.name}</div>
+          <div class="emb-date">${dateStr}</div>
+        </div>
+        <div class="emb-g-logo">${G_SVG(16)}</div>
+      </div>
+      <div class="emb-card-stars">${Array(rv.r).fill(STAR(13)).join('')}</div>
+      <div class="emb-card-text">${short}</div>
+      ${replyHtml}
+    </div>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div class="emb-shell">
+      <div class="emb-header" style="background:${headerBg}">
+        <div class="emb-header-left">
+          <div class="emb-logo-wrap" style="border-radius:${logoRadius}">${G_SVG(26)}</div>
+          <div>
+            <div class="emb-biz-name" style="color:${isModern ? S.accent : 'var(--gr-text,#111827)'}">${t.label}</div>
+            <div class="emb-meta">
+              <span class="emb-score" style="color:${scoreCol}">5.0</span>
+              <div class="emb-stars-wrap">
+                <div class="emb-stars">${Array(5).fill(STAR(14)).join('')}</div>
+                <span class="emb-count">47 ${t.reviews}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="emb-header-right">
+          <button class="emb-btn-write">✏️ ${S.ctaWrite}</button>
+          <button class="emb-btn-all">${S.ctaAll}</button>
+        </div>
+      </div>
+      <div class="emb-grid">${cards}</div>
+    </div>`;
+}
 
 function _init() {
   renderReviews(); buildOffsetFields();
