@@ -507,6 +507,21 @@ let S={
   showCount:true,devDesktop:true,devTablet:true,devMobile:true
 };
 
+
+// ── Read config from <script data-config="..."> tag ─────────────────────────
+(function() {
+  try {
+    const scripts = document.querySelectorAll('script[data-config]');
+    const me = scripts[scripts.length - 1]; // last = this script
+    if (me && me.dataset.config) {
+      const cfg = JSON.parse(atob(me.dataset.config));
+      Object.keys(cfg).forEach(k => { if (k in S || ['type','widgetType','minRating','reviewCount','textLen','dateFormat','ownerReply','barPos','barCustomText','barDismissible','ctaWrite','ctaAll'].includes(k)) S[k] = cfg[k]; });
+      if (cfg.widgetType) S._initType = cfg.widgetType;
+      if (cfg.type) S._initType = cfg.type;
+    }
+  } catch(e) {}
+})();
+
 function isTop(){return S.pos.startsWith('top');}
 function isLeft(){return S.pos.endsWith('left');}
 
@@ -700,6 +715,7 @@ function exp(i){ document.getElementById('s'+i).classList.add('hidden'); documen
 function col(i){ document.getElementById('s'+i).classList.remove('hidden'); document.getElementById('f'+i).classList.remove('visible'); }
 
 renderReviews(); buildBadge(); buildOffsetFields(); applyTheme(); applyPosition();
+if (S._initType) switchType(S._initType, document.querySelector(`.type-btn[data-type="${S._initType}"]`));
 window.addEventListener('resize',applyPosition);
 
 // ── IFRAME POSTMESSAGE BRIDGE (pre admin konfigurátor) ───────────────────────
