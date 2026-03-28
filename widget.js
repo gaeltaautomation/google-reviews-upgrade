@@ -451,10 +451,12 @@ const CONTEXT_COPY = {
 };
 
 function buildContextCopy(type){
+  const _isDisplay = new URLSearchParams(window.location.search).get('display') === '1';
   const cfg = CONTEXT_COPY[type] || CONTEXT_COPY.c0;
   const container = document.querySelector('.preview-copy');
   const grid = document.querySelector('.tip-grid');
   if(!container || !grid) return;
+  if (_isDisplay) { container.style.display='none'; grid.style.display='none'; return; }
 
   const h1 = container.querySelector('h1');
   const lead = container.querySelector('p.lead');
@@ -565,12 +567,14 @@ function applyPosition(){
   const badge=document.getElementById('gr-badge'); const panel=document.getElementById('gr-panel');
   const top=isTop(),left=isLeft(); const o=currentDevice==='mobile'?S.offsetMobile:S.offsetDesktop; const sc=SIZES[S.size];
 
+  const _isDisplay = new URLSearchParams(window.location.search).get('display') === '1';
+  const _pos = _isDisplay ? 'fixed' : 'absolute';
   if(currentDevice==='desktop'){
     if(top){
-      badge.style.position='absolute'; badge.style.top=(o.top||100)+'px'; badge.style.bottom='auto'; badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
+      badge.style.position=_pos; badge.style.top=(o.top||100)+'px'; badge.style.bottom='auto'; badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
       badge.style.transform=`scale(${sc})`; badge.style.transformOrigin=`top ${left?'left':'right'}`;
     }else{
-      badge.style.position='absolute'; badge.style.top='auto'; badge.style.bottom=(o.bottom||28)+'px'; badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
+      badge.style.position=_pos; badge.style.top='auto'; badge.style.bottom=(o.bottom||28)+'px'; badge.style.left=left?'0':'auto'; badge.style.right=!left?'0':'auto';
       badge.style.transform=`scale(${sc})`; badge.style.transformOrigin=`bottom ${left?'left':'right'}`;
     }
     setTimeout(()=>{
@@ -768,9 +772,17 @@ function setBarDismissible(v, el) {
 function exp(i){ document.getElementById('s'+i).classList.add('hidden'); document.getElementById('f'+i).classList.add('visible'); }
 function col(i){ document.getElementById('s'+i).classList.remove('hidden'); document.getElementById('f'+i).classList.remove('visible'); }
 
-renderReviews(); buildOffsetFields();
-// Always call switchType on init so sidebar sections AND preview visibility are correct
-switchType(S.widgetType || 'c0', document.querySelector(`.type-btn[data-type="${S.widgetType || 'c0'}"]`) || {classList:{add:()=>{},remove:()=>{}}});
+function _init() {
+  renderReviews(); buildOffsetFields();
+  const _type = S.widgetType || 'c0';
+  const _el = document.querySelector(`.type-btn[data-type="${_type}"]`);
+  switchType(_type, _el || {classList:{add:()=>{},remove:()=>{}}});
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _init);
+} else {
+  _init();
+}
 window.addEventListener('resize', applyPosition);
 // Notify admin parent that widget is fully initialised
 if (window.parent && window.parent !== window) {
