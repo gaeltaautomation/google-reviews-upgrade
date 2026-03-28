@@ -701,3 +701,40 @@ function col(i){ document.getElementById('s'+i).classList.remove('hidden'); docu
 
 renderReviews(); buildBadge(); buildOffsetFields(); applyTheme(); applyPosition();
 window.addEventListener('resize',applyPosition);
+
+// ── IFRAME POSTMESSAGE BRIDGE (pre admin konfigurátor) ───────────────────────
+// Admin posiela LOAD_CONFIG → načítame stav do S a prestavíme UI
+// Admin posiela GET_CONFIG  → odpovieme CONFIG_DATA so stavom S
+window.addEventListener('message', function(e) {
+  if (!e.data || !e.data.type) return;
+
+  if (e.data.type === 'LOAD_CONFIG') {
+    const cfg = e.data.config;
+    if (!cfg) return;
+    // Merge config into S
+    const keys = ['style','accent','mode','radius','size','pos','lang',
+                  'minRating','reviewCount','textLen','dateFormat','ownerReply',
+                  'devDesktop','devTablet','devMobile','showCount',
+                  'ctaWrite','ctaAll','barPos','barCustomText','barDismissible',
+                  'widgetType','offsetDesktop','offsetMobile'];
+    keys.forEach(k => { if (cfg[k] !== undefined) S[k] = cfg[k]; });
+    // Rebuild UI with loaded config
+    const type = cfg.widgetType || cfg.type || 'c0';
+    switchType(type, document.querySelector(`.type-btn[data-type="${type}"]`));
+    applyTheme();
+    applyPosition();
+    // Sync sidebar controls to loaded values
+    const radEl = document.getElementById('radius-val');
+    if (radEl) radEl.textContent = S.radius + 'px';
+    const tlEl = document.getElementById('textlen-val');
+    if (tlEl) tlEl.textContent = S.textLen + ' znakov';
+  }
+
+  if (e.data.type === 'GET_CONFIG') {
+    const config = Object.assign({}, S, {
+      widgetType: S.widgetType || 'c0',
+      type: S.widgetType || 'c0'
+    });
+    window.parent.postMessage({ type: 'CONFIG_DATA', config: config }, '*');
+  }
+});
