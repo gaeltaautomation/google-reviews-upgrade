@@ -402,9 +402,9 @@ select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(99,102,241,.14
     <span class="logo-sub">Admin</span>
   </div>
   <div class="header-right">
-    <a href="google_reviews_widget_v9.html" class="btn btn-outline" target="_blank" style="font-size:11px;padding:6px 13px;">
+    <a href="https://shopstack.eu" class="btn btn-outline" target="_blank" style="font-size:11px;padding:6px 13px;">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      Konfigurátor
+      Test site
     </a>
   </div>
 </header>
@@ -998,14 +998,14 @@ function openConfigurator(slot) {
   activeSlot = slot;
   const iframe = document.getElementById('cfg-iframe');
   document.getElementById('modal-title').textContent = `Konfigurátor – Widget ${slot}`;
-  document.getElementById('modal-overlay').classList.add('active');
+  document.getElementById('modal-overlay').classList.add('open');
   // Reset then load — widget.js will fire WIDGET_READY when ready
   iframe.src = '';
-  requestAnimationFrame(() => { iframe.src = 'google_reviews_widget_v9.html'; });
+  requestAnimationFrame(() => { iframe.src = 'google_reviews_widget_v9.html?display=1'; });
 }
 
 function closeConfigurator() {
-  document.getElementById('modal-overlay').classList.remove('active');
+  document.getElementById('modal-overlay').classList.remove('open');
   document.getElementById('cfg-iframe').src = '';
   activeSlot = null;
 }
