@@ -721,6 +721,40 @@ document.getElementById('panel-stars').innerHTML=Array(5).fill(STAR(12)).join(''
 function renderReviews(){
   const MAX=130; document.getElementById('gr-reviews-list').innerHTML=reviews.map((rv,i)=>{ const long=rv.text.length>MAX,short=long?rv.text.slice(0,MAX)+'...':rv.text; return `<div class="gr-review-item"><div class="gr-review-top"><div class="gr-avatar" style="background:${rv.col}">${rv.init}</div><div><div class="gr-reviewer-name">${rv.name}</div><div class="gr-review-date">${rv.date}</div></div></div><div class="gr-review-stars">${Array(rv.r).fill(STAR(12)).join('')}</div><div class="gr-review-text"><span id="s${i}" class="gr-text-short">${short}${long?`<span class="gr-read-more" onclick="exp(${i})"> Čítať viac</span>`:''}</span>${long?`<span id="f${i}" class="gr-text-full">${rv.text}<span class="gr-read-more" onclick="col(${i})"> Menej</span></span>`:''}</div></div>`; }).join('');
 }
+
+function setMinRating(v, el) {
+  document.querySelectorAll('[data-minrating]').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  S.minRating = v;
+}
+
+function setReviewCount(v, el) {
+  document.querySelectorAll('[data-count]').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  S.reviewCount = v;
+  renderReviews();
+}
+
+function setTextLen(v) {
+  S.textLen = parseInt(v);
+  const el = document.getElementById('textlen-val');
+  if (el) el.textContent = S.textLen + ' znakov';
+  renderReviews();
+}
+
+function setDateFormat(v, el) {
+  document.querySelectorAll('[data-datefmt]').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  S.dateFormat = v;
+  renderReviews();
+}
+
+function setOwnerReply(v, el) {
+  document.querySelectorAll('[data-ownerreply]').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  S.ownerReply = v;
+}
+
 function exp(i){ document.getElementById('s'+i).classList.add('hidden'); document.getElementById('f'+i).classList.add('visible'); }
 function col(i){ document.getElementById('s'+i).classList.remove('hidden'); document.getElementById('f'+i).classList.remove('visible'); }
 
