@@ -747,12 +747,10 @@ function openConfigurator(slot) {
   activeSlot = slot;
   const iframe = document.getElementById('cfg-iframe');
   document.getElementById('modal-title').textContent = `Konfigurátor – Widget ${slot}`;
-  iframe.src = 'google_reviews_widget_v9.html';
   document.getElementById('modal-overlay').classList.add('active');
-  iframe.onload = () => {
-    const existing = slot===1 ? state.widget1 : state.widget2;
-    if (existing) iframe.contentWindow.postMessage({type:'LOAD_CONFIG',config:existing},'*');
-  };
+  // Reset then load — widget.js will fire WIDGET_READY when ready
+  iframe.src = '';
+  requestAnimationFrame(() => { iframe.src = 'google_reviews_widget_v9.html'; });
 }
 
 function closeConfigurator() {
@@ -781,12 +779,23 @@ function saveFromConfigurator() {
 }
 
 window.addEventListener('message', e => {
-  if (e.data?.type==='CONFIG_DATA' && activeSlot) {
+  if (!e.data?.type) return;
+  // Widget ready — send existing config if editing
+  if (e.data.type === 'WIDGET_READY' && activeSlot) {
+    const iframe = document.getElementById('cfg-iframe');
+    const existing = activeSlot===1 ? state.widget1 : state.widget2;
+    if (existing && iframe?.contentWindow) {
+      iframe.contentWindow.postMessage({type:'LOAD_CONFIG', config:existing}, '*');
+    }
+  }
+  // Config saved from widget
+  if (e.data.type === 'CONFIG_DATA' && activeSlot) {
     const config = {...e.data.config, savedAt: new Date().toISOString()};
     if (activeSlot===1) state.widget1=config; else state.widget2=config;
     renderSlot(activeSlot, config);
     closeConfigurator();
-    saveSettings(); // auto-save — no second tap needed
+    saveSettings();
+    showToast('Widget uložený ✓', 'success');
   }
 });
 
