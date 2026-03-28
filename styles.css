@@ -951,3 +951,105 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   #preview-stage-wrapper{ display:none; }
   #config{ width:100%; max-width:100%; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   STICKY SAVE FOOTER — always above Safari toolbar
+   ══════════════════════════════════════════════════════════════ */
+.cfg-save-footer {
+  position: sticky;
+  bottom: 0;
+  left: 0; right: 0;
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+  padding: 12px 20px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+}
+.cfg-save-btn {
+  width: 100%;
+  background: #1e293b;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: .2px;
+  transition: background .15s;
+}
+.cfg-save-btn:hover { background: #4285F4; }
+.cfg-save-btn:active { background: #1d4ed8; transform: scale(.98); }
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE — iPhone 17 Pro (393px) & all phones
+   ══════════════════════════════════════════════════════════════ */
+@media(max-width:900px){
+  /* Already hides preview — just ensure #config fills correctly */
+  #config {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;       /* dynamic viewport height — excludes Safari toolbar */
+    overflow: hidden;
+  }
+  .cfg-head { flex-shrink: 0; }
+  .cfg-device-bar { flex-shrink: 0; }
+  .cfg-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0;
+  }
+}
+
+@media(max-width:600px){
+  /* Header compact */
+  .cfg-head { padding: 14px 16px 12px; }
+  .cfg-head-title { font-size: 12px; }
+  .cfg-head-sub { font-size: 10px; }
+  .cfg-preview { margin-top: 8px; }
+
+  /* Device bar */
+  .cfg-device-bar { padding: 8px 12px; gap: 6px; }
+  .dev-btn { font-size: 11px; padding: 5px 10px; }
+
+  /* Sections */
+  .cfg-group { padding: 8px 16px 5px; font-size: 9px; }
+  .cfg-section { padding: 10px 16px; }
+  .cfg-label { font-size: 10px; }
+
+  /* Type grid — 3+2 layout on mobile */
+  .type-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .type-btn { padding: 8px 6px; }
+  .type-icon { font-size: 18px; }
+  .type-label { font-size: 10px; }
+  .type-sub { font-size: 9px; }
+
+  /* Pill buttons — wrap nicely */
+  .cfg-row { gap: 6px; flex-wrap: wrap; }
+  .pill-btn { font-size: 11px; padding: 5px 10px; }
+
+  /* Toggle buttons */
+  .toggle-wrap { gap: 6px; }
+  .toggle-btn { font-size: 11px; padding: 6px 12px; }
+
+  /* Sliders */
+  .cfg-slider { height: 36px; }
+  .slider-row { margin-bottom: 6px; }
+
+  /* Checkboxes */
+  .chk-single { font-size: 12px; padding: 5px 0; }
+
+  /* Color swatches */
+  .color-swatch { width: 26px; height: 26px; }
+
+  /* Save footer */
+  .cfg-save-footer { padding: 10px 16px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+  .cfg-save-btn { padding: 12px 16px; font-size: 13px; border-radius: 9px; }
+}
+
+@media(max-width:393px){
+  /* iPhone 17 Pro exact */
+  .type-grid { grid-template-columns: repeat(3, 1fr); }
+  .cfg-section { padding: 9px 14px; }
+}
