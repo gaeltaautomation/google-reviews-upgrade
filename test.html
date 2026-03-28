@@ -2,53 +2,121 @@
 <html lang="sk">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Test Site — Google Reviews Widget</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Inter',system-ui,sans-serif;background:#f8fafc;color:#1e293b;}
 
-    /* ── Fake e-shop header ── */
-    .shop-header{background:#fff;border-bottom:1px solid #e2e8f0;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-    .shop-logo{font-size:22px;font-weight:800;color:#1e293b;letter-spacing:-0.5px;}
-    .shop-logo span{color:#4285F4;}
-    .shop-nav{display:flex;gap:24px;font-size:14px;color:#64748b;}
-    .shop-nav a{color:#64748b;text-decoration:none;}
-    .shop-cart{background:#4285F4;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+    /* ── Safe area support (Dynamic Island + home indicator) ── */
+    :root{
+      --sat: env(safe-area-inset-top, 0px);
+      --sar: env(safe-area-inset-right, 0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left, 0px);
+    }
 
-    /* ── Hero ── */
-    .hero{background:linear-gradient(135deg,#1e40af 0%,#3b82f6 100%);color:#fff;padding:80px 32px;text-align:center;}
-    .hero h1{font-size:42px;font-weight:800;margin-bottom:16px;letter-spacing:-1px;}
-    .hero p{font-size:18px;opacity:.85;margin-bottom:32px;}
-    .hero-btn{background:#fff;color:#1e40af;border:none;padding:14px 32px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;}
-
-    /* ── Products ── */
-    .section{padding:64px 32px;max-width:1100px;margin:0 auto;}
-    .section-title{font-size:26px;font-weight:700;margin-bottom:32px;}
-    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;}
-    .product-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:box-shadow .2s;}
-    .product-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.12);}
-    .product-img{width:100%;height:160px;object-fit:cover;background:linear-gradient(135deg,#e0e7ff,#f0fdf4);display:flex;align-items:center;justify-content:center;font-size:48px;}
-    .product-info{padding:16px;}
-    .product-name{font-weight:600;margin-bottom:6px;}
-    .product-price{color:#4285F4;font-weight:700;font-size:18px;}
-    .product-btn{width:100%;margin-top:12px;background:#f1f5f9;border:none;padding:8px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:#1e293b;}
-    .product-btn:hover{background:#4285F4;color:#fff;}
-
-    /* ── Footer ── */
-    .footer{background:#1e293b;color:#94a3b8;text-align:center;padding:32px;font-size:14px;margin-top:80px;}
-
-    /* ── Widget status bar (top of page, admin tool) ── */
-    .widget-bar{background:#0f172a;color:#e2e8f0;font-size:13px;padding:10px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
-    .widget-bar-left{display:flex;align-items:center;gap:12px;}
-    .wbar-badge{background:#22c55e;color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+    /* ── Admin debug bar ── */
+    .widget-bar{
+      background:#0f172a;color:#e2e8f0;font-size:13px;
+      padding:10px 20px 10px calc(20px + var(--sal));
+      padding-right:calc(20px + var(--sar));
+      display:flex;align-items:center;justify-content:space-between;gap:8px;
+      flex-wrap:wrap;
+    }
+    .widget-bar-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .wbar-badge{background:#22c55e;color:#fff;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;}
     .wbar-badge.off{background:#ef4444;}
     .wbar-badge.none{background:#64748b;}
-    .widget-bar a{color:#60a5fa;text-decoration:none;font-size:12px;}
-    .widget-bar a:hover{text-decoration:underline;}
-    .refresh-btn{background:#334155;color:#e2e8f0;border:none;padding:5px 14px;border-radius:6px;font-size:12px;cursor:pointer;}
+    .widget-bar a{color:#60a5fa;text-decoration:none;font-size:12px;white-space:nowrap;}
+    .refresh-btn{background:#334155;color:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;white-space:nowrap;}
     .refresh-btn:hover{background:#4285F4;color:#fff;}
-    .slot-info{font-size:12px;opacity:.7;}
+    .wbar-right{display:flex;align-items:center;gap:8px;}
+    .slot-info{font-size:11px;opacity:.6;display:none;}
+
+    /* ── E-shop header ── */
+    .shop-header{
+      background:#fff;border-bottom:1px solid #e2e8f0;
+      padding:0 20px;padding-left:calc(20px + var(--sal));padding-right:calc(20px + var(--sar));
+      height:60px;display:flex;align-items:center;justify-content:space-between;
+      position:sticky;top:0;z-index:100;
+    }
+    .shop-logo{font-size:20px;font-weight:800;color:#1e293b;letter-spacing:-0.5px;}
+    .shop-logo span{color:#4285F4;}
+    .shop-nav{display:flex;gap:20px;font-size:14px;}
+    .shop-nav a{color:#64748b;text-decoration:none;}
+    .shop-cart{background:#4285F4;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+
+    /* ── Hero ── */
+    .hero{
+      background:linear-gradient(135deg,#1e40af 0%,#3b82f6 100%);
+      color:#fff;padding:60px 20px;text-align:center;
+    }
+    .hero h1{font-size:36px;font-weight:800;margin-bottom:14px;letter-spacing:-1px;line-height:1.15;}
+    .hero p{font-size:16px;opacity:.85;margin-bottom:28px;line-height:1.6;}
+    .hero-btn{background:#fff;color:#1e40af;border:none;padding:14px 28px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;}
+
+    /* ── Products ── */
+    .section{
+      padding:48px 20px;max-width:1100px;margin:0 auto;
+      padding-left:calc(20px + var(--sal));
+      padding-right:calc(20px + var(--sar));
+    }
+    .section-title{font-size:22px;font-weight:700;margin-bottom:24px;}
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;}
+    .product-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:box-shadow .2s;}
+    .product-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.12);}
+    .product-img{width:100%;height:140px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#e0e7ff,#f0fdf4);}
+    .product-info{padding:14px;}
+    .product-name{font-weight:600;margin-bottom:6px;font-size:14px;}
+    .product-price{color:#4285F4;font-weight:700;font-size:17px;}
+    .product-btn{width:100%;margin-top:10px;background:#f1f5f9;border:none;padding:8px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:#1e293b;}
+    .product-btn:active{background:#4285F4;color:#fff;}
+
+    /* ── Footer ── */
+    .footer{
+      background:#1e293b;color:#94a3b8;text-align:center;
+      padding:28px 20px;
+      padding-bottom:calc(28px + var(--sab));
+      font-size:13px;margin-top:64px;line-height:1.6;
+    }
+
+    /* ── iPhone / mobile ── */
+    @media (max-width: 480px) {
+      /* Header: hide nav, compact */
+      .shop-nav{display:none;}
+      .shop-header{height:54px;}
+      .shop-logo{font-size:18px;}
+      .shop-cart{padding:7px 12px;font-size:12px;}
+
+      /* Debug bar: stack vertically, compact */
+      .widget-bar{font-size:11px;padding:8px 16px;gap:6px;}
+      .widget-bar-left{gap:6px;}
+      .wbar-badge{font-size:10px;padding:2px 7px;}
+      #w2-badge{display:none;}  /* show only w1 on small screen */
+      .slot-info{display:none!important;}
+
+      /* Hero */
+      .hero{padding:48px 20px;}
+      .hero h1{font-size:26px;}
+      .hero p{font-size:14px;}
+      .hero-btn{padding:12px 24px;font-size:14px;}
+
+      /* Products: 2 columns */
+      .section{padding:36px 16px;}
+      .section-title{font-size:18px;margin-bottom:18px;}
+      .products{grid-template-columns:repeat(2, 1fr);gap:12px;}
+      .product-img{height:110px;font-size:36px;}
+      .product-info{padding:10px;}
+      .product-name{font-size:13px;}
+      .product-price{font-size:15px;}
+    }
+
+    /* ── iPhone 17 Pro exact (393px logical) ── */
+    @media (max-width: 393px) {
+      .hero h1{font-size:24px;}
+      .products{grid-template-columns:repeat(2, 1fr);gap:10px;}
+    }
   </style>
 </head>
 <body>
@@ -56,19 +124,18 @@
 <!-- ── Admin debug bar ──────────────────────────────────────────── -->
 <div class="widget-bar">
   <div class="widget-bar-left">
-    <span>🔧 Widget Test Site</span>
-    <span id="w1-badge" class="wbar-badge none">Widget 1: —</span>
-    <span id="w2-badge" class="wbar-badge none">Widget 2: —</span>
-    <span id="active-badge" class="wbar-badge none">Doplnok: —</span>
+    <span>🔧</span>
+    <span id="w1-badge" class="wbar-badge none">W1: —</span>
+    <span id="w2-badge" class="wbar-badge none">W2: —</span>
+    <span id="active-badge" class="wbar-badge none">—</span>
   </div>
-  <div style="display:flex;align-items:center;gap:12px;">
-    <span class="slot-info" id="slot-info">Načítavam z localStorage...</span>
-    <button class="refresh-btn" onclick="loadWidgets()">↻ Obnoviť</button>
-    <a href="admin.html">⚙️ Otvoriť admin</a>
+  <div class="wbar-right">
+    <button class="refresh-btn" onclick="loadWidgets()">↻</button>
+    <a href="admin.html">⚙️ Admin</a>
   </div>
 </div>
 
-<!-- ── Fake e-shop ──────────────────────────────────────────────── -->
+<!-- ── E-shop header ──────────────────────────────────────────────── -->
 <header class="shop-header">
   <div class="shop-logo">Demo<span>Shop</span>.sk</div>
   <nav class="shop-nav">
@@ -77,15 +144,17 @@
     <a href="#">O nás</a>
     <a href="#">Kontakt</a>
   </nav>
-  <button class="shop-cart">🛒 Košík (0)</button>
+  <button class="shop-cart">🛒 Košík</button>
 </header>
 
+<!-- ── Hero ──────────────────────────────────────────────────────── -->
 <section class="hero">
   <h1>Najlepší online obchod</h1>
-  <p>Kvalitné produkty s rýchlym doručením po celom Slovensku</p>
+  <p>Kvalitné produkty s rýchlym<br>doručením po celom Slovensku</p>
   <button class="hero-btn">Nakupovať teraz →</button>
 </section>
 
+<!-- ── Products ─────────────────────────────────────────────────── -->
 <section class="section">
   <div class="section-title">Obľúbené produkty</div>
   <div class="products">
@@ -118,48 +187,33 @@
   </div>
 </section>
 
-<!-- ── Widget container (dynamically injected) ──────────────────── -->
+<!-- ── Widget inject point ───────────────────────────────────────── -->
 <div id="gr-widget-container"></div>
 
 <footer class="footer">
-  © 2026 DemoShop.sk — Toto je testovacia stránka pre Google Reviews Widget
+  © 2026 DemoShop.sk<br>
+  <span style="font-size:11px;opacity:.6;">Testovacia stránka — Google Reviews Widget</span>
 </footer>
 
 <script>
 const STORAGE_KEY = 'gr_admin_v2';
-
-const TYPE_LABELS = {
-  c0:'💬 Floating', c1:'🎠 Karusel', c2:'📌 Lišta', c3:'🧩 Embed', c4:'✍️ CTA tlačidlo'
-};
+const TYPE_LABELS = {c0:'💬 Floating',c1:'🎠 Karusel',c2:'📌 Lišta',c3:'🧩 Embed',c4:'✍️ CTA'};
 
 function loadWidgets() {
-  const container = document.getElementById('gr-widget-container');
-  container.innerHTML = '';
-
-  // Remove any previously injected widget scripts
   document.querySelectorAll('script[data-gr-widget]').forEach(s => s.remove());
-
   const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) {
-    updateBar(null, null, null);
-    return;
-  }
-
+  if (!raw) { updateBar(null, null, null); return; }
   let state;
-  try { state = JSON.parse(raw); } catch(e) { updateBar(null, null, null); return; }
-
+  try { state = JSON.parse(raw); } catch(e) { updateBar(null,null,null); return; }
   updateBar(state.active, state.widget1, state.widget2);
-
   if (!state.active) return;
-
   [state.widget1, state.widget2].forEach((cfg, i) => {
     if (!cfg) return;
     const slot = i + 1;
-    const configB64 = btoa(JSON.stringify(cfg));
     const script = document.createElement('script');
     script.src = 'widget.js?slot=' + slot + '&t=' + Date.now();
     script.setAttribute('data-slot', slot);
-    script.setAttribute('data-config', configB64);
+    script.setAttribute('data-config', btoa(JSON.stringify(cfg)));
     script.setAttribute('data-gr-widget', '1');
     document.body.appendChild(script);
   });
@@ -169,36 +223,22 @@ function updateBar(active, w1, w2) {
   const b1 = document.getElementById('w1-badge');
   const b2 = document.getElementById('w2-badge');
   const ab = document.getElementById('active-badge');
-  const info = document.getElementById('slot-info');
-
   if (active === null) {
-    b1.textContent = 'Widget 1: —'; b1.className = 'wbar-badge none';
-    b2.textContent = 'Widget 2: —'; b2.className = 'wbar-badge none';
-    ab.textContent = 'Žiadne dáta'; ab.className = 'wbar-badge none';
-    info.textContent = 'localStorage je prázdny — najskôr nastav admin';
+    b1.textContent='W1: —'; b1.className='wbar-badge none';
+    b2.textContent='W2: —'; b2.className='wbar-badge none';
+    ab.textContent='Nastav admin'; ab.className='wbar-badge none';
     return;
   }
-
-  ab.textContent = active ? '✓ Aktívny' : '✗ Vypnutý';
+  ab.textContent = active ? '✓ ON' : '✗ OFF';
   ab.className = 'wbar-badge' + (active ? '' : ' off');
-
-  b1.textContent = w1 ? 'Widget 1: ' + (TYPE_LABELS[w1.type||w1.widgetType] || w1.type||'?') : 'Widget 1: prázdny';
-  b1.className = 'wbar-badge' + (w1 ? '' : ' none');
-
-  b2.textContent = w2 ? 'Widget 2: ' + (TYPE_LABELS[w2.type||w2.widgetType] || w2.type||'?') : 'Widget 2: prázdny';
-  b2.className = 'wbar-badge' + (w2 ? '' : ' none');
-
-  const count = [w1,w2].filter(Boolean).length;
-  info.textContent = count === 0 ? 'Žiadny widget nie je nastavený — otvor admin' : `${count} widget(y) načítané z localStorage`;
+  const t1 = w1 ? (TYPE_LABELS[w1.type||w1.widgetType]||w1.type||'?') : '—';
+  const t2 = w2 ? (TYPE_LABELS[w2.type||w2.widgetType]||w2.type||'?') : '—';
+  b1.textContent = 'W1: '+t1; b1.className = 'wbar-badge'+(w1?'':' none');
+  b2.textContent = 'W2: '+t2; b2.className = 'wbar-badge'+(w2?'':' none');
 }
 
-// Load on page open
 loadWidgets();
-
-// Auto-refresh when admin saves (storage event = iná karta)
-window.addEventListener('storage', e => {
-  if (e.key === STORAGE_KEY) loadWidgets();
-});
+window.addEventListener('storage', e => { if (e.key===STORAGE_KEY) loadWidgets(); });
 </script>
 </body>
 </html>
