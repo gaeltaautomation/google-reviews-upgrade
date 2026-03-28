@@ -758,7 +758,7 @@ function renderSlot(slot, config) {
       meta.style.display = 'flex';
     }
     if (embedEl) {
-      embedEl.value = `<script src="https://reviews.shopstack.eu/widget.js" data-slot="${slot}" data-config="${btoa(JSON.stringify(config))}"><\/script>`;
+      embedEl.value = `<script src="https://reviews.shopstack.eu/widget.js" data-slot="${slot}" data-config="${btoa(unescape(encodeURIComponent(JSON.stringify(config))))}"><\/script>`;
     }
   } else {
     configured.style.display = 'none'; empty.style.display = 'block';
