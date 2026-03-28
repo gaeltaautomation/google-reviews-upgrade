@@ -194,11 +194,23 @@ function reload() {
     iframe.className = 'widget-iframe';
     iframe.setAttribute('scrolling', 'no');
     iframe.setAttribute('allowtransparency', 'true');
-    iframe.src = BASE + '?slot=' + (i+1) + '&t=' + Date.now();
+    iframe.src = BASE + '?slot=' + (i+1) + '&display=1&t=' + Date.now();
     // When loaded → send config via postMessage
     iframe.addEventListener('load', () => {
       iframe.classList.add('loaded');
-      iframe.contentWindow.postMessage({ type: 'LOAD_CONFIG', config: cfg }, '*');
+      // Try direct S access first (var-scoped), fallback to postMessage
+      setTimeout(() => {
+        if (iframe.contentWindow && iframe.contentWindow.S) {
+          Object.assign(iframe.contentWindow.S, cfg);
+          if (typeof iframe.contentWindow.applyTheme === 'function') iframe.contentWindow.applyTheme();
+          if (typeof iframe.contentWindow.applyPosition === 'function') iframe.contentWindow.applyPosition();
+          if (typeof iframe.contentWindow.switchType === 'function') {
+            iframe.contentWindow.switchType(cfg.widgetType||cfg.type||'c0', {classList:{add:()=>{},remove:()=>{}}});
+          }
+        } else {
+          iframe.contentWindow.postMessage({ type: 'LOAD_CONFIG', config: cfg }, '*');
+        }
+      }, 100);
     });
     document.body.appendChild(iframe);
   });
