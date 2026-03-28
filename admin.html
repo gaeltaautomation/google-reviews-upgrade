@@ -3,170 +3,486 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Google Reviews Admin</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Google Reviews – Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  :root{--accent:#4285F4;--accent-hover:#3367D6;--bg:#f1f5f9;--surface:#fff;--header-bg:#1e293b;--text-primary:#0f172a;--text-secondary:#64748b;--border:#e2e8f0;--danger:#ef4444;--success:#22c55e;--radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)}
-  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text-primary);min-height:100vh}
-  header{background:var(--header-bg);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-  .header-logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:15px;font-weight:600}
-  .header-logo svg{width:24px;height:24px}
-  .header-actions{display:flex;align-items:center;gap:12px}
-  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .15s ease;text-decoration:none}
-  .btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent-hover)}
-  .btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.25)}.btn-outline:hover{background:rgba(255,255,255,.1)}
-  .btn-secondary{background:var(--surface);color:var(--text-primary);border:1px solid var(--border)}.btn-secondary:hover{background:var(--bg)}
-  .btn-danger{background:transparent;color:var(--danger);border:1px solid #fecaca}.btn-danger:hover{background:#fef2f2}
-  main{max-width:1100px;margin:0 auto;padding:32px 24px}
-  .page-title{font-size:22px;font-weight:700;margin-bottom:4px}
-  .page-subtitle{font-size:14px;color:var(--text-secondary);margin-bottom:28px}
-  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px}
-  .stat-card{background:var(--surface);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
-  .stat-label{font-size:12px;font-weight:500;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
-  .stat-value{font-size:28px;font-weight:700}
-  .stat-value span{font-size:14px;font-weight:400;color:var(--text-secondary);margin-left:4px}
-  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-  .section-title{font-size:16px;font-weight:600}
-  .card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-  table{width:100%;border-collapse:collapse}
-  thead th{padding:12px 20px;text-align:left;font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;background:#f8fafc;border-bottom:1px solid var(--border)}
-  tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
-  tbody tr:last-child{border-bottom:none}
-  tbody tr:hover{background:#f8fafc}
-  td{padding:14px 20px;font-size:14px;vertical-align:middle}
-  .widget-name{font-weight:600}
-  .widget-location{font-size:13px;color:var(--text-secondary);margin-top:2px}
-  .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500}
-  .badge-active{background:#dcfce7;color:#16a34a}
-  .badge-inactive{background:#f1f5f9;color:var(--text-secondary)}
-  .rating-stars{color:#f59e0b;font-size:13px;letter-spacing:1px}
-  .actions-cell{display:flex;gap:8px;align-items:center}
-  .empty-state{text-align:center;padding:60px 20px;color:var(--text-secondary)}
-  .empty-state-icon{font-size:48px;margin-bottom:16px;opacity:.4}
-  .empty-state h3{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px}
-  .empty-state p{font-size:14px;margin-bottom:20px}
-  .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease}
-  .modal-overlay.active{opacity:1;pointer-events:all}
-  .modal{background:var(--surface);border-radius:16px;width:95vw;max-width:1100px;height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:translateY(12px);transition:transform .2s ease;overflow:hidden}
-  .modal-overlay.active .modal{transform:translateY(0)}
-  .modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border);background:var(--header-bg)}
-  .modal-title{font-size:15px;font-weight:600;color:#fff}
-  .modal-close{width:32px;height:32px;border-radius:8px;border:none;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:background .15s}
-  .modal-close:hover{background:rgba(255,255,255,.2)}
-  .modal-body{flex:1;overflow:hidden}
-  .modal-body iframe{width:100%;height:100%;border:none}
-  .modal-footer{padding:14px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;background:#f8fafc}
-  .toast{position:fixed;bottom:24px;right:24px;background:var(--header-bg);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .25s ease;z-index:2000}
-  .toast.show{transform:translateY(0);opacity:1}
-  .toast.success{border-left:4px solid var(--success)}
-  .toast.error{border-left:4px solid var(--danger)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --accent:#4285F4;--accent-hover:#3367D6;
+  --bg:#f1f5f9;--surface:#fff;--header-bg:#1e293b;
+  --text:#0f172a;--muted:#64748b;--border:#e2e8f0;
+  --danger:#ef4444;--success:#22c55e;--warn:#f59e0b;
+  --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--header-bg);padding:0 32px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:15px;font-weight:700}
+.logo svg{width:22px;height:22px}
+.logo-sub{font-weight:400;opacity:.5;margin-left:4px;font-size:13px}
+.header-right{display:flex;align-items:center;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .15s;text-decoration:none;white-space:nowrap}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent-hover)}
+.btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.2)}.btn-outline:hover{background:rgba(255,255,255,.08)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}.btn-secondary:hover{background:var(--bg)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}.btn-ghost:hover{background:var(--bg);color:var(--text)}
+.btn-danger{background:transparent;color:var(--danger);border:1px solid #fecaca}.btn-danger:hover{background:#fef2f2}
+.btn-success{background:var(--success);color:#fff}.btn-success:hover{filter:brightness(.93)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+main{max-width:760px;margin:0 auto;padding:36px 24px 80px}
+.page-title{font-size:20px;font-weight:700;margin-bottom:2px}
+.page-sub{font-size:14px;color:var(--muted);margin-bottom:32px}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden}
+.card-head{padding:18px 24px 0;display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.card-title svg{width:16px;height:16px;color:var(--accent)}
+.card-body{padding:20px 24px 24px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.toggle-info h3{font-size:14px;font-weight:600;margin-bottom:3px}
+.toggle-info p{font-size:13px;color:var(--muted)}
+.toggle{position:relative;width:46px;height:26px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;background:#cbd5e1;border-radius:13px;transition:.2s;cursor:pointer}
+.toggle input:checked+.toggle-track{background:var(--success)}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.2s;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle input:checked~.toggle-thumb{left:23px}
+.field{margin-bottom:18px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.field-hint{font-size:12px;color:var(--muted);margin-top:4px}
+select,input[type=text]{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);background:var(--surface);transition:border .15s}
+select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(66,133,244,.12)}
+.logo-upload-area{border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all .15s;background:#fafbfc}
+.logo-upload-area:hover{border-color:var(--accent);background:#eff6ff}
+.logo-upload-area.has-logo{border-style:solid;border-color:#bbdefb;background:#eff6ff}
+.logo-preview{width:80px;height:80px;object-fit:contain;border-radius:8px;border:1px solid var(--border);background:#fff;margin:0 auto 10px;display:block}
+.logo-upload-icon{font-size:28px;margin-bottom:8px;opacity:.5}
+.logo-upload-text{font-size:13px;font-weight:500;color:var(--muted)}
+.logo-upload-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.logo-actions{display:flex;justify-content:center;gap:8px;margin-top:10px}
+.widget-slot{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px}
+.widget-slot:last-child{margin-bottom:0}
+.widget-slot-head{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;background:#fafbfc;border-bottom:1px solid var(--border)}
+.widget-slot-label{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+.widget-slot-badge{padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-configured{background:#dcfce7;color:#15803d}
+.badge-empty{background:#f1f5f9;color:var(--muted)}
+.widget-slot-body{padding:16px 18px}
+.widget-type-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:#eff6ff;color:var(--accent);border-radius:6px;font-size:12px;font-weight:500;margin-bottom:10px}
+.widget-actions{display:flex;gap:8px;flex-wrap:wrap}
+.widget-slot-empty{text-align:center;padding:24px;color:var(--muted)}
+.widget-slot-empty p{font-size:13px;margin-bottom:14px}
+.limit-banner{background:linear-gradient(135deg,#fef9ec,#fef3c7);border:1px solid #fde68a;border-radius:10px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;margin-top:16px}
+.limit-banner-icon{font-size:22px;flex-shrink:0}
+.limit-banner h4{font-size:13px;font-weight:600;margin-bottom:4px;color:#92400e}
+.limit-banner p{font-size:12px;color:#a16207;line-height:1.6}
+.limit-banner a{color:var(--accent);font-weight:500}
+.legacy-banner{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:1px solid #bae6fd;border-radius:10px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;margin-bottom:20px}
+.legacy-banner-icon{font-size:22px;flex-shrink:0}
+.legacy-banner h4{font-size:13px;font-weight:600;margin-bottom:4px;color:#0369a1}
+.legacy-banner p{font-size:12px;color:#0284c7;line-height:1.6}
+.legacy-banner .btn{margin-top:8px;font-size:12px;padding:6px 14px;background:var(--accent);color:#fff;border:none}
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:var(--header-bg);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:100;transform:translateY(100%);transition:transform .25s;box-shadow:0 -4px 20px rgba(0,0,0,.15)}
+.save-bar.visible{transform:translateY(0)}
+.save-bar-text{color:rgba(255,255,255,.7);font-size:13px}
+.save-bar-actions{display:flex;gap:10px}
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border-radius:16px;width:96vw;max-width:1140px;height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.3);transform:translateY(14px);transition:transform .2s;overflow:hidden}
+.modal-overlay.active .modal{transform:translateY(0)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:var(--header-bg);flex-shrink:0}
+.modal-title{font-size:15px;font-weight:600;color:#fff}
+.modal-close{width:32px;height:32px;border-radius:8px;border:none;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:background .15s}
+.modal-close:hover{background:rgba(255,255,255,.2)}
+.modal-body{flex:1;overflow:hidden}
+.modal-body iframe{width:100%;height:100%;border:none}
+.modal-footer{padding:14px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;background:#f8fafc;flex-shrink:0}
+.toast{position:fixed;bottom:80px;right:24px;background:var(--header-bg);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(20px);opacity:0;transition:all .25s;z-index:2000}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-left:4px solid var(--success)}
+.toast.error{border-left:4px solid var(--danger)}
 </style>
 </head>
 <body>
+
 <header>
-  <div class="header-logo">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-    Google Reviews Admin
+  <div class="logo">
+    <svg viewBox="0 0 48 48" fill="none">
+      <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+      <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+      <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+      <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+    </svg>
+    Google Reviews
+    <span class="logo-sub">Admin</span>
   </div>
-  <div class="header-actions">
-    <a href="google_reviews_widget_v9.html" class="btn btn-outline" target="_blank">Otvoriť konfigurátor</a>
-    <button class="btn btn-primary" onclick="openConfigurator()">+ Nový widget</button>
+  <div class="header-right">
+    <a href="google_reviews_widget_v9.html" class="btn btn-outline" target="_blank">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Konfigurátor
+    </a>
   </div>
 </header>
+
 <main>
-  <div class="page-title">Správa widgetov</div>
-  <div class="page-subtitle">Všetky Google Reviews widgety na jednom mieste</div>
-  <div class="stats-grid">
-    <div class="stat-card"><div class="stat-label">Celkovo widgetov</div><div class="stat-value" id="stat-total">0</div></div>
-    <div class="stat-card"><div class="stat-label">Aktívnych</div><div class="stat-value" id="stat-active">0</div></div>
-    <div class="stat-card"><div class="stat-label">Priemerné hodnotenie</div><div class="stat-value" id="stat-rating">—<span>/ 5</span></div></div>
+  <div class="page-title">Nastavenia doplnku</div>
+  <div class="page-sub">Google Reviews · shopstack.eu</div>
+
+  <!-- LEGACY BANNER -->
+  <div class="legacy-banner" id="legacy-banner" style="display:none">
+    <div class="legacy-banner-icon">🔄</div>
+    <div>
+      <h4>Máte aktívnu staršiu verziu widgetu</h4>
+      <p>Váš e-shop beží na pôvodnom dizajne. Môžete prejsť na nové admin rozhranie s modernejším vzhľadom — vaše nastavenia zostanú zachované. Prepnutie je dobrovoľné.</p>
+      <button class="btn" onclick="migrateLegacy()">Prejsť na nový dizajn</button>
+    </div>
   </div>
-  <div class="section-header"><div class="section-title">Widgety</div></div>
+
+  <!-- 1. STAV -->
   <div class="card">
-    <table id="widgets-table">
-      <thead><tr><th>Názov</th><th>Hodnotenie</th><th>Recenzií</th><th>Stav</th><th>Naposledy upravený</th><th>Akcie</th></tr></thead>
-      <tbody id="widgets-tbody"></tbody>
-    </table>
-    <div class="empty-state" id="empty-state">
-      <div class="empty-state-icon">⭐</div>
-      <h3>Zatiaľ žiadne widgety</h3>
-      <p>Vytvor prvý widget kliknutím na tlačidlo nižšie.</p>
-      <button class="btn btn-primary" onclick="openConfigurator()">+ Vytvoriť prvý widget</button>
+    <div class="card-head">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Stav doplnku
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <h3>Zapnutý / Vypnutý</h3>
+          <p>Ak vypnete doplnok, widgety sa nebudú zobrazovať na e-shope.</p>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-active" checked onchange="markDirty()">
+          <div class="toggle-track"></div>
+          <div class="toggle-thumb"></div>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. GMB PROFIL -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Google My Business profil
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field">
+        <label for="gmb-select">Vyberte profil</label>
+        <select id="gmb-select" onchange="markDirty()">
+          <option value="">— Načítavam profily... —</option>
+        </select>
+        <div class="field-hint">Zobrazujú sa iba profily prepojené s vaším Google účtom.</div>
+      </div>
+      <div class="field" id="place-id-field" style="display:none">
+        <label>Place ID (manuálne)</label>
+        <input type="text" id="place-id-input" placeholder="ChIJ..." onchange="markDirty()">
+        <div class="field-hint">Zadajte Place ID manuálne ak váš profil nie je v zozname.</div>
+      </div>
+      <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;margin-top:4px" onclick="toggleManualPlaceId()">Zadať Place ID manuálne</button>
+    </div>
+  </div>
+
+  <!-- 3. LOGO -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Logo
+      </div>
+    </div>
+    <div class="card-body">
+      <input type="file" id="logo-file-input" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
+      <div class="logo-upload-area" id="logo-upload-area" onclick="document.getElementById('logo-file-input').click()">
+        <img src="" alt="Logo" class="logo-preview" id="logo-preview" style="display:none">
+        <div id="logo-upload-placeholder">
+          <div class="logo-upload-icon">🖼️</div>
+          <div class="logo-upload-text">Kliknite pre nahratie loga</div>
+          <div class="logo-upload-sub">PNG, JPG alebo SVG · max 2 MB</div>
+        </div>
+      </div>
+      <div class="logo-actions" id="logo-actions" style="display:none">
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="removeLogo()">Odstrániť logo</button>
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="document.getElementById('logo-file-input').click()">Zmeniť</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4+5. WIDGETY -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Widgety
+      </div>
+    </div>
+    <div class="card-body">
+
+      <!-- Widget 1 -->
+      <div class="widget-slot">
+        <div class="widget-slot-head">
+          <div class="widget-slot-label">
+            Widget 1
+            <span class="widget-slot-badge badge-empty" id="slot-1-badge">Nenastavený</span>
+          </div>
+        </div>
+        <div class="widget-slot-body">
+          <div id="slot-1-configured" style="display:none">
+            <div class="widget-type-tag" id="slot-1-type-tag">💬 Floating</div>
+            <div class="widget-actions">
+              <button class="btn btn-secondary" style="font-size:12px;padding:7px 14px" onclick="openConfigurator(1)">Upraviť widget</button>
+              <button class="btn btn-danger" style="font-size:12px;padding:7px 14px" onclick="removeWidget(1)">Odstrániť</button>
+            </div>
+          </div>
+          <div class="widget-slot-empty" id="slot-1-empty">
+            <p>Widget nie je nastavený. Kliknite pre otvorenie konfigurátor.</p>
+            <button class="btn btn-primary" onclick="openConfigurator(1)">+ Nastaviť Widget 1</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Widget 2 -->
+      <div class="widget-slot">
+        <div class="widget-slot-head">
+          <div class="widget-slot-label">
+            Widget 2
+            <span class="widget-slot-badge badge-empty" id="slot-2-badge">Nenastavený</span>
+          </div>
+        </div>
+        <div class="widget-slot-body">
+          <div id="slot-2-configured" style="display:none">
+            <div class="widget-type-tag" id="slot-2-type-tag">💬 Floating</div>
+            <div class="widget-actions">
+              <button class="btn btn-secondary" style="font-size:12px;padding:7px 14px" onclick="openConfigurator(2)">Upraviť widget</button>
+              <button class="btn btn-danger" style="font-size:12px;padding:7px 14px" onclick="removeWidget(2)">Odstrániť</button>
+            </div>
+          </div>
+          <div class="widget-slot-empty" id="slot-2-empty">
+            <p>Widget nie je nastavený. Kliknite pre otvorenie konfigurátor.</p>
+            <button class="btn btn-secondary" onclick="openConfigurator(2)">+ Nastaviť Widget 2</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIMIT -->
+      <div class="limit-banner">
+        <div class="limit-banner-icon">⭐</div>
+        <div>
+          <h4>Potrebujete viac ako 2 widgety?</h4>
+          <p>Každý ďalší widget stojí <strong>2 € / mesiac</strong> (fakturované ročne · 24 € / rok). Kontaktujte nás na <a href="mailto:support@shopstack.eu">support@shopstack.eu</a> a widget pridáme do 24 hodín.</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </main>
+
+<!-- SAVE BAR -->
+<div class="save-bar" id="save-bar">
+  <div class="save-bar-text">Máte neuložené zmeny</div>
+  <div class="save-bar-actions">
+    <button class="btn btn-ghost" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2)" onclick="discardChanges()">Zahodiť</button>
+    <button class="btn btn-success" onclick="saveSettings()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      Uložiť nastavenia
+    </button>
+  </div>
+</div>
+
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title" id="modal-title">Konfigurátor widgetu</div>
       <button class="modal-close" onclick="closeConfigurator()">✕</button>
     </div>
-    <div class="modal-body"><iframe id="configurator-iframe" src="" title="Widget konfigurátor"></iframe></div>
+    <div class="modal-body">
+      <iframe id="cfg-iframe" src="" title="Widget konfigurátor"></iframe>
+    </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeConfigurator()">Zrušiť</button>
-      <button class="btn btn-primary" onclick="saveFromConfigurator()">✓ Uložiť widget</button>
+      <button class="btn btn-primary" onclick="saveFromConfigurator()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Uložiť widget
+      </button>
     </div>
   </div>
 </div>
+
 <div class="toast" id="toast"></div>
+
 <script>
-  const STORAGE_KEY='gaelta_widgets_v1';
-  let widgets=[],editingId=null;
-  function loadWidgets(){try{widgets=JSON.parse(localStorage.getItem(STORAGE_KEY))||[];}catch(e){widgets=[];}renderWidgets();updateStats();}
-  function saveWidgets(){localStorage.setItem(STORAGE_KEY,JSON.stringify(widgets));}
-  function renderWidgets(){
-    const tbody=document.getElementById('widgets-tbody'),empty=document.getElementById('empty-state'),thead=document.getElementById('widgets-table').querySelector('thead');
-    if(!widgets.length){tbody.innerHTML='';empty.style.display='block';thead.style.display='none';return;}
-    empty.style.display='none';thead.style.display='';
-    tbody.innerHTML=widgets.map(w=>`<tr>
-      <td><div class="widget-name">${escHtml(w.name||'Widget')}</div><div class="widget-location">${escHtml(w.placeId||'—')}</div></td>
-      <td><div class="rating-stars">${'★'.repeat(Math.round(w.rating||0))}${'☆'.repeat(5-Math.round(w.rating||0))}</div><div style="font-size:12px;color:var(--text-secondary)">${w.rating?w.rating.toFixed(1):'—'}</div></td>
-      <td>${w.reviewCount||'—'}</td>
-      <td><span class="badge ${w.active?'badge-active':'badge-inactive'}">${w.active?'Aktívny':'Neaktívny'}</span></td>
-      <td style="color:var(--text-secondary);font-size:13px">${formatDate(w.updatedAt)}</td>
-      <td><div class="actions-cell">
-        <button class="btn btn-secondary" style="padding:6px 12px;font-size:12px" onclick="editWidget('${w.id}')">Upraviť</button>
-        <button class="btn btn-danger" style="padding:6px 12px;font-size:12px" onclick="deleteWidget('${w.id}')">Odstrániť</button>
-      </div></td></tr>`).join('');
+const STORAGE_KEY = 'gr_admin_v2';
+const TYPE_LABELS = {c0:'💬 Floating',c1:'🎠 Karusel',c2:'📌 Lišta',c3:'🧩 Embed',c4:'✍️ CTA tlačidlo'};
+
+let state = {active:true,gmbProfileId:'',placeIdManual:'',logoUrl:'',widget1:null,widget2:null,isLegacy:false};
+let dirty = false;
+let activeSlot = null;
+
+function init() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) { try { Object.assign(state, JSON.parse(saved)); } catch(e) {} }
+  applyState();
+  loadGMBProfiles();
+}
+
+function applyState() {
+  document.getElementById('toggle-active').checked = state.active;
+  if (state.placeIdManual) {
+    document.getElementById('place-id-input').value = state.placeIdManual;
+    document.getElementById('place-id-field').style.display = 'block';
   }
-  function updateStats(){
-    const active=widgets.filter(w=>w.active).length;
-    const ratings=widgets.filter(w=>w.rating).map(w=>w.rating);
-    const avg=ratings.length?(ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1):'—';
-    document.getElementById('stat-total').textContent=widgets.length;
-    document.getElementById('stat-active').textContent=active;
-    document.getElementById('stat-rating').innerHTML=avg==='—'?'—':`${avg}<span>/ 5</span>`;
+  if (state.logoUrl) setLogoPreview(state.logoUrl);
+  renderSlot(1, state.widget1);
+  renderSlot(2, state.widget2);
+  if (state.isLegacy) document.getElementById('legacy-banner').style.display = 'flex';
+}
+
+function loadGMBProfiles() {
+  const select = document.getElementById('gmb-select');
+  // Placeholder — Rails backend doplní reálne profily cez /shop/gmb_profiles
+  const profiles = [
+    {id:'', label:'— Vyberte profil —'},
+    {id:'ChIJexample1', label:'Sklníky Dúha – Bratislava'},
+    {id:'ChIJexample2', label:'Moja firma – Košice'}
+  ];
+  select.innerHTML = profiles.map(p => `<option value="${p.id}"${p.id===state.gmbProfileId?' selected':''}>${p.label}</option>`).join('');
+}
+
+function markDirty() {
+  dirty = true;
+  document.getElementById('save-bar').classList.add('visible');
+}
+
+function discardChanges() {
+  dirty = false;
+  document.getElementById('save-bar').classList.remove('visible');
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) { try { Object.assign(state, JSON.parse(saved)); } catch(e) {} }
+  applyState();
+  showToast('Zmeny zahodené', 'error');
+}
+
+function saveSettings() {
+  state.active = document.getElementById('toggle-active').checked;
+  state.gmbProfileId = document.getElementById('gmb-select').value;
+  state.placeIdManual = document.getElementById('place-id-input').value;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  dirty = false;
+  document.getElementById('save-bar').classList.remove('visible');
+  showToast('Nastavenia uložené', 'success');
+  // POST na Rails: /shop/update_settings
+}
+
+function handleLogoUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 2*1024*1024) { showToast('Logo je väčšie ako 2 MB', 'error'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => { state.logoUrl = ev.target.result; setLogoPreview(ev.target.result); markDirty(); };
+  reader.readAsDataURL(file);
+}
+
+function setLogoPreview(url) {
+  document.getElementById('logo-preview').src = url;
+  document.getElementById('logo-preview').style.display = 'block';
+  document.getElementById('logo-upload-placeholder').style.display = 'none';
+  document.getElementById('logo-upload-area').classList.add('has-logo');
+  document.getElementById('logo-actions').style.display = 'flex';
+}
+
+function removeLogo() {
+  state.logoUrl = '';
+  document.getElementById('logo-preview').style.display = 'none';
+  document.getElementById('logo-upload-placeholder').style.display = 'block';
+  document.getElementById('logo-upload-area').classList.remove('has-logo');
+  document.getElementById('logo-actions').style.display = 'none';
+  document.getElementById('logo-file-input').value = '';
+  markDirty();
+}
+
+function toggleManualPlaceId() {
+  const f = document.getElementById('place-id-field');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+function renderSlot(slot, config) {
+  const configured = document.getElementById(`slot-${slot}-configured`);
+  const empty = document.getElementById(`slot-${slot}-empty`);
+  const badge = document.getElementById(`slot-${slot}-badge`);
+  const typeTag = document.getElementById(`slot-${slot}-type-tag`);
+  if (config) {
+    configured.style.display = 'block'; empty.style.display = 'none';
+    badge.textContent = 'Nastavený'; badge.className = 'widget-slot-badge badge-configured';
+    typeTag.textContent = TYPE_LABELS[config.type] || '⚙️ Widget';
+  } else {
+    configured.style.display = 'none'; empty.style.display = 'block';
+    badge.textContent = 'Nenastavený'; badge.className = 'widget-slot-badge badge-empty';
   }
-  function openConfigurator(id=null){
-    editingId=id;
-    const iframe=document.getElementById('configurator-iframe');
-    document.getElementById('modal-title').textContent=id?'Upraviť widget':'Nový widget';
-    iframe.src='google_reviews_widget_v9.html';
-    document.getElementById('modal-overlay').classList.add('active');
-    iframe.onload=()=>{if(id){const w=widgets.find(w=>w.id===id);if(w)iframe.contentWindow.postMessage({type:'LOAD_CONFIG',config:w},'*');}};
+}
+
+function removeWidget(slot) {
+  if (!confirm(`Naozaj chceš odstrániť Widget ${slot}?`)) return;
+  if (slot===1) state.widget1=null; else state.widget2=null;
+  renderSlot(slot, null); markDirty();
+  showToast(`Widget ${slot} odstránený`, 'success');
+}
+
+function openConfigurator(slot) {
+  activeSlot = slot;
+  const iframe = document.getElementById('cfg-iframe');
+  document.getElementById('modal-title').textContent = `Konfigurátor – Widget ${slot}`;
+  iframe.src = 'google_reviews_widget_v9.html';
+  document.getElementById('modal-overlay').classList.add('active');
+  iframe.onload = () => {
+    const existing = slot===1 ? state.widget1 : state.widget2;
+    if (existing) iframe.contentWindow.postMessage({type:'LOAD_CONFIG',config:existing},'*');
+  };
+}
+
+function closeConfigurator() {
+  document.getElementById('modal-overlay').classList.remove('active');
+  document.getElementById('cfg-iframe').src = '';
+  activeSlot = null;
+}
+
+function handleOverlayClick(e) {
+  if (e.target===document.getElementById('modal-overlay')) closeConfigurator();
+}
+
+function saveFromConfigurator() {
+  document.getElementById('cfg-iframe').contentWindow.postMessage({type:'GET_CONFIG'},'*');
+}
+
+window.addEventListener('message', e => {
+  if (e.data?.type==='CONFIG_DATA' && activeSlot) {
+    if (activeSlot===1) state.widget1=e.data.config; else state.widget2=e.data.config;
+    renderSlot(activeSlot, e.data.config);
+    closeConfigurator(); markDirty();
+    showToast(`Widget ${activeSlot} uložený`, 'success');
   }
-  function editWidget(id){openConfigurator(id);}
-  function deleteWidget(id){
-    if(!confirm('Naozaj chceš odstrániť tento widget?'))return;
-    widgets=widgets.filter(w=>w.id!==id);saveWidgets();renderWidgets();updateStats();showToast('Widget odstránený','success');
-  }
-  function closeConfigurator(){document.getElementById('modal-overlay').classList.remove('active');document.getElementById('configurator-iframe').src='';editingId=null;}
-  function handleOverlayClick(e){if(e.target===document.getElementById('modal-overlay'))closeConfigurator();}
-  function saveFromConfigurator(){document.getElementById('configurator-iframe').contentWindow.postMessage({type:'GET_CONFIG'},'*');}
-  window.addEventListener('message',e=>{
-    if(e.data?.type==='CONFIG_DATA'){
-      const config=e.data.config;
-      if(editingId){const idx=widgets.findIndex(w=>w.id===editingId);if(idx!==-1)widgets[idx]={...widgets[idx],...config,updatedAt:new Date().toISOString()};}
-      else{widgets.push({id:'w_'+Date.now(),active:true,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),...config});}
-      saveWidgets();renderWidgets();updateStats();closeConfigurator();showToast('Widget uložený','success');
-    }
-  });
-  function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=(type==='success'?'✓ ':'✕ ')+msg;t.className=`toast ${type} show`;setTimeout(()=>t.classList.remove('show'),3000);}
-  function formatDate(iso){if(!iso)return'—';return new Date(iso).toLocaleDateString('sk-SK',{day:'2-digit',month:'2-digit',year:'numeric'});}
-  function escHtml(str){const d=document.createElement('div');d.appendChild(document.createTextNode(str));return d.innerHTML;}
-  loadWidgets();
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeConfigurator();});
+});
+
+function migrateLegacy() {
+  if (!confirm('Prepnúť na nový dizajn? Pôvodné nastavenia zostanú zachované.')) return;
+  state.isLegacy = false;
+  document.getElementById('legacy-banner').style.display = 'none';
+  markDirty(); showToast('Prepnuté na nový dizajn', 'success');
+}
+
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = (type==='success' ? '✓ ' : '✕ ') + msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+document.addEventListener('keydown', e => { if (e.key==='Escape') closeConfigurator(); });
+window.addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue=''; } });
+
+init();
 </script>
 </body>
 </html>
