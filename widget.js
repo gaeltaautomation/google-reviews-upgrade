@@ -1027,7 +1027,6 @@ function _init() {
   const _type = S.widgetType || 'c0';
   const _el = document.querySelector(`.type-btn[data-type="${_type}"]`);
   switchType(_type, _el || {classList:{add:()=>{},remove:()=>{}}});
-  // Signal parent admin that widget is ready — AFTER full render
   if (window.parent && window.parent !== window) {
     window.parent.postMessage({ type: 'WIDGET_READY' }, '*');
   }
