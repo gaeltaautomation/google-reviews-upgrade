@@ -15,11 +15,15 @@
   --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
 }
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
 header{background:var(--header-bg);padding:0 32px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
 .logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:15px;font-weight:700}
 .logo svg{width:22px;height:22px}
 .logo-sub{font-weight:400;opacity:.5;margin-left:4px;font-size:13px}
 .header-right{display:flex;align-items:center;gap:10px}
+
+/* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .15s;text-decoration:none;white-space:nowrap}
 .btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent-hover)}
 .btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.2)}.btn-outline:hover{background:rgba(255,255,255,.08)}
@@ -28,14 +32,37 @@ header{background:var(--header-bg);padding:0 32px;height:62px;display:flex;align
 .btn-danger{background:transparent;color:var(--danger);border:1px solid #fecaca}.btn-danger:hover{background:#fef2f2}
 .btn-success{background:var(--success);color:#fff}.btn-success:hover{filter:brightness(.93)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* ONBOARDING */
+.onboarding-overlay{position:fixed;inset:0;background:rgba(15,23,42,.75);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center}
+.onboarding-box{background:var(--surface);border-radius:20px;width:92vw;max-width:480px;padding:36px;box-shadow:0 24px 64px rgba(0,0,0,.3)}
+.ob-steps{display:flex;align-items:center;gap:8px;margin-bottom:28px}
+.ob-step{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid var(--border);color:var(--muted);transition:all .2s;flex-shrink:0}
+.ob-step.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.ob-step.done{background:var(--success);border-color:var(--success);color:#fff}
+.ob-line{flex:1;height:2px;background:var(--border);transition:background .2s}
+.ob-line.done{background:var(--success)}
+.ob-icon{font-size:36px;margin-bottom:12px}
+.ob-title{font-size:18px;font-weight:700;margin-bottom:6px}
+.ob-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+.ob-actions{display:flex;justify-content:space-between;align-items:center}
+.ob-skip{font-size:13px;color:var(--muted);cursor:pointer;text-decoration:underline}
+.ob-skip:hover{color:var(--text)}
+
+/* LAYOUT */
 main{max-width:760px;margin:0 auto;padding:36px 24px 80px}
 .page-title{font-size:20px;font-weight:700;margin-bottom:2px}
-.page-sub{font-size:14px;color:var(--muted);margin-bottom:32px}
+.page-sub{font-size:14px;color:var(--muted);margin-bottom:32px;display:flex;align-items:center;gap:10px}
+.last-saved-badge{font-size:12px;background:#f1f5f9;border:1px solid var(--border);border-radius:6px;padding:2px 8px;color:var(--muted)}
+
+/* CARD */
 .card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden}
 .card-head{padding:18px 24px 0;display:flex;align-items:center;justify-content:space-between}
 .card-title{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
 .card-title svg{width:16px;height:16px;color:var(--accent)}
 .card-body{padding:20px 24px 24px}
+
+/* TOGGLE */
 .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
 .toggle-info h3{font-size:14px;font-weight:600;margin-bottom:3px}
 .toggle-info p{font-size:13px;color:var(--muted)}
@@ -45,12 +72,16 @@ main{max-width:760px;margin:0 auto;padding:36px 24px 80px}
 .toggle input:checked+.toggle-track{background:var(--success)}
 .toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.2s;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .toggle input:checked~.toggle-thumb{left:23px}
+
+/* FORM */
 .field{margin-bottom:18px}
 .field:last-child{margin-bottom:0}
 .field label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
 .field-hint{font-size:12px;color:var(--muted);margin-top:4px}
 select,input[type=text]{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);background:var(--surface);transition:border .15s}
 select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(66,133,244,.12)}
+
+/* LOGO */
 .logo-upload-area{border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all .15s;background:#fafbfc}
 .logo-upload-area:hover{border-color:var(--accent);background:#eff6ff}
 .logo-upload-area.has-logo{border-style:solid;border-color:#bbdefb;background:#eff6ff}
@@ -59,32 +90,56 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
 .logo-upload-text{font-size:13px;font-weight:500;color:var(--muted)}
 .logo-upload-sub{font-size:12px;color:var(--muted);margin-top:3px}
 .logo-actions{display:flex;justify-content:center;gap:8px;margin-top:10px}
-.widget-slot{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px}
+
+/* WIDGET SLOTS */
+.widget-slot{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;transition:box-shadow .15s}
 .widget-slot:last-child{margin-bottom:0}
 .widget-slot-head{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;background:#fafbfc;border-bottom:1px solid var(--border)}
 .widget-slot-label{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+.widget-slot-meta{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px}
 .widget-slot-badge{padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600}
 .badge-configured{background:#dcfce7;color:#15803d}
 .badge-empty{background:#f1f5f9;color:var(--muted)}
 .widget-slot-body{padding:16px 18px}
 .widget-type-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:#eff6ff;color:var(--accent);border-radius:6px;font-size:12px;font-weight:500;margin-bottom:10px}
-.widget-actions{display:flex;gap:8px;flex-wrap:wrap}
+.widget-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .widget-slot-empty{text-align:center;padding:24px;color:var(--muted)}
 .widget-slot-empty p{font-size:13px;margin-bottom:14px}
+
+/* MINI PREVIEW */
+.widget-preview-thumb{width:100%;height:120px;border-radius:8px;border:1px solid var(--border);background:linear-gradient(135deg,#f8fafc,#f1f5f9);margin-bottom:12px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+.widget-preview-thumb iframe{width:300%;height:300%;transform:scale(.33);transform-origin:top left;pointer-events:none;border:none}
+.widget-preview-label{position:absolute;bottom:6px;right:8px;font-size:10px;color:var(--muted);background:rgba(255,255,255,.8);padding:2px 6px;border-radius:4px}
+
+/* EMBED CODE */
+.embed-section{margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.embed-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.embed-box{position:relative}
+.embed-code{width:100%;padding:10px 40px 10px 12px;border:1px solid var(--border);border-radius:8px;font-family:'JetBrains Mono','Courier New',monospace;font-size:11px;color:var(--text);background:#f8fafc;resize:none;height:52px;line-height:1.5}
+.embed-copy{position:absolute;right:8px;top:50%;transform:translateY(-50%);padding:4px 10px;font-size:11px;border-radius:6px}
+.embed-copied{background:#dcfce7;color:#15803d;font-size:11px;padding:3px 8px;border-radius:5px;display:none}
+
+/* LIMIT BANNER */
 .limit-banner{background:linear-gradient(135deg,#fef9ec,#fef3c7);border:1px solid #fde68a;border-radius:10px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;margin-top:16px}
 .limit-banner-icon{font-size:22px;flex-shrink:0}
 .limit-banner h4{font-size:13px;font-weight:600;margin-bottom:4px;color:#92400e}
 .limit-banner p{font-size:12px;color:#a16207;line-height:1.6}
 .limit-banner a{color:var(--accent);font-weight:500}
+
+/* LEGACY BANNER */
 .legacy-banner{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:1px solid #bae6fd;border-radius:10px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;margin-bottom:20px}
 .legacy-banner-icon{font-size:22px;flex-shrink:0}
 .legacy-banner h4{font-size:13px;font-weight:600;margin-bottom:4px;color:#0369a1}
 .legacy-banner p{font-size:12px;color:#0284c7;line-height:1.6}
 .legacy-banner .btn{margin-top:8px;font-size:12px;padding:6px 14px;background:var(--accent);color:#fff;border:none}
+
+/* SAVE BAR */
 .save-bar{position:fixed;bottom:0;left:0;right:0;background:var(--header-bg);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:100;transform:translateY(100%);transition:transform .25s;box-shadow:0 -4px 20px rgba(0,0,0,.15)}
 .save-bar.visible{transform:translateY(0)}
 .save-bar-text{color:rgba(255,255,255,.7);font-size:13px}
 .save-bar-actions{display:flex;gap:10px}
+
+/* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
 .modal-overlay.active{opacity:1;pointer-events:all}
 .modal{background:var(--surface);border-radius:16px;width:96vw;max-width:1140px;height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.3);transform:translateY(14px);transition:transform .2s;overflow:hidden}
@@ -96,6 +151,8 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
 .modal-body{flex:1;overflow:hidden}
 .modal-body iframe{width:100%;height:100%;border:none}
 .modal-footer{padding:14px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;background:#f8fafc;flex-shrink:0}
+
+/* TOAST */
 .toast{position:fixed;bottom:80px;right:24px;background:var(--header-bg);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(20px);opacity:0;transition:all .25s;z-index:2000}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{border-left:4px solid var(--success)}
@@ -103,6 +160,24 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
 </style>
 </head>
 <body>
+
+<!-- ONBOARDING OVERLAY -->
+<div class="onboarding-overlay" id="onboarding" style="display:none">
+  <div class="onboarding-box">
+    <div class="ob-steps">
+      <div class="ob-step active" id="ob-step-1">1</div>
+      <div class="ob-line" id="ob-line-1"></div>
+      <div class="ob-step" id="ob-step-2">2</div>
+      <div class="ob-line" id="ob-line-2"></div>
+      <div class="ob-step" id="ob-step-3">3</div>
+    </div>
+    <div id="ob-content"></div>
+    <div class="ob-actions">
+      <span class="ob-skip" onclick="skipOnboarding()">Preskočiť</span>
+      <button class="btn btn-primary" id="ob-next-btn" onclick="obNext()">Pokračovať →</button>
+    </div>
+  </div>
+</div>
 
 <header>
   <div class="logo">
@@ -125,7 +200,10 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
 
 <main>
   <div class="page-title">Nastavenia doplnku</div>
-  <div class="page-sub">Google Reviews · shopstack.eu</div>
+  <div class="page-sub">
+    Google Reviews · shopstack.eu
+    <span class="last-saved-badge" id="last-saved-badge" style="display:none"></span>
+  </div>
 
   <!-- LEGACY BANNER -->
   <div class="legacy-banner" id="legacy-banner" style="display:none">
@@ -172,7 +250,7 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
       <div class="field">
         <label for="gmb-select">Vyberte profil</label>
         <select id="gmb-select" onchange="markDirty()">
-          <option value="">— Načítavam profily... —</option>
+          <option value="">— Vyberte profil —</option>
         </select>
         <div class="field-hint">Zobrazujú sa iba profily prepojené s vaším Google účtom.</div>
       </div>
@@ -204,7 +282,7 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
         </div>
       </div>
       <div class="logo-actions" id="logo-actions" style="display:none">
-        <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="removeLogo()">Odstrániť logo</button>
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="removeLogo()">Odstrániť</button>
         <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="document.getElementById('logo-file-input').click()">Zmeniť</button>
       </div>
     </div>
@@ -227,13 +305,28 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
             Widget 1
             <span class="widget-slot-badge badge-empty" id="slot-1-badge">Nenastavený</span>
           </div>
+          <div class="widget-slot-meta" id="slot-1-meta" style="display:none">
+            <span id="slot-1-saved-at"></span>
+          </div>
         </div>
         <div class="widget-slot-body">
           <div id="slot-1-configured" style="display:none">
+            <div class="widget-preview-thumb" id="slot-1-preview-thumb">
+              <span style="font-size:12px;color:var(--muted)">Náhľad</span>
+              <span class="widget-preview-label">preview</span>
+            </div>
             <div class="widget-type-tag" id="slot-1-type-tag">💬 Floating</div>
             <div class="widget-actions">
               <button class="btn btn-secondary" style="font-size:12px;padding:7px 14px" onclick="openConfigurator(1)">Upraviť widget</button>
               <button class="btn btn-danger" style="font-size:12px;padding:7px 14px" onclick="removeWidget(1)">Odstrániť</button>
+            </div>
+            <div class="embed-section">
+              <div class="embed-label">Embed kód</div>
+              <div class="embed-box">
+                <textarea class="embed-code" id="slot-1-embed" readonly></textarea>
+                <button class="btn btn-ghost embed-copy" onclick="copyEmbed(1)">Kopírovať</button>
+              </div>
+              <span class="embed-copied" id="slot-1-copied">✓ Skopírované</span>
             </div>
           </div>
           <div class="widget-slot-empty" id="slot-1-empty">
@@ -250,13 +343,28 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
             Widget 2
             <span class="widget-slot-badge badge-empty" id="slot-2-badge">Nenastavený</span>
           </div>
+          <div class="widget-slot-meta" id="slot-2-meta" style="display:none">
+            <span id="slot-2-saved-at"></span>
+          </div>
         </div>
         <div class="widget-slot-body">
           <div id="slot-2-configured" style="display:none">
+            <div class="widget-preview-thumb" id="slot-2-preview-thumb">
+              <span style="font-size:12px;color:var(--muted)">Náhľad</span>
+              <span class="widget-preview-label">preview</span>
+            </div>
             <div class="widget-type-tag" id="slot-2-type-tag">💬 Floating</div>
             <div class="widget-actions">
               <button class="btn btn-secondary" style="font-size:12px;padding:7px 14px" onclick="openConfigurator(2)">Upraviť widget</button>
               <button class="btn btn-danger" style="font-size:12px;padding:7px 14px" onclick="removeWidget(2)">Odstrániť</button>
+            </div>
+            <div class="embed-section">
+              <div class="embed-label">Embed kód</div>
+              <div class="embed-box">
+                <textarea class="embed-code" id="slot-2-embed" readonly></textarea>
+                <button class="btn btn-ghost embed-copy" onclick="copyEmbed(2)">Kopírovať</button>
+              </div>
+              <span class="embed-copied" id="slot-2-copied">✓ Skopírované</span>
             </div>
           </div>
           <div class="widget-slot-empty" id="slot-2-empty">
@@ -315,17 +423,28 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
 
 <script>
 const STORAGE_KEY = 'gr_admin_v2';
+const OB_KEY = 'gr_admin_onboarding_done';
 const TYPE_LABELS = {c0:'💬 Floating',c1:'🎠 Karusel',c2:'📌 Lišta',c3:'🧩 Embed',c4:'✍️ CTA tlačidlo'};
 
-let state = {active:true,gmbProfileId:'',placeIdManual:'',logoUrl:'',widget1:null,widget2:null,isLegacy:false};
+const OB_STEPS = [
+  {icon:'📍',title:'Vyber Google My Business profil',desc:'Prepojte váš Google profil aby sa zobrazili reálne recenzie z vášho e-shopu. Stačí vybrať zo zoznamu alebo zadať Place ID manuálne.'},
+  {icon:'🖼️',title:'Nahrajte logo firmy',desc:'Logo sa zobrazí vo widgete vedľa vašich recenzií. Odporúčame PNG s priehľadným pozadím, minimálne 200×200px.'},
+  {icon:'⭐',title:'Nastavte prvý widget',desc:'Vyberte typ widgetu (Floating, Karusel, Lišta...) a prispôsobte farby, veľkosť aj pozíciu. Môžete pridať až 2 widgety zadarmo.'}
+];
+
+let state = {active:true,gmbProfileId:'',placeIdManual:'',logoUrl:'',widget1:null,widget2:null,isLegacy:false,lastSaved:null};
 let dirty = false;
 let activeSlot = null;
+let obStep = 1;
 
+// INIT
 function init() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) { try { Object.assign(state, JSON.parse(saved)); } catch(e) {} }
   applyState();
   loadGMBProfiles();
+  updateLastSavedBadge();
+  if (!localStorage.getItem(OB_KEY)) showOnboarding();
 }
 
 function applyState() {
@@ -342,7 +461,6 @@ function applyState() {
 
 function loadGMBProfiles() {
   const select = document.getElementById('gmb-select');
-  // Placeholder — Rails backend doplní reálne profily cez /shop/gmb_profiles
   const profiles = [
     {id:'', label:'— Vyberte profil —'},
     {id:'ChIJexample1', label:'Sklníky Dúha – Bratislava'},
@@ -351,6 +469,42 @@ function loadGMBProfiles() {
   select.innerHTML = profiles.map(p => `<option value="${p.id}"${p.id===state.gmbProfileId?' selected':''}>${p.label}</option>`).join('');
 }
 
+// ONBOARDING
+function showOnboarding() {
+  document.getElementById('onboarding').style.display = 'flex';
+  renderObStep(1);
+}
+
+function renderObStep(step) {
+  obStep = step;
+  const s = OB_STEPS[step-1];
+  document.getElementById('ob-content').innerHTML = `
+    <div class="ob-icon">${s.icon}</div>
+    <div class="ob-title">${s.title}</div>
+    <div class="ob-desc">${s.desc}</div>`;
+  [1,2,3].forEach(i => {
+    const el = document.getElementById(`ob-step-${i}`);
+    el.className = 'ob-step' + (i < step ? ' done' : i === step ? ' active' : '');
+    el.textContent = i < step ? '✓' : i;
+  });
+  [1,2].forEach(i => {
+    const l = document.getElementById(`ob-line-${i}`);
+    l.className = 'ob-line' + (i < step ? ' done' : '');
+  });
+  document.getElementById('ob-next-btn').textContent = step === 3 ? 'Začať →' : 'Pokračovať →';
+}
+
+function obNext() {
+  if (obStep < 3) { renderObStep(obStep + 1); }
+  else { skipOnboarding(); }
+}
+
+function skipOnboarding() {
+  localStorage.setItem(OB_KEY, '1');
+  document.getElementById('onboarding').style.display = 'none';
+}
+
+// DIRTY / SAVE
 function markDirty() {
   dirty = true;
   document.getElementById('save-bar').classList.add('visible');
@@ -369,13 +523,27 @@ function saveSettings() {
   state.active = document.getElementById('toggle-active').checked;
   state.gmbProfileId = document.getElementById('gmb-select').value;
   state.placeIdManual = document.getElementById('place-id-input').value;
+  state.lastSaved = new Date().toISOString();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   dirty = false;
   document.getElementById('save-bar').classList.remove('visible');
+  updateLastSavedBadge();
   showToast('Nastavenia uložené', 'success');
   // POST na Rails: /shop/update_settings
 }
 
+function updateLastSavedBadge() {
+  const badge = document.getElementById('last-saved-badge');
+  if (!state.lastSaved) { badge.style.display = 'none'; return; }
+  const d = new Date(state.lastSaved);
+  const now = new Date();
+  const diff = Math.round((now - d) / 60000);
+  let label = diff < 1 ? 'práve teraz' : diff < 60 ? `pred ${diff} min` : d.toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'});
+  badge.textContent = `Uložené: ${label}`;
+  badge.style.display = 'inline-flex';
+}
+
+// LOGO
 function handleLogoUpload(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -408,18 +576,32 @@ function toggleManualPlaceId() {
   f.style.display = f.style.display === 'none' ? 'block' : 'none';
 }
 
+// WIDGET SLOTS
 function renderSlot(slot, config) {
   const configured = document.getElementById(`slot-${slot}-configured`);
   const empty = document.getElementById(`slot-${slot}-empty`);
   const badge = document.getElementById(`slot-${slot}-badge`);
   const typeTag = document.getElementById(`slot-${slot}-type-tag`);
+  const meta = document.getElementById(`slot-${slot}-meta`);
+  const savedAt = document.getElementById(`slot-${slot}-saved-at`);
+  const embedEl = document.getElementById(`slot-${slot}-embed`);
+
   if (config) {
     configured.style.display = 'block'; empty.style.display = 'none';
     badge.textContent = 'Nastavený'; badge.className = 'widget-slot-badge badge-configured';
     typeTag.textContent = TYPE_LABELS[config.type] || '⚙️ Widget';
+    if (config.savedAt) {
+      const d = new Date(config.savedAt);
+      savedAt.textContent = `Uložený: ${d.toLocaleDateString('sk-SK')} ${d.toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'})}`;
+      meta.style.display = 'flex';
+    }
+    if (embedEl) {
+      embedEl.value = `<script src="https://reviews.shopstack.eu/widget.js" data-slot="${slot}" data-config="${btoa(JSON.stringify(config))}"><\/script>`;
+    }
   } else {
     configured.style.display = 'none'; empty.style.display = 'block';
     badge.textContent = 'Nenastavený'; badge.className = 'widget-slot-badge badge-empty';
+    meta.style.display = 'none';
   }
 }
 
@@ -430,6 +612,17 @@ function removeWidget(slot) {
   showToast(`Widget ${slot} odstránený`, 'success');
 }
 
+// EMBED COPY
+function copyEmbed(slot) {
+  const el = document.getElementById(`slot-${slot}-embed`);
+  el.select();
+  document.execCommand('copy');
+  const copied = document.getElementById(`slot-${slot}-copied`);
+  copied.style.display = 'inline';
+  setTimeout(() => { copied.style.display = 'none'; }, 2000);
+}
+
+// CONFIGURATOR MODAL
 function openConfigurator(slot) {
   activeSlot = slot;
   const iframe = document.getElementById('cfg-iframe');
@@ -458,13 +651,15 @@ function saveFromConfigurator() {
 
 window.addEventListener('message', e => {
   if (e.data?.type==='CONFIG_DATA' && activeSlot) {
-    if (activeSlot===1) state.widget1=e.data.config; else state.widget2=e.data.config;
-    renderSlot(activeSlot, e.data.config);
+    const config = {...e.data.config, savedAt: new Date().toISOString()};
+    if (activeSlot===1) state.widget1=config; else state.widget2=config;
+    renderSlot(activeSlot, config);
     closeConfigurator(); markDirty();
     showToast(`Widget ${activeSlot} uložený`, 'success');
   }
 });
 
+// LEGACY
 function migrateLegacy() {
   if (!confirm('Prepnúť na nový dizajn? Pôvodné nastavenia zostanú zachované.')) return;
   state.isLegacy = false;
@@ -472,6 +667,7 @@ function migrateLegacy() {
   markDirty(); showToast('Prepnuté na nový dizajn', 'success');
 }
 
+// TOAST
 function showToast(msg, type='success') {
   const t = document.getElementById('toast');
   t.textContent = (type==='success' ? '✓ ' : '✕ ') + msg;
