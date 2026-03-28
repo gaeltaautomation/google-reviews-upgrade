@@ -247,31 +247,59 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
       </div>
     </div>
     <div class="card-body">
-      <div class="field">
-        <label for="place-id-input">Google Place ID</label>
-        <div style="display:flex;gap:8px;align-items:stretch;">
+
+      <div class="field" id="gmb-step-search">
+        <label style="font-size:13px;font-weight:600;color:var(--text);">🔍 Nájdi firmu na Google</label>
+        <div style="display:flex;gap:8px;margin-top:6px;">
+          <input type="text" id="gmb-search-input"
+            placeholder="Napr. Sklníky Dúha Bratislava"
+            style="flex:1;min-width:0;"
+            autocomplete="off" spellcheck="false"
+            onkeydown="if(event.key==='Enter') searchGMB()"
+            oninput="onGmbSearchInput(this.value)">
+          <button class="btn btn-primary" style="white-space:nowrap;padding:0 16px;" onclick="searchGMB()">
+            Hľadať →
+          </button>
+        </div>
+        <div class="field-hint" style="margin-top:8px;">
+          Otvorí Google Maps — nájdi svoju firmu a skopíruj <strong>Place ID</strong> z URL alebo cez <strong>Zdieľať → Vložiť mapu</strong>.
+        </div>
+      </div>
+
+      <div class="field" id="gmb-step-placeid" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
+        <label style="font-size:13px;font-weight:600;color:var(--text);">📋 Vlož Place ID a potvrď profil</label>
+        <div style="display:flex;gap:8px;margin-top:6px;align-items:stretch;">
           <input type="text" id="place-id-input"
             placeholder="ChIJ..."
-            style="flex:1;min-width:0;"
+            style="flex:1;min-width:0;font-family:monospace;font-size:13px;"
             autocomplete="off" autocorrect="off" spellcheck="false"
-            oninput="onPlaceIdInput(this.value)">
-          <button class="btn btn-primary" style="white-space:nowrap;padding:0 16px;" onclick="confirmPlaceId()">Potvrdiť →</button>
+            oninput="onPlaceIdInput(this.value)"
+            onkeydown="if(event.key==='Enter') confirmPlaceId()">
+          <button class="btn btn-primary" id="gmb-confirm-btn" style="white-space:nowrap;padding:0 16px;" onclick="confirmPlaceId()">
+            ✓ Potvrdiť
+          </button>
         </div>
-        <div class="field-hint" id="place-id-hint">
-          Nájdite vaše Place ID na <a href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder" target="_blank" style="color:var(--accent);">Google Place ID Finder →</a>
+        <div class="field-hint" id="place-id-hint" style="margin-top:6px;">
+          Place ID začína na <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:11px;">ChIJ...</code>
+          &nbsp;·&nbsp;
+          <a href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder" target="_blank" style="color:var(--accent);">Place ID Finder →</a>
         </div>
       </div>
-      <div id="gmb-verified-card" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:12px 14px;margin-top:4px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:20px;">📍</span>
-          <div style="flex:1;min-width:0;">
-            <div id="gmb-verified-name" style="font-weight:700;font-size:14px;color:#15803d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
-            <div id="gmb-verified-id" style="font-size:11px;color:#64748b;margin-top:2px;"></div>
+
+      <div id="gmb-verified-card" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:14px 16px;margin-top:12px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:#fff;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
           </div>
-          <button onclick="clearPlaceId()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:18px;line-height:1;">×</button>
+          <div style="flex:1;min-width:0;">
+            <div style="margin-bottom:3px;"><span style="font-size:11px;font-weight:700;color:#15803d;background:#dcfce7;padding:2px 8px;border-radius:20px;">✓ OVERENÝ</span></div>
+            <div id="gmb-verified-name" style="font-weight:700;font-size:15px;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+            <div id="gmb-verified-id" style="font-size:11px;color:#64748b;margin-top:2px;font-family:monospace;"></div>
+          </div>
+          <button onclick="clearPlaceId()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:22px;line-height:1;padding:4px;flex-shrink:0;" title="Zmeniť profil">×</button>
         </div>
       </div>
-      <!-- hidden select for backwards compatibility with saveSettings -->
+
       <select id="gmb-select" style="display:none"></select>
     </div>
   </div>
@@ -492,42 +520,51 @@ function applyState() {
 }
 
 function loadGMBProfiles() {
-  // Populate input + verified card from state
   const id = state.placeIdManual || state.gmbProfileId || '';
   const name = state._shopName || '';
   if (id) {
     document.getElementById('place-id-input').value = id;
+    if (name && name !== id) document.getElementById('gmb-search-input').value = name;
     showVerifiedCard(id, name || id);
   }
-  // Keep hidden select in sync for saveSettings
   const select = document.getElementById('gmb-select');
-  if (select && id) {
-    select.innerHTML = `<option value="${id}" selected>${name || id}</option>`;
-  }
+  if (select && id) select.innerHTML = `<option value="${id}" selected>${name || id}</option>`;
 }
 
+
 function onPlaceIdInput(val) {
-  // Clear verified card while typing
-  if (!val.trim()) {
-    document.getElementById('gmb-verified-card').style.display = 'none';
-  }
+  if (!val.trim()) document.getElementById('gmb-verified-card').style.display = 'none';
+}
+
+
+function onGmbSearchInput(val) {}
+
+function searchGMB() {
+  const q = document.getElementById('gmb-search-input').value.trim();
+  if (!q) { showToast('Zadaj názov firmy', 'error'); return; }
+  window.open('https://www.google.com/maps/search/' + encodeURIComponent(q), '_blank');
+  showToast('Nájdi firmu → klikni na ňu → skopíruj Place ID z URL', 'info', 5000);
 }
 
 function confirmPlaceId() {
   const val = document.getElementById('place-id-input').value.trim();
-  if (!val) {
-    showToast('Zadajte Place ID', 'error'); return;
-  }
+  if (!val) { showToast('Vlož Place ID (začína ChIJ...)', 'error'); return; }
+  if (val.length < 10) { showToast('Place ID vyzerá príliš krátke', 'error'); return; }
+  const btn = document.getElementById('gmb-confirm-btn');
+  if (btn) { btn.textContent = '⏳'; btn.disabled = true; }
+  const searchName = document.getElementById('gmb-search-input').value.trim();
+  const displayName = searchName || val;
   state.placeIdManual = val;
   state.gmbProfileId = val;
-  // Update hidden select
+  state._shopName = displayName;
   const select = document.getElementById('gmb-select');
-  select.innerHTML = `<option value="${val}" selected>${val}</option>`;
-  // Show verified card immediately with Place ID
-  showVerifiedCard(val, state._shopName || val);
+  select.innerHTML = `<option value="${val}" selected>${displayName}</option>`;
+  showVerifiedCard(val, displayName);
   markDirty();
-  showToast('Place ID nastavené ✓', 'success');
+  if (btn) { btn.textContent = '✓ Potvrdiť'; btn.disabled = false; }
+  showToast('Profil potvrdený ✓', 'success');
 }
+
 
 function showVerifiedCard(id, name) {
   document.getElementById('gmb-verified-name').textContent = name;
@@ -541,11 +578,14 @@ function clearPlaceId() {
   state.gmbProfileId = '';
   state._shopName = '';
   document.getElementById('place-id-input').value = '';
+  document.getElementById('gmb-search-input').value = '';
   document.getElementById('gmb-verified-card').style.display = 'none';
   document.getElementById('place-id-hint').style.display = 'block';
-  document.getElementById('gmb-select').innerHTML = '<option value="">—</option>';
+  document.getElementById('gmb-select').innerHTML = '<option value="">&#8212;</option>';
   markDirty();
+  showToast('Profil odpojený', 'info');
 }
+
 
 
 // ONBOARDING
@@ -808,12 +848,14 @@ function migrateLegacy() {
 }
 
 // TOAST
-function showToast(msg, type='success') {
+function showToast(msg, type='success', duration=3000) {
   const t = document.getElementById('toast');
-  t.textContent = (type==='success' ? '✓ ' : '✕ ') + msg;
+  const icon = type==='success' ? '✓ ' : type==='info' ? 'ℹ ' : '✕ ';
+  t.textContent = icon + msg;
   t.className = `toast ${type} show`;
-  setTimeout(() => t.classList.remove('show'), 3000);
+  setTimeout(() => t.classList.remove('show'), duration);
 }
+
 
 document.addEventListener('keydown', e => { if (e.key==='Escape') closeConfigurator(); });
 window.addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue=''; } });
