@@ -248,18 +248,31 @@ select:focus,input[type=text]:focus{outline:none;border-color:var(--accent);box-
     </div>
     <div class="card-body">
       <div class="field">
-        <label for="gmb-select">Vyberte profil</label>
-        <select id="gmb-select" onchange="markDirty()">
-          <option value="">— Vyberte profil —</option>
-        </select>
-        <div class="field-hint">Zobrazujú sa iba profily prepojené s vaším Google účtom.</div>
+        <label for="place-id-input">Google Place ID</label>
+        <div style="display:flex;gap:8px;align-items:stretch;">
+          <input type="text" id="place-id-input"
+            placeholder="ChIJ..."
+            style="flex:1;min-width:0;"
+            autocomplete="off" autocorrect="off" spellcheck="false"
+            oninput="onPlaceIdInput(this.value)">
+          <button class="btn btn-primary" style="white-space:nowrap;padding:0 16px;" onclick="confirmPlaceId()">Potvrdiť →</button>
+        </div>
+        <div class="field-hint" id="place-id-hint">
+          Nájdite vaše Place ID na <a href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder" target="_blank" style="color:var(--accent);">Google Place ID Finder →</a>
+        </div>
       </div>
-      <div class="field" id="place-id-field">
-        <label>Place ID (manuálne)</label>
-        <input type="text" id="place-id-input" placeholder="Zadajte Place ID (napr. ChIJrU_95Sxw... )" onchange="markDirty()">
-        <div class="field-hint">Zadajte Place ID manuálne ak váš profil nie je v zozname.</div>
+      <div id="gmb-verified-card" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:12px 14px;margin-top:4px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:20px;">📍</span>
+          <div style="flex:1;min-width:0;">
+            <div id="gmb-verified-name" style="font-weight:700;font-size:14px;color:#15803d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+            <div id="gmb-verified-id" style="font-size:11px;color:#64748b;margin-top:2px;"></div>
+          </div>
+          <button onclick="clearPlaceId()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:18px;line-height:1;">×</button>
+        </div>
       </div>
-      <!-- Place ID field je vždy viditeľný -->
+      <!-- hidden select for backwards compatibility with saveSettings -->
+      <select id="gmb-select" style="display:none"></select>
     </div>
   </div>
 
@@ -472,10 +485,6 @@ function init() {
 
 function applyState() {
   document.getElementById('toggle-active').checked = state.active;
-  if (state.placeIdManual) {
-    document.getElementById('place-id-input').value = state.placeIdManual;
-    document.getElementById('place-id-field').style.display = 'block';
-  }
   if (state.logoUrl) setLogoPreview(state.logoUrl);
   renderSlot(1, state.widget1);
   renderSlot(2, state.widget2);
@@ -483,64 +492,59 @@ function applyState() {
 }
 
 function loadGMBProfiles() {
-  const select = document.getElementById('gmb-select');
-  const currentId = state.placeIdManual || state.gmbProfileId || '';
-  const currentName = state._shopName || '';
-  const profiles = [{id:'', label:'— Vyberte profil —'}];
-  if (currentId && currentName) profiles.push({id: currentId, label: currentName});
-  else if (currentId) profiles.push({id: currentId, label: currentId});
-  select.innerHTML = profiles.map(p =>
-    `<option value="${p.id}"${p.id===currentId?' selected':''}>${p.label}</option>`
-  ).join('');
-  if (currentId) select.value = currentId;
-
-  // Wire place-id-input: typing a Place ID updates the dropdown immediately
-  const searchInput = document.getElementById('place-id-input');
-  if (searchInput && !searchInput._psWired) {
-    searchInput._psWired = true;
-    // On blur or Enter — add to dropdown and select
-    function applyPlaceId() {
-      const val = searchInput.value.trim();
-      if (!val) return;
-      state.placeIdManual = val;
-      // Try to fetch business name from Rails, fallback to just Place ID
-      fetch(`/place_search?s=${encodeURIComponent(val)}`, {
-        headers: {'Accept':'application/json','X-Requested-With':'XMLHttpRequest'}
-      })
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        let label = val;
-        if (data && data.candidates && data.candidates.length > 0) {
-          const c = data.candidates[0];
-          if (c.place_id === val || !data.candidates.some(x=>x.place_id)) label = c.name || val;
-        }
-        // Update dropdown
-        const existing = Array.from(select.options).find(o => o.value === val);
-        if (!existing) {
-          const opt = document.createElement('option');
-          opt.value = val; opt.textContent = label;
-          select.appendChild(opt);
-        }
-        select.value = val;
-        state.gmbProfileId = val;
-        markDirty();
-      })
-      .catch(() => {
-        // Rails not available (demo mode) — just use Place ID directly
-        const existing = Array.from(select.options).find(o => o.value === val);
-        if (!existing) {
-          const opt = document.createElement('option');
-          opt.value = val; opt.textContent = val;
-          select.appendChild(opt);
-        }
-        select.value = val;
-        state.gmbProfileId = val;
-        markDirty();
-      });
-    }
-    searchInput.addEventListener('blur', applyPlaceId);
-    searchInput.addEventListener('keydown', e => { if (e.key==='Enter') { e.preventDefault(); applyPlaceId(); }});
+  // Populate input + verified card from state
+  const id = state.placeIdManual || state.gmbProfileId || '';
+  const name = state._shopName || '';
+  if (id) {
+    document.getElementById('place-id-input').value = id;
+    showVerifiedCard(id, name || id);
   }
+  // Keep hidden select in sync for saveSettings
+  const select = document.getElementById('gmb-select');
+  if (select && id) {
+    select.innerHTML = `<option value="${id}" selected>${name || id}</option>`;
+  }
+}
+
+function onPlaceIdInput(val) {
+  // Clear verified card while typing
+  if (!val.trim()) {
+    document.getElementById('gmb-verified-card').style.display = 'none';
+  }
+}
+
+function confirmPlaceId() {
+  const val = document.getElementById('place-id-input').value.trim();
+  if (!val) {
+    showToast('Zadajte Place ID', 'error'); return;
+  }
+  state.placeIdManual = val;
+  state.gmbProfileId = val;
+  // Update hidden select
+  const select = document.getElementById('gmb-select');
+  select.innerHTML = `<option value="${val}" selected>${val}</option>`;
+  // Show verified card immediately with Place ID
+  showVerifiedCard(val, state._shopName || val);
+  markDirty();
+  showToast('Place ID nastavené ✓', 'success');
+}
+
+function showVerifiedCard(id, name) {
+  document.getElementById('gmb-verified-name').textContent = name;
+  document.getElementById('gmb-verified-id').textContent = 'Place ID: ' + id;
+  document.getElementById('gmb-verified-card').style.display = 'block';
+  document.getElementById('place-id-hint').style.display = 'none';
+}
+
+function clearPlaceId() {
+  state.placeIdManual = '';
+  state.gmbProfileId = '';
+  state._shopName = '';
+  document.getElementById('place-id-input').value = '';
+  document.getElementById('gmb-verified-card').style.display = 'none';
+  document.getElementById('place-id-hint').style.display = 'block';
+  document.getElementById('gmb-select').innerHTML = '<option value="">—</option>';
+  markDirty();
 }
 
 
@@ -691,10 +695,6 @@ function removeLogo() {
   }).catch(()=>{});
 }
 
-function toggleManualPlaceId() {
-  const f = document.getElementById('place-id-field');
-  f.style.display = f.style.display === 'none' ? 'block' : 'none';
-}
 
 // WIDGET SLOTS
 function renderSlot(slot, config) {
