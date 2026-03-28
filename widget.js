@@ -124,8 +124,8 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">⊕</span> Kde sa lišta zobrazí</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.barPos==='top'?'active':''}" onclick="setBarPos('top',this)">▲ Nad hlavičkou</div>
-        <div class="toggle-btn ${S.barPos==='bottom'?'active':''}" onclick="setBarPos('bottom',this)">▼ Pod hlavičkou</div>
+        <div class="toggle-btn ${S.barPos==='top'?'active':''}" data-barpos="top" onclick="setBarPos('top',this)">▲ Nad hlavičkou</div>
+        <div class="toggle-btn ${S.barPos==='bottom'?'active':''}" data-barpos="bottom" onclick="setBarPos('bottom',this)">▼ Pod hlavičkou</div>
       </div>
     </div>`,
 
@@ -160,8 +160,8 @@ const SECTIONS = {
     <div class="cfg-section">
       <div class="cfg-label"><span class="cfg-label-icon">✖</span> Návštevník môže zatvoriť</div>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${S.barDismissible?'active':''}" onclick="setBarDismissible(true,this)">Áno</div>
-        <div class="toggle-btn ${!S.barDismissible?'active':''}" onclick="setBarDismissible(false,this)">Nie</div>
+        <div class="toggle-btn ${S.barDismissible?'active':''}" data-bardismissible="true" onclick="setBarDismissible(true,this)">Áno</div>
+        <div class="toggle-btn ${!S.barDismissible?'active':''}" data-bardismissible="false" onclick="setBarDismissible(false,this)">Nie</div>
       </div>
     </div>`,
 
@@ -500,7 +500,7 @@ const reviews=[
 const SIZES={S:.82,M:1,L:1.22};
 const GAP=10;
 let panelOpen=false,currentDevice='desktop',activeOffsetTab='desktop';
-let S={
+var S={
   style:'classic',accent:'#4285F4',mode:'light',radius:14,size:'M',pos:'bottom-right',
   offsetDesktop:{bottom:28,right:28},offsetMobile:{bottom:16,right:16},
   lang:'sk',ctaWrite:'Napísať recenziu',ctaAll:'Všetky recenzie',
@@ -751,6 +751,19 @@ function setOwnerReply(v, el) {
   if (el) el.classList.add('active');
   S.ownerReply = v;
 }
+
+function setBarPos(v, el) {
+  document.querySelectorAll('[data-barpos]').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  S.barPos = v;
+}
+
+function setBarDismissible(v, el) {
+  document.querySelectorAll('[data-bardismissible]').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  S.barDismissible = v;
+}
+
 
 function exp(i){ document.getElementById('s'+i).classList.add('hidden'); document.getElementById('f'+i).classList.add('visible'); }
 function col(i){ document.getElementById('s'+i).classList.remove('hidden'); document.getElementById('f'+i).classList.remove('visible'); }
