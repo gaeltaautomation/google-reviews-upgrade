@@ -962,7 +962,7 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   background: #fff;
   border-top: 1px solid #e5e7eb;
   padding: 12px 20px;
-  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 34px));
   z-index: 30;
 }
 .cfg-save-btn {
