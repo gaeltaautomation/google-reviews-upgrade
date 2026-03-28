@@ -122,6 +122,31 @@
   </div>
 </div>
 
+<script>
+(function(){
+  const p = new URLSearchParams(window.location.search);
+  if (p.get("display")==="1") {
+    document.addEventListener("DOMContentLoaded", function() {
+      // Hide configurator sidebar
+      const cfg = document.getElementById("config");
+      if (cfg) cfg.style.display = "none";
+      // Make app-shell + stage transparent & full-width
+      const shell = document.querySelector(".app-shell");
+      if (shell) Object.assign(shell.style, {display:"block", background:"transparent", overflow:"visible"});
+      const stageW = document.getElementById("preview-stage-wrapper");
+      if (stageW) Object.assign(stageW.style, {width:"100%", height:"100%", background:"transparent", border:"none", borderRadius:"0", overflow:"visible"});
+      const stage = document.getElementById("preview-stage");
+      if (stage) Object.assign(stage.style, {width:"100vw", height:"100vh", background:"transparent", border:"none", borderRadius:"0", overflow:"visible"});
+      const inner = document.getElementById("preview-inner");
+      if (inner) Object.assign(inner.style, {background:"transparent", border:"none"});
+      // Hide mock page content
+      const devLabel = document.getElementById("device-label");
+      if (devLabel) devLabel.style.display = "none";
+      document.querySelectorAll(".preview-copy, .tip-grid, .tip-card").forEach(el => el.style.display = "none");
+    });
+  }
+})();
+</script>
 <script src="widget.js"></script>
 </body>
 </html>
