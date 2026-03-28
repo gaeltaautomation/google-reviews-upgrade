@@ -624,6 +624,16 @@ function switchType(type, el) {
   const dyn = document.getElementById('cfg-dynamic');
   dyn.innerHTML = WIDGET_TYPES[type].sections.map(s => SECTIONS[s] ? SECTIONS[s]() : '').join('');
 
+  // Sticky save footer — always present, above Safari toolbar
+  const existingFooter = document.getElementById('cfg-save-footer');
+  if (!existingFooter) {
+    const footer = document.createElement('div');
+    footer.id = 'cfg-save-footer';
+    footer.className = 'cfg-save-footer';
+    footer.innerHTML = '<button class="cfg-save-btn" onclick="window.parent.postMessage({type:\'GET_CONFIG\'},\'*\')">✓ Uložiť widget</button>';
+    document.getElementById('config').appendChild(footer);
+  }
+
   // update best practices / context copy for selected widget
   buildContextCopy(type);
 
