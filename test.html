@@ -7,173 +7,118 @@
   <style>
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Inter',system-ui,sans-serif;background:#f8fafc;color:#1e293b;}
-
-    /* ── Safe area support (Dynamic Island + home indicator) ── */
     :root{
-      --sat: env(safe-area-inset-top, 0px);
-      --sar: env(safe-area-inset-right, 0px);
-      --sab: env(safe-area-inset-bottom, 0px);
-      --sal: env(safe-area-inset-left, 0px);
+      --sat:env(safe-area-inset-top,0px);
+      --sar:env(safe-area-inset-right,0px);
+      --sab:env(safe-area-inset-bottom,0px);
+      --sal:env(safe-area-inset-left,0px);
     }
 
-    /* ── Admin debug bar ── */
-    .widget-bar{
-      background:#0f172a;color:#e2e8f0;font-size:13px;
-      padding:10px 20px 10px calc(20px + var(--sal));
-      padding-right:calc(20px + var(--sar));
-      display:flex;align-items:center;justify-content:space-between;gap:8px;
-      flex-wrap:wrap;
-    }
-    .widget-bar-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-    .wbar-badge{background:#22c55e;color:#fff;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;}
-    .wbar-badge.off{background:#ef4444;}
-    .wbar-badge.none{background:#64748b;}
-    .widget-bar a{color:#60a5fa;text-decoration:none;font-size:12px;white-space:nowrap;}
-    .refresh-btn{background:#334155;color:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;white-space:nowrap;}
-    .refresh-btn:hover{background:#4285F4;color:#fff;}
+    /* debug bar */
+    .widget-bar{background:#0f172a;color:#e2e8f0;font-size:12px;padding:9px 20px;
+      padding-left:calc(16px + var(--sal));padding-right:calc(16px + var(--sar));
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+    .widget-bar-left{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+    .wbar-badge{background:#22c55e;color:#fff;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap;}
+    .wbar-badge.off{background:#ef4444;} .wbar-badge.none{background:#475569;}
     .wbar-right{display:flex;align-items:center;gap:8px;}
-    .slot-info{font-size:11px;opacity:.6;display:none;}
+    .wbar-right a{color:#60a5fa;font-size:11px;text-decoration:none;}
+    .refresh-btn{background:#334155;color:#e2e8f0;border:none;padding:4px 10px;border-radius:5px;font-size:11px;cursor:pointer;}
+    .refresh-btn:active{background:#4285F4;}
 
-    /* ── E-shop header ── */
-    .shop-header{
-      background:#fff;border-bottom:1px solid #e2e8f0;
+    /* shop header */
+    .shop-header{background:#fff;border-bottom:1px solid #e2e8f0;
       padding:0 20px;padding-left:calc(20px + var(--sal));padding-right:calc(20px + var(--sar));
-      height:60px;display:flex;align-items:center;justify-content:space-between;
-      position:sticky;top:0;z-index:100;
-    }
-    .shop-logo{font-size:20px;font-weight:800;color:#1e293b;letter-spacing:-0.5px;}
-    .shop-logo span{color:#4285F4;}
-    .shop-nav{display:flex;gap:20px;font-size:14px;}
+      height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+    .shop-logo{font-size:19px;font-weight:800;} .shop-logo span{color:#4285F4;}
+    .shop-nav{display:flex;gap:20px;font-size:13px;}
     .shop-nav a{color:#64748b;text-decoration:none;}
-    .shop-cart{background:#4285F4;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+    .shop-cart{background:#4285F4;color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;}
 
-    /* ── Hero ── */
-    .hero{
-      background:linear-gradient(135deg,#1e40af 0%,#3b82f6 100%);
-      color:#fff;padding:60px 20px;text-align:center;
-    }
-    .hero h1{font-size:36px;font-weight:800;margin-bottom:14px;letter-spacing:-1px;line-height:1.15;}
-    .hero p{font-size:16px;opacity:.85;margin-bottom:28px;line-height:1.6;}
-    .hero-btn{background:#fff;color:#1e40af;border:none;padding:14px 28px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;}
+    /* hero */
+    .hero{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;padding:56px 20px;text-align:center;}
+    .hero h1{font-size:34px;font-weight:800;margin-bottom:12px;letter-spacing:-1px;line-height:1.15;}
+    .hero p{font-size:15px;opacity:.85;margin-bottom:24px;}
+    .hero-btn{background:#fff;color:#1e40af;border:none;padding:12px 26px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;}
 
-    /* ── Products ── */
-    .section{
-      padding:48px 20px;max-width:1100px;margin:0 auto;
-      padding-left:calc(20px + var(--sal));
-      padding-right:calc(20px + var(--sar));
-    }
-    .section-title{font-size:22px;font-weight:700;margin-bottom:24px;}
-    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;}
-    .product-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:box-shadow .2s;}
-    .product-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.12);}
-    .product-img{width:100%;height:140px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#e0e7ff,#f0fdf4);}
-    .product-info{padding:14px;}
-    .product-name{font-weight:600;margin-bottom:6px;font-size:14px;}
-    .product-price{color:#4285F4;font-weight:700;font-size:17px;}
-    .product-btn{width:100%;margin-top:10px;background:#f1f5f9;border:none;padding:8px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:#1e293b;}
+    /* products */
+    .section{padding:44px 20px;max-width:1100px;margin:0 auto;
+      padding-left:calc(20px + var(--sal));padding-right:calc(20px + var(--sar));}
+    .section-title{font-size:21px;font-weight:700;margin-bottom:20px;}
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+    .product-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+    .product-img{width:100%;height:130px;display:flex;align-items:center;justify-content:center;font-size:42px;background:linear-gradient(135deg,#e0e7ff,#f0fdf4);}
+    .product-info{padding:13px;}
+    .product-name{font-weight:600;font-size:13px;margin-bottom:5px;}
+    .product-price{color:#4285F4;font-weight:700;font-size:16px;}
+    .product-btn{width:100%;margin-top:9px;background:#f1f5f9;border:none;padding:7px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;color:#1e293b;}
     .product-btn:active{background:#4285F4;color:#fff;}
 
-    /* ── Footer ── */
-    .footer{
-      background:#1e293b;color:#94a3b8;text-align:center;
-      padding:28px 20px;
-      padding-bottom:calc(28px + var(--sab));
-      font-size:13px;margin-top:64px;line-height:1.6;
-    }
+    /* widget iframe — invisible overlay, pointer-events passthrough */
+    .widget-iframe{position:fixed;inset:0;width:100%;height:100%;border:none;
+      pointer-events:none;z-index:200;background:transparent;}
+    .widget-iframe.loaded{pointer-events:auto;}
 
-    /* ── iPhone / mobile ── */
-    @media (max-width: 480px) {
-      /* Header: hide nav, compact */
+    /* empty state */
+    .empty-state{text-align:center;padding:48px 20px;color:#94a3b8;}
+    .empty-state .icon{font-size:48px;margin-bottom:12px;}
+    .empty-state h3{font-size:16px;font-weight:600;color:#64748b;margin-bottom:8px;}
+    .empty-state a{color:#4285F4;text-decoration:none;font-size:13px;}
+
+    /* footer */
+    .footer{background:#1e293b;color:#94a3b8;text-align:center;
+      padding:24px 20px;padding-bottom:calc(24px + var(--sab));
+      font-size:12px;margin-top:60px;line-height:1.7;}
+
+    /* mobile */
+    @media(max-width:480px){
       .shop-nav{display:none;}
-      .shop-header{height:54px;}
-      .shop-logo{font-size:18px;}
-      .shop-cart{padding:7px 12px;font-size:12px;}
-
-      /* Debug bar: stack vertically, compact */
-      .widget-bar{font-size:11px;padding:8px 16px;gap:6px;}
-      .widget-bar-left{gap:6px;}
-      .wbar-badge{font-size:10px;padding:2px 7px;}
-      #w2-badge{display:none;}  /* show only w1 on small screen */
-      .slot-info{display:none!important;}
-
-      /* Hero */
-      .hero{padding:48px 20px;}
-      .hero h1{font-size:26px;}
-      .hero p{font-size:14px;}
-      .hero-btn{padding:12px 24px;font-size:14px;}
-
-      /* Products: 2 columns */
-      .section{padding:36px 16px;}
-      .section-title{font-size:18px;margin-bottom:18px;}
-      .products{grid-template-columns:repeat(2, 1fr);gap:12px;}
-      .product-img{height:110px;font-size:36px;}
-      .product-info{padding:10px;}
-      .product-name{font-size:13px;}
-      .product-price{font-size:15px;}
-    }
-
-    /* ── iPhone 17 Pro exact (393px logical) ── */
-    @media (max-width: 393px) {
       .hero h1{font-size:24px;}
-      .products{grid-template-columns:repeat(2, 1fr);gap:10px;}
+      .hero p{font-size:13px;}
+      .products{grid-template-columns:repeat(2,1fr);gap:10px;}
+      .product-img{height:100px;font-size:34px;}
+      .section{padding:32px 14px;}
     }
   </style>
 </head>
 <body>
 
-<!-- ── Admin debug bar ──────────────────────────────────────────── -->
+<!-- debug bar -->
 <div class="widget-bar">
   <div class="widget-bar-left">
     <span>🔧</span>
-    <span id="w1-badge" class="wbar-badge none">W1: —</span>
-    <span id="w2-badge" class="wbar-badge none">W2: —</span>
-    <span id="active-badge" class="wbar-badge none">—</span>
+    <span id="ab" class="wbar-badge none">—</span>
+    <span id="w1b" class="wbar-badge none">W1: —</span>
+    <span id="w2b" class="wbar-badge none">W2: —</span>
   </div>
   <div class="wbar-right">
-    <button class="refresh-btn" onclick="loadWidgets()">↻</button>
+    <button class="refresh-btn" onclick="reload()">↻ Obnoviť</button>
     <a href="admin.html">⚙️ Admin</a>
   </div>
 </div>
 
-<!-- ── E-shop header ──────────────────────────────────────────────── -->
+<!-- shop -->
 <header class="shop-header">
   <div class="shop-logo">Demo<span>Shop</span>.sk</div>
   <nav class="shop-nav">
-    <a href="#">Domov</a>
-    <a href="#">Produkty</a>
-    <a href="#">O nás</a>
-    <a href="#">Kontakt</a>
+    <a href="#">Domov</a><a href="#">Produkty</a><a href="#">O nás</a><a href="#">Kontakt</a>
   </nav>
   <button class="shop-cart">🛒 Košík</button>
 </header>
 
-<!-- ── Hero ──────────────────────────────────────────────────────── -->
 <section class="hero">
   <h1>Najlepší online obchod</h1>
-  <p>Kvalitné produkty s rýchlym<br>doručením po celom Slovensku</p>
-  <button class="hero-btn">Nakupovať teraz →</button>
+  <p>Kvalitné produkty · Rýchle doručenie</p>
+  <button class="hero-btn">Nakupovať →</button>
 </section>
 
-<!-- ── Products ─────────────────────────────────────────────────── -->
 <section class="section">
   <div class="section-title">Obľúbené produkty</div>
   <div class="products">
-    <div class="product-card">
-      <div class="product-img">👟</div>
-      <div class="product-info"><div class="product-name">Bežecké topánky Pro</div><div class="product-price">89,90 €</div><button class="product-btn">Do košíka</button></div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">🎒</div>
-      <div class="product-info"><div class="product-name">Cestovný ruksak 40L</div><div class="product-price">59,90 €</div><button class="product-btn">Do košíka</button></div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">⌚</div>
-      <div class="product-info"><div class="product-name">Smart hodinky Series 5</div><div class="product-price">149,00 €</div><button class="product-btn">Do košíka</button></div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">🎧</div>
-      <div class="product-info"><div class="product-name">Bezdrôtové slúchadlá</div><div class="product-price">79,00 €</div><button class="product-btn">Do košíka</button></div>
-    </div>
+    <div class="product-card"><div class="product-img">👟</div><div class="product-info"><div class="product-name">Bežecké topánky Pro</div><div class="product-price">89,90 €</div><button class="product-btn">Do košíka</button></div></div>
+    <div class="product-card"><div class="product-img">🎒</div><div class="product-info"><div class="product-name">Cestovný ruksak 40L</div><div class="product-price">59,90 €</div><button class="product-btn">Do košíka</button></div></div>
+    <div class="product-card"><div class="product-img">⌚</div><div class="product-info"><div class="product-name">Smart hodinky Series 5</div><div class="product-price">149,00 €</div><button class="product-btn">Do košíka</button></div></div>
+    <div class="product-card"><div class="product-img">🎧</div><div class="product-info"><div class="product-name">Bezdrôtové slúchadlá</div><div class="product-price">79,00 €</div><button class="product-btn">Do košíka</button></div></div>
   </div>
 </section>
 
@@ -187,58 +132,81 @@
   </div>
 </section>
 
-<!-- ── Widget inject point ───────────────────────────────────────── -->
-<div id="gr-widget-container"></div>
+<!-- empty state shown when no widget configured -->
+<div id="empty-state" class="empty-state" style="display:none">
+  <div class="icon">⚙️</div>
+  <h3>Widget nie je nastavený</h3>
+  <p style="margin-bottom:12px;font-size:13px;">Nastav a ulož widget v admin paneli</p>
+  <a href="admin.html">Otvoriť admin →</a>
+</div>
+
+<!-- widget iframes injected here -->
+<div id="widget-frames"></div>
 
 <footer class="footer">
   © 2026 DemoShop.sk<br>
-  <span style="font-size:11px;opacity:.6;">Testovacia stránka — Google Reviews Widget</span>
+  <span style="opacity:.5;font-size:11px;">Testovacia stránka — Google Reviews Widget</span>
 </footer>
 
 <script>
-const STORAGE_KEY = 'gr_admin_v2';
-const TYPE_LABELS = {c0:'💬 Floating',c1:'🎠 Karusel',c2:'📌 Lišta',c3:'🧩 Embed',c4:'✍️ CTA'};
+const KEY = 'gr_admin_v2';
+const LABELS = {c0:'💬 Floating',c1:'🎠 Karusel',c2:'📌 Lišta',c3:'🧩 Embed',c4:'✍️ CTA'};
+const BASE = 'google_reviews_widget_v9.html';
 
-function loadWidgets() {
-  document.querySelectorAll('script[data-gr-widget]').forEach(s => s.remove());
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) { updateBar(null, null, null); return; }
+function reload() {
+  // Remove existing iframes
+  document.getElementById('widget-frames').innerHTML = '';
+  document.querySelectorAll('.widget-iframe').forEach(f => f.remove());
+
+  const raw = localStorage.getItem(KEY);
+  const ab = document.getElementById('ab');
+  const w1b = document.getElementById('w1b');
+  const w2b = document.getElementById('w2b');
+  const empty = document.getElementById('empty-state');
+
+  if (!raw) {
+    ab.textContent='Nastav admin'; ab.className='wbar-badge none';
+    w1b.textContent='W1: —'; w1b.className='wbar-badge none';
+    w2b.textContent='W2: —'; w2b.className='wbar-badge none';
+    empty.style.display='block';
+    return;
+  }
+
   let state;
-  try { state = JSON.parse(raw); } catch(e) { updateBar(null,null,null); return; }
-  updateBar(state.active, state.widget1, state.widget2);
-  if (!state.active) return;
-  [state.widget1, state.widget2].forEach((cfg, i) => {
+  try { state = JSON.parse(raw); } catch(e) { return; }
+
+  ab.textContent = state.active ? '✓ Aktívny' : '✗ Vypnutý';
+  ab.className = 'wbar-badge' + (state.active ? '' : ' off');
+
+  const w1 = state.widget1, w2 = state.widget2;
+  w1b.textContent = w1 ? 'W1: '+(LABELS[w1.type||w1.widgetType]||'?') : 'W1: —';
+  w1b.className = 'wbar-badge'+(w1?'':' none');
+  w2b.textContent = w2 ? 'W2: '+(LABELS[w2.type||w2.widgetType]||'?') : 'W2: —';
+  w2b.className = 'wbar-badge'+(w2?'':' none');
+
+  const hasWidget = w1 || w2;
+  empty.style.display = (!state.active || !hasWidget) ? 'block' : 'none';
+  if (!state.active || !hasWidget) return;
+
+  [w1, w2].forEach((cfg, i) => {
     if (!cfg) return;
-    const slot = i + 1;
-    const script = document.createElement('script');
-    script.src = 'widget.js?slot=' + slot + '&t=' + Date.now();
-    script.setAttribute('data-slot', slot);
-    script.setAttribute('data-config', btoa(JSON.stringify(cfg)));
-    script.setAttribute('data-gr-widget', '1');
-    document.body.appendChild(script);
+    const iframe = document.createElement('iframe');
+    iframe.className = 'widget-iframe';
+    iframe.setAttribute('scrolling', 'no');
+    iframe.setAttribute('allowtransparency', 'true');
+    iframe.src = BASE + '?slot=' + (i+1) + '&t=' + Date.now();
+    // When loaded → send config via postMessage
+    iframe.addEventListener('load', () => {
+      iframe.classList.add('loaded');
+      iframe.contentWindow.postMessage({ type: 'LOAD_CONFIG', config: cfg }, '*');
+    });
+    document.body.appendChild(iframe);
   });
 }
 
-function updateBar(active, w1, w2) {
-  const b1 = document.getElementById('w1-badge');
-  const b2 = document.getElementById('w2-badge');
-  const ab = document.getElementById('active-badge');
-  if (active === null) {
-    b1.textContent='W1: —'; b1.className='wbar-badge none';
-    b2.textContent='W2: —'; b2.className='wbar-badge none';
-    ab.textContent='Nastav admin'; ab.className='wbar-badge none';
-    return;
-  }
-  ab.textContent = active ? '✓ ON' : '✗ OFF';
-  ab.className = 'wbar-badge' + (active ? '' : ' off');
-  const t1 = w1 ? (TYPE_LABELS[w1.type||w1.widgetType]||w1.type||'?') : '—';
-  const t2 = w2 ? (TYPE_LABELS[w2.type||w2.widgetType]||w2.type||'?') : '—';
-  b1.textContent = 'W1: '+t1; b1.className = 'wbar-badge'+(w1?'':' none');
-  b2.textContent = 'W2: '+t2; b2.className = 'wbar-badge'+(w2?'':' none');
-}
-
-loadWidgets();
-window.addEventListener('storage', e => { if (e.key===STORAGE_KEY) loadWidgets(); });
+reload();
+// Auto-reload when admin saves in another tab
+window.addEventListener('storage', e => { if (e.key === KEY) reload(); });
 </script>
 </body>
 </html>
