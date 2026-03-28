@@ -979,21 +979,54 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
    MOBILE RESPONSIVE — iPhone 17 Pro (393px) & all phones
    ══════════════════════════════════════════════════════════════ */
 @media(max-width:900px){
-  /* Already hides preview — just ensure #config fills correctly */
-  #config {
-    display: flex;
-    flex-direction: column;
-    height: 100dvh;       /* dynamic viewport height — excludes Safari toolbar */
+  /* Column layout: mini preview navrchu, nastavenia dole */
+  .app-shell {
+    flex-direction: column !important;
+    height: 100dvh;
     overflow: hidden;
   }
-  .cfg-head { flex-shrink: 0; }
-  .cfg-device-bar { flex-shrink: 0; }
-  .cfg-body {
+  #config {
+    order: 2;
+    width: 100% !important;
+    max-width: 100% !important;
     flex: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 0;
+    border-right: none !important;
+    border-top: 1px solid #e5e7eb;
+    height: auto;
+    padding-bottom: env(safe-area-inset-bottom,0px);
   }
+  .cfg-head { position:sticky;top:0;z-index:10;background:#fff; }
+  .cfg-device-bar { display:none; }
+  .cfg-body { padding-bottom: 24px; }
+
+  /* Mini preview hore */
+  #preview-stage-wrapper {
+    display: flex !important;
+    order: 1;
+    flex-shrink: 0;
+    height: 200px;
+    padding: 0 !important;
+    background: #0f172a;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+  }
+  #preview-stage {
+    position: relative !important;
+    width: 100% !important;
+    height: 200px !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #0f172a !important;
+    overflow: hidden !important;
+    transform: scale(0.7);
+    transform-origin: center center;
+  }
+  #device-label, .preview-copy, .tip-grid, .tip-card, #device-frame { display:none !important; }
+  #preview-inner { padding: 0 !important; height:100%; }
 }
 
 @media(max-width:600px){
