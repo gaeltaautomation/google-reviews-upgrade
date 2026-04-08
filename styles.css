@@ -71,25 +71,18 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 
 /* ══════════════════════════════════════════════════════════════
    GLASS TIP CARDS — True Apple/macOS frosted glass
-   Kľúč: blur(60px) saturate(2.2) — nie viac, nie menej.
-   Viac blur/saturate = plastic look. Apple používa blur 20-60px.
-   Vibrancy = cool white tint (light) / dark indigo tint (dark)
-   Specular = top inset white line = "glass edge"
+   blur(60px) saturate(2.2) — nie viac, nie menej.
    ══════════════════════════════════════════════════════════════ */
 
 .glass-bg-light .tip-card{
   position: relative;
-  /* iOS/macOS vibrancy light: cool white tint, jemný nie silný */
   background: rgba(255,255,255, 0.62);
   backdrop-filter: blur(60px) saturate(2.2) brightness(1.04);
   -webkit-backdrop-filter: blur(60px) saturate(2.2) brightness(1.04);
   border: none;
   box-shadow:
-    /* top specular — biela linka = glass edge */
     inset 0 1px 0 rgba(255,255,255,0.95),
-    /* outer ring — jemný priesvitný border */
     0 0 0 1px rgba(255,255,255,0.55),
-    /* lift shadow */
     0 2px 8px rgba(0,0,0,0.06),
     0 8px 24px rgba(0,0,0,0.08);
   color:#1d1d1f;
@@ -108,7 +101,6 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 
 .glass-bg-dark .tip-card{
   position: relative;
-  /* macOS dark vibrancy: tmavá s indigo undertone */
   background: rgba(28,28,42, 0.55);
   backdrop-filter: blur(60px) saturate(2.2) brightness(0.88);
   -webkit-backdrop-filter: blur(60px) saturate(2.2) brightness(0.88);
@@ -332,22 +324,17 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 /* ══════════════════════════════════════════════════════════════
    GLASS BADGE — True Apple/macOS frosted glass
    blur(60px) saturate(2.2) = správna Apple hodnota
-   Nie 80px/4.5 — to je "plastový" look
    ══════════════════════════════════════════════════════════════ */
 
 /* Glass Light Badge */
 #gr-badge.glass-badge-light{
-  position: relative;
   background: rgba(255,255,255, 0.62) !important;
   backdrop-filter: blur(60px) saturate(2.2) brightness(1.04) !important;
   -webkit-backdrop-filter: blur(60px) saturate(2.2) brightness(1.04) !important;
   border: none !important;
   box-shadow:
-    /* glass edge — top specular line */
     inset 0 1px 0 rgba(255,255,255,0.95),
-    /* outer priesvitný ring */
     0 0 0 1px rgba(255,255,255,0.55),
-    /* lift shadows */
     0 2px 8px rgba(0,0,0,0.06),
     0 8px 28px rgba(0,0,0,0.09),
     0 24px 56px rgba(0,0,0,0.06) !important;
@@ -377,7 +364,6 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 
 /* Glass Dark Badge */
 #gr-badge.glass-badge-dark{
-  position: relative;
   background: rgba(28,28,42, 0.58) !important;
   backdrop-filter: blur(60px) saturate(2.2) brightness(0.88) !important;
   -webkit-backdrop-filter: blur(60px) saturate(2.2) brightness(0.88) !important;
@@ -495,7 +481,6 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
     0 20px 48px rgba(0,0,0,0.55),
     0 0 48px color-mix(in srgb, var(--accent) 28%, transparent);
 }
-/* Neon accent stripe */
 #gr-badge.modern-badge.modern-dark.horiz::before{
   content:"";
   display:block; flex-shrink:0;
@@ -595,10 +580,11 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 
 /* ══════════════════════════════════════════════════════════════
    GLASS PANEL — True Apple/macOS frosted glass
-   blur(60px) saturate(2.2) — správna Apple hodnota
+   FIX: odstránený position:relative — konflikt so transform:translateZ(0)
+   ktorý ruší backdrop-filter v niektorých prehliadačoch
    ══════════════════════════════════════════════════════════════ */
 #gr-panel.glass-light{
-  position: relative;
+  /* FIX: no position:relative — parent #gr-panel is already position:absolute */
   background: rgba(255,255,255, 0.70);
   backdrop-filter: blur(60px) saturate(2.2) brightness(1.04);
   -webkit-backdrop-filter: blur(60px) saturate(2.2) brightness(1.04);
@@ -610,6 +596,8 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
     0 16px 48px rgba(0,0,0,0.10),
     0 40px 80px rgba(0,0,0,0.07);
   overflow: hidden;
+  /* FIX: --gr-text-body pre správnu farbu review textu na glass light */
+  --gr-text-body: rgba(30,30,50,0.72);
 }
 #gr-panel.glass-light::before{
   content:"";
@@ -625,7 +613,7 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
 #gr-panel.glass-light > *{ position:relative; z-index:1; }
 
 #gr-panel.glass-dark{
-  position: relative;
+  /* FIX: no position:relative */
   background: rgba(28,28,42, 0.65);
   backdrop-filter: blur(60px) saturate(2.2) brightness(0.88);
   -webkit-backdrop-filter: blur(60px) saturate(2.2) brightness(0.88);
@@ -637,6 +625,8 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
     0 16px 48px rgba(0,0,0,0.70),
     0 40px 80px rgba(0,0,0,0.45);
   overflow: hidden;
+  /* FIX: --gr-text-body pre správnu farbu review textu na glass dark */
+  --gr-text-body: rgba(235,235,250,0.75);
 }
 #gr-panel.glass-dark::before{
   content:"";
@@ -1485,11 +1475,16 @@ body{ font-family:"Inter",sans-serif; min-height:100vh; background:#f3f4f6; }
   to{ opacity:1; transform:scale(1); }
 }
 
+/* ══════════════════════════════════════════════════════════════
+   @supports backdrop-filter
+   FIX: generické selektory #gr-badge.horiz / #gr-badge.vert
+   prepísali glass backdrop-filter na none. Opravené :not() výnimkami.
+   ══════════════════════════════════════════════════════════════ */
 @supports (-webkit-backdrop-filter: blur(1px)) {
   .gr-bar.glass-bar,
-  #gr-badge.horiz,
-  #gr-badge.vert,
-  #gr-panel,
+  #gr-badge:not(.glass-badge-light):not(.glass-badge-dark).horiz,
+  #gr-badge:not(.glass-badge-light):not(.glass-badge-dark).vert,
+  #gr-panel:not(.glass-light):not(.glass-dark),
   .cta-btn.cta-glass,
   .cta-btn.cta-glass-dark {
     -webkit-backdrop-filter: var(--gr-blur, none);
